@@ -37,7 +37,7 @@ export const CoreTeamSection: React.FC = () => {
                   <img
                     src={member.imageUrl}
                     alt={member.name}
-                    className="w-full h-full object-cover grayscale transition-all duration-500 md:group-hover:grayscale-0"
+                    className={`w-full h-full object-cover ${member.id === 'core-member-01' ? 'object-[30%_center]' : ''} grayscale transition-all duration-500 group-hover:grayscale-0`}
                     style={touchedMemberImage === member.id ? { filter: 'none' } : undefined}
                   />
                 ) : (
@@ -52,9 +52,11 @@ export const CoreTeamSection: React.FC = () => {
               <h3 className="text-xl font-extrabold text-white mt-2 mb-3 tracking-tight">
                 {member.name}
               </h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
-                {member.bio}
-              </p>
+              {member.bio && (
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  {member.bio}
+                </p>
+              )}
             </article>
           ))}
         </div>
