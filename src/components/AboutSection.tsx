@@ -36,9 +36,8 @@ export const AboutSection: React.FC = () => {
               01 // Mission & Ethos
             </span>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.05]">
-              Artists,<br />
-              Designers, &amp;<br />
-              <span className="text-neutral-500">Original People of Earth.</span>
+              Artists &amp;<br />
+              Designers
             </h2>
           </div>
 
@@ -73,6 +72,36 @@ export const AboutSection: React.FC = () => {
               </p>
             </div>
           ))}
+        </div>
+
+        <div className="group mt-12 sm:mt-20 grid overflow-hidden border border-white/10 bg-[#1A1A1A] lg:mt-24 lg:grid-cols-12">
+          <div className="relative overflow-hidden border-b border-white/10 lg:col-span-7 lg:border-b-0 lg:border-r">
+            <img
+              src="/adope-club-photo.jpeg"
+              alt="aDOPE club members and faculty together at MGIT"
+              className="block aspect-[3/2] h-full w-full object-cover grayscale transition-[filter,transform] duration-700 group-hover:scale-[1.02] group-hover:grayscale-0"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10" />
+            <span className="absolute left-4 top-4 border border-white/25 bg-black/35 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-sm sm:left-6 sm:top-6">
+              aDOPE / MGIT
+            </span>
+          </div>
+          <div className="flex flex-col justify-between p-6 sm:p-8 lg:col-span-5 lg:p-10">
+            <div>
+              <span className="mb-5 block font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-500 sm:text-[10px]">
+                The people behind the practice
+              </span>
+              <h3 className="max-w-[12ch] text-3xl font-semibold uppercase leading-[1.02] tracking-[-0.05em] text-white sm:text-4xl">
+                Made together.
+              </h3>
+              <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-400 sm:text-base">
+                A community of student designers, artists, and mentors shaping visual culture at MGIT.
+              </p>
+            </div>
+            <div className="mt-10 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-600">
+              <span className="h-px w-8 bg-white/35" />Artists, designers &amp; original people of Earth
+            </div>
+          </div>
         </div>
 
         {/* Live Club Stats Bar */}

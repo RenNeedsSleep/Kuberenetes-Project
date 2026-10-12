@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ARTWORKS_DATA } from '../data/mockData';
 import { Artwork } from '../types';
-import { Plus, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import * as THREE from 'three';
 
 const NirvanaPhoenix: React.FC = () => {
@@ -21,8 +21,8 @@ const NirvanaPhoenix: React.FC = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(34, mount.clientWidth / mount.clientHeight, 0.1, 100);
     camera.position.z = 8.2;
-    const compactDevice = window.matchMedia('(pointer: coarse)').matches;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, compactDevice ? 1.25 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
@@ -31,35 +31,20 @@ const NirvanaPhoenix: React.FC = () => {
     scene.add(emblem);
     const texture = new THREE.TextureLoader().load('/nirvana-phoenix.png', (loaded) => {
       loaded.colorSpace = THREE.SRGBColorSpace;
+      loaded.generateMipmaps = true;
+      loaded.minFilter = THREE.LinearMipmapLinearFilter;
+      loaded.magFilter = THREE.LinearFilter;
+      loaded.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      loaded.needsUpdate = true;
       const image = loaded.image as HTMLImageElement;
       const aspect = image.width / image.height;
       const height = 4.15;
       const width = height * aspect;
 
-      // A shallow, even relief gives the cutout a slim edge when it tilts.
-      const reliefLayers = 7;
-      const reliefDepth = 0.12;
-      for (let layer = 0; layer < reliefLayers; layer += 1) {
-        const relief = new THREE.Mesh(
-          new THREE.PlaneGeometry(width, height),
-          new THREE.MeshBasicMaterial({
-            map: loaded,
-            color: 0x9a5415,
-            transparent: true,
-            alphaTest: 0.04,
-            depthWrite: true,
-            side: THREE.DoubleSide
-          })
-        );
-        relief.position.z = -reliefDepth + (layer / (reliefLayers - 1)) * reliefDepth;
-        emblem.add(relief);
-      }
-
       const face = new THREE.Mesh(
         new THREE.PlaneGeometry(width, height),
-        new THREE.MeshBasicMaterial({ map: loaded, transparent: true, alphaTest: 0.04, depthWrite: false, side: THREE.DoubleSide })
+        new THREE.MeshBasicMaterial({ map: loaded, transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false })
       );
-      face.position.z = 0.04;
       emblem.add(face);
       emblem.position.y = 0.25;
       renderer.render(scene, camera);
@@ -174,12 +159,10 @@ const NirvanaPhoenix: React.FC = () => {
 
 interface VisualOutputSectionProps {
   onSelectArtwork: (artwork: Artwork) => void;
-  onOpenJoinModal: () => void;
 }
 
 export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
-  onSelectArtwork,
-  onOpenJoinModal
+  onSelectArtwork
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [touchedArtworkId, setTouchedArtworkId] = useState<string | null>(null);
@@ -312,22 +295,6 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
             );
           })}
 
-          {/* Special Square: Submit / Join Archive Tile */}
-          <div
-            onClick={onOpenJoinModal}
-            className="md:col-span-4 group cursor-pointer relative overflow-hidden aspect-square border border-white/10 bg-[#1A1A1A] flex flex-col items-center justify-center p-8 hover:bg-[#252525] transition-all duration-300"
-          >
-            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/50 z-10" />
-            <div className="p-4 bg-white/5 border border-white/10 mb-4 group-hover:bg-white group-hover:text-[#131313] transition-colors">
-              <Plus className="w-6 h-6 text-white/70 group-hover:text-[#131313] transition-colors" />
-            </div>
-            <h4 className="font-mono text-xs uppercase tracking-widest text-center text-white/80 group-hover:text-white transition-colors mb-2">
-              Submit Artwork / Join Archives
-            </h4>
-            <p className="text-[11px] text-neutral-400 text-center max-w-xs">
-              Are you an MGIT student exploring branding, posters, digital art, or interfaces? Apply to showcase your work.
-            </p>
-          </div>
         </div>
       </div>
     </section>

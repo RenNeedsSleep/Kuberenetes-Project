@@ -67,7 +67,6 @@ export default function App() {
         <TimelineSection />
         <VisualOutputSection
           onSelectArtwork={(artwork) => setSelectedArtwork(artwork)}
-          onOpenJoinModal={handleJoin}
         />
       </main>
 

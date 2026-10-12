@@ -205,13 +205,6 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
     bio: 'Leading aDOPE’s creative community and guiding the club’s vision and initiatives.'
   },
   {
-    id: 'core-member-01',
-    name: 'Abhishek Krishna Mopada',
-    role: 'President',
-    imageUrl: '/abhisheik-krishna-mopada.jpeg',
-    bio: 'Representing aDOPE and guiding its creative community, vision, and initiatives.'
-  },
-  {
     id: 'core-member-02',
     name: 'Shyam Sunder Pabboju',
     role: 'Faculty Coordinator',
@@ -224,12 +217,6 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
     role: 'Faculty Coordinator',
     imageUrl: '/sree-divya.png',
     bio: 'Supporting aDOPE’s student team through faculty mentorship across its creative work.'
-  },
-  {
-    id: 'core-member-04',
-    name: 'To be announced',
-    role: 'Member',
-    bio: 'Profile pending.'
   }
 ];
 
