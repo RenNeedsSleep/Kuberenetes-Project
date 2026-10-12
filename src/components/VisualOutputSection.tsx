@@ -164,15 +164,8 @@ interface VisualOutputSectionProps {
 export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
   onSelectArtwork
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [touchedArtworkId, setTouchedArtworkId] = useState<string | null>(null);
   const touchedArtworkRef = useRef<string | null>(null);
-
-  const categories = ['All', 'Branding', 'Editorial', 'Posters', 'UI/UX', 'Logo Design', 'Event Identity'];
-
-  const filteredArtworks = selectedCategory === 'All'
-    ? ARTWORKS_DATA
-    : ARTWORKS_DATA.filter((art) => art.category === selectedCategory);
 
   return (
     <section id="work" className="py-16 sm:py-24 lg:py-32 bg-[#131313] relative z-20 border-b border-white/10">
@@ -189,32 +182,14 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
             </h2>
           </div>
 
-          <div className="w-full md:w-auto flex flex-col items-start md:items-end gap-3 sm:gap-4">
-            <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest">
-              Showing {filteredArtworks.length} of {ARTWORKS_DATA.length} Projects
-            </span>
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap gap-2" aria-label="Filter artwork by category">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`min-h-10 font-mono text-[10px] sm:text-xs px-3 py-2 uppercase tracking-wider transition-all border ${
-                    selectedCategory === cat
-                      ? 'bg-white text-[#131313] border-white font-semibold'
-                      : 'bg-[#1A1A1A] text-neutral-400 border-white/10 hover:border-white/30 hover:text-white'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
+          <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest">
+            {ARTWORKS_DATA.length} Projects
+          </span>
         </div>
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
-          {filteredArtworks.map((art, idx) => {
+          {ARTWORKS_DATA.map((art, idx) => {
             // Bento sizing rules
             let colSpan = 'md:col-span-4';
             let aspect = 'aspect-square';

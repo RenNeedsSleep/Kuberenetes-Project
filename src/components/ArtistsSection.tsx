@@ -28,7 +28,7 @@ export const ArtistsSection: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-16 gap-5 sm:gap-6">
           <div>
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
-              02 // Collective Members
+              02 // ARTWORKS
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white">
               The Practice Areas

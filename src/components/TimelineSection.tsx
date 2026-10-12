@@ -27,7 +27,7 @@ export const TimelineSection: React.FC = () => {
         <div className="mx-auto w-full max-w-[1200px] px-5 py-8 sm:px-10 sm:py-12 lg:px-16">
           <header className="mb-4 sm:mb-7">
             <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.24em] text-neutral-500 sm:text-[10px]">04 / The aDOPE archive · MGIT, Hyderabad</span>
-            <h2 className="text-2xl font-semibold uppercase tracking-[-0.055em] text-white sm:text-4xl">A history in motion</h2>
+            <h2 className="text-2xl font-semibold uppercase tracking-[-0.055em] text-white sm:text-4xl">History in motion</h2>
           </header>
 
           <div className="relative mx-auto w-full max-w-[920px]">

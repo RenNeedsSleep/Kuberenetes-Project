@@ -29,52 +29,7 @@ export const AboutSection: React.FC = () => {
   return (
     <section id="about" className="py-16 sm:py-24 lg:py-32 bg-[#131313] border-b border-white/10 relative z-20">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative">
-        {/* Top Grid: Title + Description Box */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
-          <div className="lg:col-span-5">
-            <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-4">
-              01 // Mission & Ethos
-            </span>
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.05]">
-              Artists &amp;<br />
-              Designers
-            </h2>
-          </div>
-
-          <div className="lg:col-span-7">
-              <div className="bg-[#1A1A1A] border border-white/10 p-5 sm:p-8 lg:p-12 relative group hover:bg-[#222222] transition-colors duration-500">
-              <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-white/40 group-hover:border-white transition-colors" />
-              <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-white/40 group-hover:border-white transition-colors" />
-
-              <p className="font-sans text-lg sm:text-xl text-neutral-300 mb-6 leading-relaxed">
-                aDOPE is the design club of Mahatma Gandhi Institute of Technology in Hyderabad. It brings student creatives together to make identities, posters, editorial work, digital art, interfaces, and merchandise for campus culture.
-              </p>
-              <p className="font-sans text-sm sm:text-base text-neutral-400 leading-relaxed">
-                The club describes itself as a design team and digital art club. Its public archive shows a practice grounded in visual communication, collaborative briefs, and making memorable work for MGIT.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Pillars Grid */}
-        <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {pillars.map((pillar, idx) => (
-            <div
-              key={idx}
-              className="bg-[#1A1A1A]/60 border border-white/10 p-5 sm:p-6 relative group hover:border-white/30 transition-all hover:-translate-y-1"
-            >
-              <div className="mb-4">{pillar.icon}</div>
-              <h3 className="font-mono text-sm uppercase tracking-wider text-white mb-2 font-semibold">
-                {pillar.title}
-              </h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
-                {pillar.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="group mt-12 sm:mt-20 grid overflow-hidden border border-white/10 bg-[#1A1A1A] lg:mt-24 lg:grid-cols-12">
+        <div className="group mb-12 grid overflow-hidden border border-white/10 bg-[#1A1A1A] sm:mb-16 lg:grid-cols-12">
           <div className="relative overflow-hidden border-b border-white/10 lg:col-span-7 lg:border-b-0 lg:border-r">
             <img
               src="/adope-club-photo.jpeg"
@@ -99,9 +54,69 @@ export const AboutSection: React.FC = () => {
               </p>
             </div>
             <div className="mt-10 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-600">
-              <span className="h-px w-8 bg-white/35" />Artists, designers &amp; original people of Earth
+              <span className="h-px w-8 bg-white/35" />MGIT design club
             </div>
           </div>
+        </div>
+
+        {/* Top Grid: Title + Description Box */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
+          <div className="lg:col-span-5">
+            <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-4">
+              01 // Vision &amp; Mission
+            </span>
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.05]">
+              Artists &amp;<br />
+              Designers
+            </h2>
+          </div>
+
+          <div className="lg:col-span-7">
+              <div className="bg-[#1A1A1A] border border-white/10 p-5 sm:p-8 lg:p-12 relative group hover:bg-[#222222] transition-colors duration-500">
+              <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-white/40 group-hover:border-white transition-colors" />
+              <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-white/40 group-hover:border-white transition-colors" />
+
+              <p className="font-sans text-lg sm:text-xl text-neutral-300 mb-6 leading-relaxed">
+                aDOPE is the design club of Mahatma Gandhi Institute of Technology in Hyderabad. It brings student creatives together to make identities, posters, editorial work, digital art, interfaces, and merchandise for campus culture.
+              </p>
+              <p className="font-sans text-sm sm:text-base text-neutral-400 leading-relaxed">
+                The club describes itself as a design team and digital art club. Its public archive shows a practice grounded in visual communication, collaborative briefs, and making memorable work for MGIT.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 gap-px border border-white/10 bg-white/10 sm:grid-cols-2 sm:mt-12">
+          <article className="bg-[#131313] p-5 sm:p-7">
+            <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white">Mission</h3>
+            <p className="max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+              Bring student creatives together to make identities, images, and experiences that shape campus culture.
+            </p>
+          </article>
+          <article className="bg-[#131313] p-5 sm:p-7">
+            <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-white">Vision</h3>
+            <p className="max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+              Build a collaborative design community where bold ideas grow into work people remember.
+            </p>
+          </article>
+        </div>
+
+        {/* Pillars Grid */}
+        <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          {pillars.map((pillar, idx) => (
+            <div
+              key={idx}
+              className="bg-[#1A1A1A]/60 border border-white/10 p-5 sm:p-6 relative group hover:border-white/30 transition-all hover:-translate-y-1"
+            >
+              <div className="mb-4">{pillar.icon}</div>
+              <h3 className="font-mono text-sm uppercase tracking-wider text-white mb-2 font-semibold">
+                {pillar.title}
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                {pillar.desc}
+              </p>
+            </div>
+          ))}
         </div>
 
         {/* Live Club Stats Bar */}
