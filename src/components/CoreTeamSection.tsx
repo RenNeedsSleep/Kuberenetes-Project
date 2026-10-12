@@ -22,11 +22,15 @@ export const CoreTeamSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
           {CORE_TEAM_DATA.map((member: CoreTeamMember) => (
             <article
               key={member.id}
-              className="bg-[#1A1A1A] border border-white/10 p-4 sm:p-5 relative group hover:border-white/40 transition-all duration-300"
+              className={`bg-[#1A1A1A] border border-white/10 p-4 sm:p-5 relative group hover:border-white/40 transition-all duration-300 ${
+                member.id === 'core-member-02' ? 'xl:row-start-2 xl:col-start-2' :
+                member.id === 'core-member-03' ? 'xl:row-start-2 xl:col-start-3' :
+                member.id === 'core-member-04' ? 'xl:row-start-2 xl:col-start-4' : ''
+              }`}
             >
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/40 group-hover:border-white" />
               <div

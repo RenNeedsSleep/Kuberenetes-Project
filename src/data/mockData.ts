@@ -91,42 +91,49 @@ export const ARTWORKS_DATA: Artwork[] = [
 export const TIMELINE_DATA: TimelineLog[] = [
   {
     id: 'log-1',
-    version: 'ORIGIN / MGIT',
+    version: '01 — WHO WE ARE / WHERE WE STARTED',
     title: 'A design team takes shape',
-    category: 'Club History',
-    description: 'aDOPE is part of Mahatma Gandhi Institute of Technology in Hyderabad, where it operates as a student design club.',
+    category: 'ORIGIN / MGIT',
+    description: 'aDOPE begins as a student design club at Mahindra University, bringing together 12 designers with a shared interest in visual culture.',
     fullDetails: [
-      'MGIT lists Adope Design Club among its student clubs and organizations.',
-      'The club is based at Mahatma Gandhi Institute of Technology in Hyderabad, India.',
-      'Public profiles describe aDOPE as a design and digital art club.'
+      'INTRO: aDOPE started with a simple idea: bring together students who care about design and give them a space to experiment, create, and build together.',
+      'ORIGIN STORY',
+      'Started as a student design club with a founding team of 12.',
+      'Built around collaboration rather than a single design discipline.',
+      'The club became a space for students to explore identity, visual communication, and creative direction.'
     ],
     date: 'MGIT',
     imageUrl: LOGO_URL
   },
   {
     id: 'log-2',
-    version: 'TEAM / 12',
+    version: '02 — WHAT WE DO / OUR IMPACT',
     title: 'Branding events across campus',
-    category: 'Collaboration',
-    description: 'The club’s LinkedIn profile describes its beginning as a team of 12 focused on branding every event it sponsored.',
+    category: 'EVENTS / BRANDING',
+    description: 'From event identities to posters and digital interfaces, aDOPE shapes how campus experiences look and feel.',
     fullDetails: [
-      'Event branding is a central part of aDOPE’s public identity.',
-      'The club brings together student designers around shared briefs and visual systems.',
-      'Its work extends beyond a single medium: posters, identity, editorial, merchandise, and interfaces.'
+      'INTRO: Event branding became one of aDOPE\'s most visible forms of work — turning briefs into visual systems that could live across campus.',
+      'EVENT BRANDING',
+      'Designed identities and visual systems for campus events.',
+      'Extended concepts across posters, social media, digital interfaces, and merchandise.',
+      'Worked as a team around shared briefs, concepts, and visual direction.'
     ],
     date: 'FOUNDING STORY',
     imageUrl: '/nirvana-phoenix.png'
   },
   {
     id: 'log-3',
-    version: 'PUBLIC / ARCHIVE',
+    version: '03 — WHAT WE CREATE / OUR RANGE',
     title: 'From identity to digital art',
-    category: 'Portfolio',
-    description: 'The public portfolio documents a range of work including logos, posters, magazine design, UI/UX, and merchandise.',
+    category: 'PORTFOLIO / OUTPUT',
+    description: 'A growing archive of visual experiments spanning identity, UI/UX, motion, posters, merchandise, and digital experiences.',
     fullDetails: [
-      'Behance portfolio: Club LOGO, LOGO Design, Posters, Event posters, UI/UX Design, Magazine Design, and Merchandise.',
-      'The archive reflects a practice rooted in visual communication and design craft.',
-      'Public work is collected at behance.net/adopeclubmgit.'
+      'INTRO: aDOPE\'s work moves beyond traditional graphic design — exploring how an idea can take different forms across physical and digital spaces.',
+      'CREATIVE OUTPUT',
+      'Identity — logos, visual systems, and brand direction.',
+      'Digital — UI/UX, websites, and interactive experiences.',
+      'Visual — posters, editorial, motion, and digital art.',
+      'Merchandise — T-shirts, physical graphics, and event applications.'
     ],
     date: 'PORTFOLIO',
     imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/bbaf7c167501801.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png'
@@ -171,7 +178,7 @@ export const ARTISTS_DATA: Artist[] = [
 export const CORE_TEAM_DATA: CoreTeamMember[] = [
   {
     id: 'core-head',
-    name: 'Krish SRK',
+    name: 'Krish Srk',
     role: 'Head',
     imageUrl: '/krish-srk.jpeg',
     bio: 'Leading aDOPE\'s visual direction and creative work.'
@@ -199,7 +206,7 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
   },
   {
     id: 'core-member-01',
-    name: 'Abhisheik Krishna Mopada',
+    name: 'Abhishek Krishna Mopada',
     role: 'President',
     imageUrl: '/abhisheik-krishna-mopada.jpeg',
     bio: 'Representing aDOPE and guiding its creative community, vision, and initiatives.'
@@ -217,6 +224,12 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
     role: 'Faculty Coordinator',
     imageUrl: '/sree-divya.png',
     bio: 'Supporting aDOPE’s student team through faculty mentorship across its creative work.'
+  },
+  {
+    id: 'core-member-04',
+    name: 'To be announced',
+    role: 'Member',
+    bio: 'Profile pending.'
   }
 ];
 

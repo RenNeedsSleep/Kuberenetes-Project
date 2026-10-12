@@ -7,14 +7,14 @@ const CIRCUIT_PATH = 'M 780 490 C 816 495 842 470 825 433 L 745 285 C 730 255 70
 
 const STATIONS = [
   { x: 780, y: 490, label: 'ORIGIN / MGIT' },
-  { x: 337, y: 175, label: 'TEAM OF 12' },
-  { x: 384, y: 357, label: 'PUBLIC ARCHIVE' },
+  { x: 337, y: 175, label: 'EVENTS / BRANDING' },
+  { x: 384, y: 357, label: 'PORTFOLIO / OUTPUT' },
 ];
 
 const CHECKPOINT_POPUP_POSITIONS = [
-  { x: 87.5, y: 81.7, above: true },
-  { x: 34.8, y: 28.3, above: false },
-  { x: 40.4, y: 59.1, above: false },
+  { x: 93.4, y: 56.1, above: true },
+  { x: 29.8, y: 39.5, above: false },
+  { x: 44, y: 64.1, above: false },
 ];
 
 export const TimelineSection: React.FC = () => {
@@ -73,11 +73,11 @@ export const TimelineSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="absolute inset-x-[5vw] bottom-[5vh] top-[12vh]">
+          <div className="absolute left-1/2 top-[54%] aspect-[840/590] w-[min(94vw,720px)] -translate-x-1/2 -translate-y-1/2">
             <div className="absolute left-0 top-0 z-10 flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-600 sm:text-[9px]">
-              <Gauge className="h-3 w-3" /> Top-down circuit / 01 · Three archive entries
+              <Gauge className="h-3 w-3" /> Top-view archive route / 01 · Three entries
             </div>
-            <svg viewBox="45 8 840 590" preserveAspectRatio="none" className="block h-full w-full" role="img" aria-label="Top-down view of the aDOPE archive circuit; the route draws as the timeline advances">
+            <svg viewBox="45 8 840 590" preserveAspectRatio="xMidYMid meet" className="block h-full w-full md:rotate-[-25deg]" role="img" aria-label="Top-down view of the aDOPE archive route; the route draws as the timeline advances">
                 <defs>
                   <filter id="timeline-laser-glow" x="-80%" y="-80%" width="260%" height="260%">
                     <feGaussianBlur stdDeviation="4" result="blur" />
@@ -93,24 +93,24 @@ export const TimelineSection: React.FC = () => {
                   </radialGradient>
                 </defs>
                 {/* Layered strokes turn the route into a flat, readable top-down track. */}
-                <path d={CIRCUIT_PATH} fill="none" stroke="#090a0c" strokeWidth="27" strokeLinecap="round" strokeLinejoin="round" />
-                <path d={CIRCUIT_PATH} fill="none" stroke="#25292e" strokeWidth="21" strokeLinecap="round" strokeLinejoin="round" />
-                <path d={CIRCUIT_PATH} fill="none" stroke="#72777b" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                <path d={CIRCUIT_PATH} fill="none" stroke="#a2a6a8" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="9 13" opacity="0.72" />
+                <path d={CIRCUIT_PATH} fill="none" stroke="#090a0c" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={CIRCUIT_PATH} fill="none" stroke="#25292e" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={CIRCUIT_PATH} fill="none" stroke="#72777b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={CIRCUIT_PATH} fill="none" stroke="#a2a6a8" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="7 13" opacity="0.72" />
                 <motion.path
                   ref={trackPathRef}
                   d={CIRCUIT_PATH}
                   fill="none"
                   stroke="#ffffff"
-                  strokeWidth="2.8"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   opacity="0.42"
                   filter="url(#timeline-laser-glow)"
                   style={{ pathLength: scrollYProgress }}
                 />
-                <motion.path d={CIRCUIT_PATH} fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ pathLength: scrollYProgress }} />
-                <motion.path d={CIRCUIT_PATH} fill="none" stroke="#f1feff" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" style={{ pathLength: scrollYProgress }} />
+                <motion.path d={CIRCUIT_PATH} fill="none" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" style={{ pathLength: scrollYProgress }} />
+                <motion.path d={CIRCUIT_PATH} fill="none" stroke="#f1feff" strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" style={{ pathLength: scrollYProgress }} />
 
                 <g ref={laserHeadRef} transform={`translate(${STATIONS[0].x} ${STATIONS[0].y})`} pointerEvents="none">
                   <circle r="22" fill="url(#timeline-head-halo)" />
@@ -136,12 +136,12 @@ export const TimelineSection: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0 }}
               style={{
-                left: `clamp(0.25rem, calc(${CHECKPOINT_POPUP_POSITIONS[activeIndex].x}% - 190px), calc(100% - min(380px, calc(100% - 0.5rem)) - 0.25rem))`,
+                left: `clamp(0.25rem, calc(${CHECKPOINT_POPUP_POSITIONS[activeIndex].x}% - 160px), calc(100% - min(320px, calc(100% - 0.5rem)) - 0.25rem))`,
                 top: CHECKPOINT_POPUP_POSITIONS[activeIndex].above
                   ? `calc(${CHECKPOINT_POPUP_POSITIONS[activeIndex].y}% - 1rem)`
                   : `calc(${CHECKPOINT_POPUP_POSITIONS[activeIndex].y}% + 1rem)`,
                 transform: CHECKPOINT_POPUP_POSITIONS[activeIndex].above ? 'translateY(-100%)' : undefined,
-                width: 'min(380px, calc(100% - 0.5rem))',
+                width: 'min(320px, calc(100% - 0.5rem))',
               }}
               className="absolute z-20 grid grid-cols-[72px_1fr] gap-2 border border-white/20 bg-[#171717]/95 p-2.5 shadow-[0_20px_80px_rgba(0,0,0,0.75)] backdrop-blur-md sm:grid-cols-[132px_1fr] sm:gap-4 sm:p-4"
               aria-live="polite"
@@ -149,7 +149,7 @@ export const TimelineSection: React.FC = () => {
             >
               <img src={activeItem.imageUrl} alt={activeItem.title} className="h-20 w-full object-cover grayscale sm:h-28" />
               <div className="self-center">
-                <span className="mb-1 block font-mono text-[7px] uppercase tracking-[0.12em] text-neutral-500 sm:text-[8px] sm:tracking-[0.16em]">{STATIONS[activeIndex].label} · {activeItem.date}</span>
+                <span className="mb-1 block font-mono text-[7px] uppercase tracking-[0.12em] text-neutral-500 sm:text-[8px] sm:tracking-[0.16em]">{STATIONS[activeIndex].label} · {activeItem.version}</span>
                 <h3 className="mb-1 text-xs font-semibold leading-tight tracking-[-0.035em] text-white sm:text-lg">{activeItem.title}</h3>
                 <p className="text-[8px] leading-relaxed text-neutral-400 sm:text-[11px]">{activeItem.description}</p>
               </div>
