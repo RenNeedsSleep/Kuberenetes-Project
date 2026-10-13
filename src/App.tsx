@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutSection } from './components/AboutSection';
 import { ArtistsSection } from './components/ArtistsSection';
+import { MeetTeamSection } from './components/MeetTeamSection';
 import { CoreTeamSection } from './components/CoreTeamSection';
 import { TimelineSection } from './components/TimelineSection';
 import { VisualOutputSection } from './components/VisualOutputSection';
@@ -10,6 +11,7 @@ import { ArtworkModal } from './components/ArtworkModal';
 import { JoinModal } from './components/JoinModal';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
+import { ScrollReveal } from './components/ScrollReveal';
 import { Artwork } from './types';
 
 const JOIN_FORM_URL = 'https://forms.gle/HYMR5CyABFc13pSK8';
@@ -69,16 +71,17 @@ export default function App() {
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        <AboutSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
-        <ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
-        <CoreTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
+        <ScrollReveal><AboutSection /></ScrollReveal>
+        <ScrollReveal><ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
+        <ScrollReveal><MeetTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
+        <ScrollReveal><CoreTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
         <TimelineSection />
-        <VisualOutputSection
+        <ScrollReveal><VisualOutputSection
           highlightedImageId={highlightedImageId}
           onImageEnter={handleImageEnter}
           onImageLeave={handleImageLeave}
           onSelectArtwork={(artwork) => setSelectedArtwork(artwork)}
-        />
+        /></ScrollReveal>
       </main>
 
       {/* Footer */}

@@ -10,6 +10,11 @@
     text-rendering: optimizeLegibility;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   h1, h2, h3, h4 {
     font-family: 'Syne', sans-serif;
     letter-spacing: -0.035em;
@@ -88,6 +93,12 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #666666;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Magnetic Button Glow Effect */
