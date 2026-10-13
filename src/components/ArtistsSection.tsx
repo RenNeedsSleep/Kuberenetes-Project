@@ -7,13 +7,14 @@ export const ArtistsSection: React.FC = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('All');
   const [touchedArtistImage, setTouchedArtistImage] = useState<string | null>(null);
 
-  const specialties = ['All', 'Nirvana', 'Editorial', 'UI/UX', 'Posters'];
+  const specialties = ['All', 'Nirvana', 'Editorial', 'UI/UX', 'Posters', 'Logos'];
 
   const specialtyMatches: Record<string, string[]> = {
     Nirvana: ['branding', 'events', 'campaigns'],
     Editorial: ['editorial'],
     'UI/UX': ['ui/ux'],
     Posters: ['posters'],
+    Logos: ['logo'],
   };
 
   const filteredArtists = selectedSpecialty === 'All'
@@ -31,7 +32,7 @@ export const ArtistsSection: React.FC = () => {
               02 // ARTWORKS
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white">
-              The Practice Areas
+              Areas of Practice
             </h2>
           </div>
 

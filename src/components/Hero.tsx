@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { ThreeCanvas } from './ThreeCanvas';
 import { LOGO_URL } from '../data/mockData';
 
-const VIDEO_SRC = '/intro.mp4';
+const VIDEO_SRC = '/intro-4k.mp4';
 const MOBILE_VIDEO_SRC = '/intro-mobile.mp4';
 
 export const Hero: React.FC = () => {
@@ -266,10 +266,6 @@ export const Hero: React.FC = () => {
               alt="aDOPE Logo"
               className="h-10 md:h-12 object-contain filter invert opacity-95 hover:opacity-100 transition-opacity drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
             />
-            <p className="font-sans text-xs sm:text-sm md:text-base text-neutral-400 max-w-lg mt-3 leading-relaxed">
-              MGIT's design and digital art club. Comprehending ideas and designing memories.
-            </p>
-
           </div>
         </div>
       </div>

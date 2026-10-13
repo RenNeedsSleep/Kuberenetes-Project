@@ -174,11 +174,11 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 sm:mb-12 gap-5 sm:gap-6">
           <div>
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
-              05 // Archive Gallery
+              Gallery
             </span>
             <h2 className="text-4xl sm:text-6xl font-extrabold uppercase leading-none tracking-tight text-white">
-              Visual<br />
-              Output
+              Design<br />
+              Archive
             </h2>
           </div>
 

@@ -172,6 +172,14 @@ export const ARTISTS_DATA: Artist[] = [
     avatarUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/9d18f5167500789.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
     bio: 'Campaign graphics and event visuals that connect the club’s design work to MGIT’s campus life.',
     specialty: ['Events', 'Campaigns', 'Graphic Design']
+  },
+  {
+    id: 'practice-logos',
+    name: 'Logos',
+    role: 'Practice Area',
+    avatarUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/ee1ac3167501207.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
+    bio: 'Distinctive marks and logo systems that give campus identities a clear, lasting visual signature.',
+    specialty: ['Logos', 'Branding', 'Identity']
   }
 ];
 
@@ -217,6 +225,12 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
     role: 'Faculty Coordinator',
     imageUrl: '/sree-divya.png',
     bio: 'Supporting aDOPE’s student team through faculty mentorship across its creative work.'
+  },
+  {
+    id: 'core-faculty-pending',
+    name: '',
+    role: 'Faculty Coordinator',
+    bio: ''
   }
 ];
 

@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
     { name: 'Artists', href: '#artists' },
     { name: 'Core Team', href: '#team' },
     { name: 'Archive', href: '#timeline' },
-    { name: 'Visual Output', href: '#work' },
+    { name: 'Design Archive', href: '#work' },
   ];
 
   return (

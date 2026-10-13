@@ -38,7 +38,7 @@ export const AboutSection: React.FC = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10" />
             <span className="absolute left-4 top-4 border border-white/25 bg-black/35 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-sm sm:left-6 sm:top-6">
-              aDOPE / MGIT
+              Meet the team
             </span>
           </div>
           <div className="flex flex-col justify-between p-6 sm:p-8 lg:col-span-5 lg:p-10">
@@ -63,7 +63,7 @@ export const AboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
           <div className="lg:col-span-5">
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-4">
-              01 // Vision &amp; Mission
+              01 // Mission &amp; Ethos
             </span>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.05]">
               Artists,<br />
