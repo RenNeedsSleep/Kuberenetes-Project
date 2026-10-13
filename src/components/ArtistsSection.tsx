@@ -60,7 +60,7 @@ export const ArtistsSection: React.FC<ArtistsSectionProps> = ({ highlightedImage
         <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 md:px-16">
           <div className="mb-6 flex items-end justify-between gap-5 sm:mb-8 sm:gap-8">
             <div>
-              <span className="mb-2 block font-mono text-[9px] uppercase tracking-widest text-neutral-400 sm:mb-3 sm:text-xs">02 // ARTWORKS · SCROLL TO EXPLORE</span>
+              <span className="mb-2 block font-mono text-[9px] uppercase tracking-widest text-neutral-400 sm:mb-3 sm:text-xs">02 // PRACTICE · SCROLL TO EXPLORE</span>
               <h2 className="text-3xl font-extrabold uppercase tracking-tight text-white sm:text-5xl">Areas of Practice</h2>
             </div>
             <div className="hidden shrink-0 items-center gap-2 sm:flex">
@@ -88,25 +88,28 @@ export const ArtistsSection: React.FC<ArtistsSectionProps> = ({ highlightedImage
                     onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(imageId)}
                     onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(imageId)}
                     onClick={() => window.matchMedia('(hover: none)').matches && onImageEnter(imageId)}
-                    className="group relative flex h-[min(58svh,520px)] min-h-[360px] w-[82vw] max-w-[430px] shrink-0 flex-col justify-between overflow-hidden border border-white/10 bg-[#171717] p-4 transition-colors duration-300 hover:border-white/40 sm:w-[52vw] sm:p-5 lg:w-[36vw] lg:p-6"
+                    className="group relative grid h-[min(66svh,560px)] min-h-[430px] w-[82vw] max-w-[560px] shrink-0 grid-rows-[0.82fr_1.18fr] overflow-hidden border border-white/10 bg-[#171717] p-3 transition-colors duration-300 hover:border-white/40 sm:h-[min(60svh,500px)] sm:min-h-[390px] sm:w-[74vw] sm:grid-cols-[0.9fr_1.1fr] sm:grid-rows-1 sm:p-4 lg:w-[42vw] lg:max-w-[640px] lg:p-5"
                   >
-                    <div className="absolute right-0 top-0 h-2 w-2 border-r border-t border-white/40" />
-                    <div>
-                      <div className="relative mb-4 aspect-[1.62] overflow-hidden bg-[#0E0E0E] sm:mb-5">
-                        <img src={artist.avatarUrl} alt="" loading="lazy" className="h-full w-full object-cover transition duration-700" style={{ filter: isHighlighted ? 'none' : 'grayscale(1)', transform: isHighlighted ? 'scale(1.04)' : 'scale(1)', opacity: isHighlighted ? 1 : 0.72 }} />
-                        <span className="absolute left-3 top-3 border border-white/20 bg-black/45 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">{String(index + 1).padStart(2, '0')} / {artist.role}</span>
-                      </div>
-                      <h3 className="mb-1.5 text-xl font-extrabold tracking-tight text-white sm:text-2xl">{artist.name}</h3>
-                      <p className="mb-4 max-w-[42ch] text-[12px] leading-relaxed text-neutral-400 sm:mb-5 sm:text-sm">{artist.bio}</p>
+                    <div className="group/image relative min-h-0 overflow-hidden bg-[#0E0E0E]">
+                      <img src={artist.avatarUrl} alt="" loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover/image:scale-[1.04]" style={{ filter: isHighlighted ? 'none' : 'grayscale(1)', transform: isHighlighted ? 'scale(1.04)' : undefined, opacity: isHighlighted ? 1 : 0.76 }} />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 sm:bg-gradient-to-r sm:from-transparent sm:via-transparent sm:to-black/25" />
+                      <span className="absolute left-3 top-3 border border-white/20 bg-black/45 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/80 backdrop-blur-sm">{String(index + 1).padStart(2, '0')} / {artist.role}</span>
                     </div>
-                    <div>
-                      <div className="mb-3 flex flex-wrap gap-1.5 sm:mb-4">
-                        {artist.specialty.map((spec) => <span key={spec} className="border border-white/10 bg-white/5 px-2 py-1 font-mono text-[9px] uppercase text-neutral-300">{spec}</span>)}
+                    <div className="flex min-h-0 flex-col justify-between gap-3 px-1 py-3 sm:px-4 sm:py-2 lg:px-5">
+                      <div>
+                        <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-500">Practice area {String(index + 1).padStart(2, '0')}</span>
+                        <h3 className="mb-2 text-xl font-extrabold leading-tight tracking-tight text-white sm:text-2xl">{artist.name}</h3>
+                        <p className="max-w-[38ch] text-[12px] leading-relaxed text-neutral-400 sm:text-sm">{artist.bio}</p>
                       </div>
-                      <div className="flex items-center gap-3 border-t border-white/10 pt-3 text-neutral-400">
-                        {artist.instagramUrl && <a href={artist.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:text-white" title="Instagram"><Instagram className="h-4 w-4" /></a>}
-                        {artist.linkedinUrl && <a href={artist.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:text-white" title="LinkedIn"><Linkedin className="h-4 w-4" /></a>}
-                        {artist.githubUrl && <a href={artist.githubUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:text-white" title="GitHub"><Github className="h-4 w-4" /></a>}
+                      <div>
+                        <div className="mb-3 flex flex-wrap gap-1.5 sm:mb-4">
+                          {artist.specialty.map((spec) => <span key={spec} className="border border-white/10 bg-white/5 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.08em] text-neutral-300 sm:text-[9px]">{spec}</span>)}
+                        </div>
+                        {(artist.instagramUrl || artist.linkedinUrl || artist.githubUrl) && <div className="flex items-center gap-3 border-t border-white/10 pt-3 text-neutral-400">
+                          {artist.instagramUrl && <a href={artist.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:text-white" title="Instagram"><Instagram className="h-4 w-4" /></a>}
+                          {artist.linkedinUrl && <a href={artist.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:text-white" title="LinkedIn"><Linkedin className="h-4 w-4" /></a>}
+                          {artist.githubUrl && <a href={artist.githubUrl} target="_blank" rel="noopener noreferrer" className="p-1 hover:text-white" title="GitHub"><Github className="h-4 w-4" /></a>}
+                        </div>}
                       </div>
                     </div>
                   </article>

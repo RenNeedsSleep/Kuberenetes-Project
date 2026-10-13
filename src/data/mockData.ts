@@ -91,52 +91,41 @@ export const ARTWORKS_DATA: Artwork[] = [
 export const TIMELINE_DATA: TimelineLog[] = [
   {
     id: 'log-1',
-    version: '01 — WHO WE ARE / WHERE WE STARTED',
-    title: 'A design team takes shape',
-    category: 'ORIGIN / MGIT',
-    description: 'aDOPE begins as a student design club at Mahindra University, bringing together 12 designers with a shared interest in visual culture.',
-    fullDetails: [
-      'INTRO: aDOPE started with a simple idea: bring together students who care about design and give them a space to experiment, create, and build together.',
-      'ORIGIN STORY',
-      'Started as a student design club with a founding team of 12.',
-      'Built around collaboration rather than a single design discipline.',
-      'The club became a space for students to explore identity, visual communication, and creative direction.'
-    ],
-    date: 'MGIT',
-    imageUrl: LOGO_URL
+    title: 'A student design club begins',
+    category: 'ORIGIN',
+    period: '2020 — 2021',
+    description: 'Started at MGIT by seniors Sreenivas and Bhargav, with fewer than ten designers and a shared design philosophy.',
+    events: [
+      { date: 'Feb 2020', title: 'aDOPE starts at MGIT', note: 'Founded by Sreenivas and Bhargav.' },
+      { date: '6 Mar 2020', title: 'Nirvana 2020 poster', note: 'An early club design post.' }
+    ]
   },
   {
     id: 'log-2',
-    version: '02 — WHAT WE DO / OUR IMPACT',
-    title: 'Branding events across campus',
-    category: 'EVENTS / BRANDING',
-    description: 'From event identities to posters and digital interfaces, aDOPE shapes how campus experiences look and feel.',
-    fullDetails: [
-      'INTRO: Event branding became one of aDOPE\'s most visible forms of work — turning briefs into visual systems that could live across campus.',
-      'EVENT BRANDING',
-      'Designed identities and visual systems for campus events.',
-      'Extended concepts across posters, social media, digital interfaces, and merchandise.',
-      'Worked as a team around shared briefs, concepts, and visual direction.'
-    ],
-    date: 'FOUNDING STORY',
-    imageUrl: '/nirvana-phoenix.png'
+    title: 'From posters to teaching design',
+    category: 'WORKSHOPS & EVENTS',
+    period: '2022 — 2023',
+    description: 'The club grows into seminars, hands-on workshops, and design challenges alongside its event work.',
+    events: [
+      { date: '1 Apr 2022', title: 'Design seminar', note: 'Abhishek senior · session details to confirm.' },
+      { date: '29 Jun 2022', title: 'Nirvana 2022' },
+      { date: '6 Apr 2023', title: 'Resolution 2.0 · UX/UI workshop', note: 'Presenter name to confirm.' },
+      { date: '27 Apr 2023', title: 'Nirvana 2023' },
+      { date: '22 Dec 2023', title: 'Design Dynasty workshop', note: 'UI/UX and graphic design.' }
+    ]
   },
   {
     id: 'log-3',
-    version: '03 — WHAT WE CREATE / OUR RANGE',
-    title: 'From identity to digital art',
-    category: 'PORTFOLIO / OUTPUT',
-    description: 'A growing archive of visual experiments spanning identity, UI/UX, motion, posters, merchandise, and digital experiences.',
-    fullDetails: [
-      'INTRO: aDOPE\'s work moves beyond traditional graphic design — exploring how an idea can take different forms across physical and digital spaces.',
-      'CREATIVE OUTPUT',
-      'Identity — logos, visual systems, and brand direction.',
-      'Digital — UI/UX, websites, and interactive experiences.',
-      'Visual — posters, editorial, motion, and digital art.',
-      'Merchandise — T-shirts, physical graphics, and event applications.'
-    ],
-    date: 'PORTFOLIO',
-    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/bbaf7c167501801.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png'
+    title: 'A signature look, new skills',
+    category: 'IDENTITY & RANGE',
+    period: '2024 — 2026',
+    description: 'Nirvana gets a new identity each year as aDOPE expands into video editing and creative collaborations.',
+    events: [
+      { date: '15 Mar 2024', title: 'Nirvana 2024', imageUrl: '/nirvana-2024-poster.png' },
+      { date: '23 Mar 2025', title: 'Nirvana 2025 logo' },
+      { date: '14 Oct 2025', title: 'Video editing workshop', note: 'Collaboration with DOP.' },
+      { date: '23 Feb 2026', title: 'Nirvana 2026', imageUrl: '/nirvana-2026-poster.webp' }
+    ]
   }
 ];
 

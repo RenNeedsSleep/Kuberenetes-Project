@@ -72,8 +72,8 @@ export default function App() {
       {/* Main Content Sections */}
       <main className="flex-grow">
         <ScrollReveal><AboutSection /></ScrollReveal>
-        <ScrollReveal><ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
         <ScrollReveal><MeetTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
+        <ScrollReveal><ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
         <ScrollReveal><CoreTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
         <TimelineSection />
         <ScrollReveal><VisualOutputSection

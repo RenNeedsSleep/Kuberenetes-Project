@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUp, ArrowUpRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { SOCIAL_LINKS } from '../data/mockData';
 
 const socialItems = [
@@ -10,60 +10,104 @@ const socialItems = [
   { label: 'YouTube', href: SOCIAL_LINKS.youtube, external: true },
 ];
 
+const letterReveal: Variants = {
+  hidden: { opacity: 0, y: '115%', rotateX: -70 },
+  visible: { opacity: 1, y: '0%', rotateX: 0, transition: { type: 'spring', stiffness: 280, damping: 22 } },
+};
+
 export const Footer: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
+  const reveal: Variants = prefersReducedMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0, transition: { duration: 0 } } }
+    : { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const, staggerChildren: 0.12, delayChildren: 0.08 } } };
+  const itemReveal: Variants = prefersReducedMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0, transition: { duration: 0 } } }
+    : { hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const, staggerChildren: 0.08 } } };
+  const logoReveal: Variants = prefersReducedMotion
+    ? { hidden: {}, visible: { transition: { staggerChildren: 0 } } }
+    : { hidden: {}, visible: { transition: { staggerChildren: 0.055, delayChildren: 0.1 } } };
+  const glyphReveal: Variants = prefersReducedMotion
+    ? { hidden: { opacity: 1, y: 0, rotateX: 0 }, visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0 } } }
+    : letterReveal;
 
   return (
     <motion.footer
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={reveal}
+      initial={prefersReducedMotion ? false : 'hidden'}
+      whileInView="visible"
       viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="relative z-20 w-full overflow-hidden border-t border-white/10 bg-[#0E0E0E]"
     >
-      <div className="overflow-hidden border-b border-white/10 py-4 sm:py-6" aria-hidden="true">
-        <motion.div
-          className="flex w-max items-center whitespace-nowrap"
-          animate={prefersReducedMotion ? { x: 0 } : { x: ['0%', '-50%'] }}
-          transition={prefersReducedMotion ? undefined : { duration: 30, repeat: Infinity, ease: 'linear' }}
-        >
-          {[0, 1].map((copy) => (
-            <span key={copy} className="flex items-center gap-5 pr-5 text-[clamp(2.2rem,7vw,6.5rem)] font-black uppercase leading-none tracking-[-0.065em] text-white sm:gap-8 sm:pr-8">
-              <span>MAKE GOOD THINGS</span>
-              <span className="text-neutral-600">✳</span>
-              <span className="text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.72)]">MAKE GOOD TROUBLE</span>
-              <span className="text-neutral-600">✳</span>
-            </span>
-          ))}
-        </motion.div>
-      </div>
+      <motion.div
+        aria-hidden="true"
+        initial={prefersReducedMotion ? { scaleX: 1 } : { scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.9, delay: prefersReducedMotion ? 0 : 0.15, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-x-0 top-0 h-px origin-left bg-gradient-to-r from-white/70 via-white/20 to-transparent"
+      />
 
       <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-9 sm:px-6 sm:py-12 md:grid-cols-[1.2fr_.8fr] md:items-end md:px-16 md:py-16">
-        <div>
-          <span className="mb-3 block font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-500">Mahatma Gandhi Institute of Technology · Hyderabad</span>
-          <div className="text-4xl font-extrabold uppercase leading-[0.88] tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">ADOPE<br />CLUB<span className="text-neutral-600">.</span></div>
-          <p className="mt-5 max-w-[34ch] font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-neutral-500">A student-led design community turning ideas into identity, experience and culture.</p>
-        </div>
-
-        <div className="flex flex-col gap-7 md:items-end">
-          <nav aria-label="Social links">
-            <ul className="flex flex-wrap gap-2 md:justify-end">
-              {socialItems.map(({ label, href, external }) => (
-                <li key={label}>
-                  <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className="group inline-flex items-center gap-2 border border-white/15 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-300 transition-colors hover:border-white hover:bg-white hover:text-black">
-                    {label}<ArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </a>
-                </li>
+        <motion.div variants={itemReveal}>
+          <motion.span variants={itemReveal} className="mb-3 block font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-500">Mahatma Gandhi Institute of Technology · Hyderabad</motion.span>
+          <div className="mb-5 flex items-center justify-between gap-3 sm:gap-6">
+            <motion.h2 aria-label="aDOPE Club" variants={logoReveal} className="min-w-0 perspective-[500px] text-4xl font-extrabold uppercase leading-[0.88] tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">
+              {['ADOPE', 'CLUB.'].map((row) => (
+                <span key={row} aria-hidden="true" className="block overflow-hidden whitespace-nowrap pb-1">
+                  {Array.from(row).map((character, index) => (
+                    <motion.span key={`${row}-${index}`} variants={glyphReveal} className={`inline-block ${character === '.' ? 'text-neutral-600' : ''}`}>
+                      {character}
+                    </motion.span>
+                  ))}
+                </span>
               ))}
-            </ul>
+            </motion.h2>
+
+            <div aria-hidden="true" className="relative grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center sm:h-28 sm:w-28">
+              <div className="absolute inset-1 rounded-full border border-dashed border-white/20" />
+              <motion.div
+                animate={prefersReducedMotion ? undefined : { rotate: 360 }}
+                transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-2 rounded-full border border-white/15"
+              >
+                <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.75)]" />
+              </motion.div>
+              <motion.div
+                animate={prefersReducedMotion ? undefined : { rotate: -360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-[27%] rounded-full border border-white/20"
+              >
+                <span className="absolute -right-1 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rotate-45 bg-neutral-400" />
+              </motion.div>
+              <motion.span
+                animate={prefersReducedMotion ? undefined : { rotate: 360, scale: [1, 1.12, 1] }}
+                transition={prefersReducedMotion ? undefined : { rotate: { duration: 22, repeat: Infinity, ease: 'linear' }, scale: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } }}
+                className="relative text-3xl text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.28)] sm:text-5xl"
+              >✳</motion.span>
+            </div>
+          </div>
+          <motion.p variants={itemReveal} className="mt-5 max-w-[34ch] font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-neutral-500">A student-led design community turning ideas into identity, experience and culture.</motion.p>
+        </motion.div>
+
+        <motion.div variants={itemReveal} className="flex flex-col gap-7 md:items-end">
+          <nav aria-label="Social links">
+            <motion.ul variants={itemReveal} className="flex flex-wrap gap-2 md:justify-end">
+              {socialItems.map(({ label, href, external }) => (
+                <motion.li key={label} variants={itemReveal}>
+                  <motion.a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} whileHover={prefersReducedMotion ? undefined : { y: -3 }} whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }} className="group inline-flex items-center gap-2 border border-white/15 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-300 transition-colors hover:border-white hover:bg-white hover:text-black">
+                    {label}<ArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </motion.a>
+                </motion.li>
+              ))}
+            </motion.ul>
           </nav>
           <div className="flex w-full items-center justify-between gap-5 border-t border-white/10 pt-4 md:justify-end md:gap-8">
             <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-600">©2026 ADOPE CLUB · MGIT DESIGN CLUB</span>
-            <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })} className="group inline-flex shrink-0 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-400 transition-colors hover:text-white">
+            <motion.button type="button" onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })} whileHover={prefersReducedMotion ? undefined : { y: -2 }} className="group inline-flex shrink-0 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-400 transition-colors hover:text-white">
               Back to top<span className="grid h-8 w-8 place-items-center border border-white/20 transition-all group-hover:-translate-y-1 group-hover:border-white group-hover:bg-white group-hover:text-black"><ArrowUp className="h-3.5 w-3.5" /></span>
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </motion.footer>
   );
