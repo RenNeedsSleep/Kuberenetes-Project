@@ -66,8 +66,9 @@ export const AboutSection: React.FC = () => {
               01 // Vision &amp; Mission
             </span>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-white leading-[1.05]">
-              Artists &amp;<br />
-              Designers
+              Artists,<br />
+              Designers &amp;<br />
+              Originals
             </h2>
           </div>
 
