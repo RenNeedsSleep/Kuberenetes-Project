@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ARTWORKS_DATA } from '../data/mockData';
 import { Artwork } from '../types';
 import { Eye } from 'lucide-react';
@@ -158,15 +158,18 @@ const NirvanaPhoenix: React.FC = () => {
 };
 
 interface VisualOutputSectionProps {
+  highlightedImageId: string | null;
+  onImageEnter: (imageId: string) => void;
+  onImageLeave: (imageId: string) => void;
   onSelectArtwork: (artwork: Artwork) => void;
 }
 
 export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
+  highlightedImageId,
+  onImageEnter,
+  onImageLeave,
   onSelectArtwork
 }) => {
-  const [touchedArtworkId, setTouchedArtworkId] = useState<string | null>(null);
-  const touchedArtworkRef = useRef<string | null>(null);
-
   return (
     <section id="work" className="py-16 sm:py-24 lg:py-32 bg-[#131313] relative z-20 border-b border-white/10">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative">
@@ -205,10 +208,12 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
             return (
               <div
                 key={art.id}
+                onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(`work-${art.id}`)}
+                onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(`work-${art.id}`)}
                 onClick={() => {
-                  if (window.matchMedia('(hover: none)').matches && touchedArtworkRef.current !== art.id) {
-                    touchedArtworkRef.current = art.id;
-                    setTouchedArtworkId(art.id);
+                  const imageId = `work-${art.id}`;
+                  if (window.matchMedia('(hover: none)').matches && highlightedImageId !== imageId) {
+                    onImageEnter(imageId);
                     return;
                   }
                   onSelectArtwork(art);
@@ -222,21 +227,25 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                   {art.id === 'art-nirvana-2026' ? (
                     <>
                       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(176,94,20,0.18),transparent_58%)]" />
-                      <NirvanaPhoenix />
+                      <div className="absolute inset-0">
+                        <NirvanaPhoenix />
+                      </div>
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none font-mono text-[9px] uppercase tracking-[0.28em] text-amber-100/55">Drag to rotate</div>
                     </>
                   ) : (
                     <div
-                      className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-luminosity transition-all duration-700 md:group-hover:scale-105 md:group-hover:opacity-100 md:group-hover:mix-blend-normal"
+                      className="absolute inset-0 bg-cover bg-center transition-all duration-700"
                       style={{
                         backgroundImage: `url('${art.imageUrl}')`,
-                        opacity: touchedArtworkId === art.id ? 1 : undefined,
-                        mixBlendMode: touchedArtworkId === art.id ? 'normal' : undefined
+                        filter: highlightedImageId === `work-${art.id}` ? 'none' : 'grayscale(1)',
+                        opacity: highlightedImageId === `work-${art.id}` ? 1 : 0.6,
+                        mixBlendMode: highlightedImageId === `work-${art.id}` ? 'normal' : 'luminosity',
+                        transform: highlightedImageId === `work-${art.id}` ? 'scale(1.05)' : 'scale(1)'
                       }}
                     />
                   )}
 
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#131313] via-transparent to-transparent opacity-85 group-hover:opacity-60 transition-opacity" />
+                  <div className={`absolute inset-0 pointer-events-none bg-gradient-to-t from-[#131313] via-transparent to-transparent transition-opacity ${highlightedImageId === `work-${art.id}` ? 'opacity-60' : 'opacity-85'}`} />
 
                   {/* Top Badge */}
                   <div className="absolute top-4 left-4 z-10">

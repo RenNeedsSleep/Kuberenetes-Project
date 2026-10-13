@@ -235,8 +235,6 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
 ];
 
 export const CLUB_STATS = [
-  { label: 'Home Base', value: 'MGIT' },
-  { label: 'Founded As', value: '12' },
   { label: 'Portfolio Projects', value: '7' },
   { label: 'Core Practice', value: 'DESIGN' }
 ];

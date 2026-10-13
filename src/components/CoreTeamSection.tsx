@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CORE_TEAM_DATA } from '../data/mockData';
 import { CoreTeamMember } from '../types';
 
-export const CoreTeamSection: React.FC = () => {
-  const [touchedMemberImage, setTouchedMemberImage] = useState<string | null>(null);
+interface CoreTeamSectionProps {
+  highlightedImageId: string | null;
+  onImageEnter: (imageId: string) => void;
+  onImageLeave: (imageId: string) => void;
+}
+
+export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({ highlightedImageId, onImageEnter, onImageLeave }) => {
 
   return (
     <section id="team" className="py-16 sm:py-24 lg:py-32 bg-[#131313] border-b border-white/10 relative z-20">
@@ -26,6 +31,9 @@ export const CoreTeamSection: React.FC = () => {
           {CORE_TEAM_DATA.map((member: CoreTeamMember) => (
             <article
               key={member.id}
+              onPointerEnter={() => window.matchMedia('(hover: hover)').matches && member.imageUrl && onImageEnter(`team-${member.id}`)}
+              onPointerLeave={() => window.matchMedia('(hover: hover)').matches && member.imageUrl && onImageLeave(`team-${member.id}`)}
+              onClick={() => window.matchMedia('(hover: none)').matches && member.imageUrl && onImageEnter(`team-${member.id}`)}
               className={`bg-[#1A1A1A] border border-white/10 p-4 sm:p-5 relative group hover:border-white/40 transition-all duration-300 ${
                 member.id === 'core-member-02' ? 'lg:row-start-2 lg:col-start-1' :
                 member.id === 'core-member-03' ? 'lg:row-start-2 lg:col-start-2' : ''
@@ -34,14 +42,13 @@ export const CoreTeamSection: React.FC = () => {
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/40 group-hover:border-white" />
               <div
                 className="aspect-[4/5] bg-[#0E0E0E] border border-white/10 mb-5 overflow-hidden flex items-center justify-center"
-                onClick={() => setTouchedMemberImage(member.id)}
               >
                 {member.imageUrl ? (
                   <img
                     src={member.imageUrl}
                     alt={member.name}
-                    className={`w-full h-full object-cover ${member.id === 'core-member-01' ? 'object-[30%_center]' : ''} grayscale transition-all duration-500 group-hover:grayscale-0`}
-                    style={touchedMemberImage === member.id ? { filter: 'none' } : undefined}
+                    className={`w-full h-full object-cover ${member.id === 'core-member-01' ? 'object-[30%_center]' : ''} transition-all duration-500`}
+                    style={{ filter: highlightedImageId === `team-${member.id}` ? 'none' : 'grayscale(1)' }}
                   />
                 ) : (
                   <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-600">

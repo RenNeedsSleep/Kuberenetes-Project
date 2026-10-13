@@ -9,6 +9,7 @@ import { VisualOutputSection } from './components/VisualOutputSection';
 import { ArtworkModal } from './components/ArtworkModal';
 import { JoinModal } from './components/JoinModal';
 import { Footer } from './components/Footer';
+import { CustomCursor } from './components/CustomCursor';
 import { Artwork } from './types';
 
 const JOIN_FORM_URL = 'https://forms.gle/HYMR5CyABFc13pSK8';
@@ -17,6 +18,12 @@ export default function App() {
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [highlightedImageId, setHighlightedImageId] = useState<string | null>(null);
+
+  const handleImageEnter = (imageId: string) => setHighlightedImageId(imageId);
+  const handleImageLeave = (imageId: string) => {
+    setHighlightedImageId((activeId) => activeId === imageId ? null : activeId);
+  };
 
   const handleJoin = () => {
     window.open(JOIN_FORM_URL, '_blank', 'noopener,noreferrer');
@@ -48,6 +55,7 @@ export default function App() {
 
   return (
     <div className="bg-[#131313] text-[#e5e2e1] min-h-screen flex flex-col font-sans selection:bg-white selection:text-black relative">
+      <CustomCursor />
       {/* Navigation */}
       <Navbar
         onOpenJoinModal={handleJoin}
@@ -61,11 +69,14 @@ export default function App() {
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        <AboutSection />
-        <ArtistsSection />
-        <CoreTeamSection />
+        <AboutSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
+        <ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
+        <CoreTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
         <TimelineSection />
         <VisualOutputSection
+          highlightedImageId={highlightedImageId}
+          onImageEnter={handleImageEnter}
+          onImageLeave={handleImageLeave}
           onSelectArtwork={(artwork) => setSelectedArtwork(artwork)}
         />
       </main>

@@ -3,9 +3,14 @@ import { ARTISTS_DATA } from '../data/mockData';
 import { Artist } from '../types';
 import { Instagram, Linkedin, Github } from 'lucide-react';
 
-export const ArtistsSection: React.FC = () => {
+interface ArtistsSectionProps {
+  highlightedImageId: string | null;
+  onImageEnter: (imageId: string) => void;
+  onImageLeave: (imageId: string) => void;
+}
+
+export const ArtistsSection: React.FC<ArtistsSectionProps> = ({ highlightedImageId, onImageEnter, onImageLeave }) => {
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('All');
-  const [touchedArtistImage, setTouchedArtistImage] = useState<string | null>(null);
 
   const specialties = ['All', 'Nirvana', 'Editorial', 'UI/UX', 'Posters', 'Logos'];
 
@@ -57,8 +62,11 @@ export const ArtistsSection: React.FC = () => {
         {/* Artists Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {filteredArtists.map((artist: Artist) => (
-            <div
+            <article
               key={artist.id}
+              onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(`artist-${artist.id}`)}
+              onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(`artist-${artist.id}`)}
+              onClick={() => window.matchMedia('(hover: none)').matches && onImageEnter(`artist-${artist.id}`)}
               className="bg-[#1A1A1A] border border-white/10 p-4 sm:p-6 flex flex-col justify-between group hover:border-white/40 transition-all duration-300 relative"
             >
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/40" />
@@ -66,13 +74,16 @@ export const ArtistsSection: React.FC = () => {
               <div>
                 <div
                   className="relative overflow-hidden mb-6 aspect-square bg-[#131313] border border-white/5"
-                  onClick={() => setTouchedArtistImage(artist.id)}
                 >
                   <img
                     src={artist.avatarUrl}
                     alt={artist.name}
-                    className="w-full h-full object-cover grayscale mix-blend-luminosity transition-all duration-500 scale-100 md:group-hover:scale-105 md:group-hover:grayscale-0 md:group-hover:mix-blend-normal"
-                    style={touchedArtistImage === artist.id ? { filter: 'none', mixBlendMode: 'normal' } : undefined}
+                    className="w-full h-full object-cover transition-all duration-500"
+                    style={{
+                      filter: highlightedImageId === `artist-${artist.id}` ? 'none' : 'grayscale(1)',
+                      mixBlendMode: highlightedImageId === `artist-${artist.id}` ? 'normal' : 'luminosity',
+                      transform: highlightedImageId === `artist-${artist.id}` ? 'scale(1.05)' : 'scale(1)'
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent opacity-80" />
                 </div>
@@ -137,7 +148,7 @@ export const ArtistsSection: React.FC = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
