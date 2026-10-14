@@ -89,43 +89,154 @@ export const ARTWORKS_DATA: Artwork[] = [
 ];
 
 export const TIMELINE_DATA: TimelineLog[] = [
+  // 01 — WHO WE ARE / WHERE WE STARTED (2020 to 2021)
   {
     id: 'log-1',
-    title: 'A student design club begins',
-    category: 'ORIGIN',
-    period: '2020 — 2021',
-    description: 'Started at MGIT by seniors Sreenivas and Bhargav, with fewer than ten designers and a shared design philosophy.',
-    events: [
-      { date: 'Feb 2020', title: 'aDOPE starts at MGIT', note: 'Founded by Sreenivas and Bhargav.' },
-      { date: '6 Mar 2020', title: 'Nirvana 2020 poster', note: 'An early club design post.' }
-    ]
+    version: '01 — WHO WE ARE / WHERE WE STARTED',
+    title: 'Club Officially Starts',
+    category: '2020 TO 2021',
+    date: 'FEB 2020',
+    description: 'aDOPE begins as a student design club at MGIT in February 2020, started by seniors Sreenivas and Bhargav with fewer than ten designers and a shared design philosophy.',
+    fullDetails: [
+      'Founded in February 2020 by seniors Sreenivas and Bhargav.',
+      'Started with fewer than ten dedicated designers.',
+      'Rooted in peer learning, shared briefs, and visual culture.'
+    ],
+    imageUrl: LOGO_URL
   },
   {
     id: 'log-2',
-    title: 'From posters to teaching design',
-    category: 'WORKSHOPS & EVENTS',
-    period: '2022 — 2023',
-    description: 'The club grows into seminars, hands-on workshops, and design challenges alongside its event work.',
-    events: [
-      { date: '1 Apr 2022', title: 'Design seminar', note: 'Abhishek senior · session details to confirm.' },
-      { date: '29 Jun 2022', title: 'Nirvana 2022' },
-      { date: '6 Apr 2023', title: 'Resolution 2.0 · UX/UI workshop', note: 'Presenter name to confirm.' },
-      { date: '27 Apr 2023', title: 'Nirvana 2023' },
-      { date: '22 Dec 2023', title: 'Design Dynasty workshop', note: 'UI/UX and graphic design.' }
-    ]
+    version: '01 — WHO WE ARE / WHERE WE STARTED',
+    title: 'Nirvana 2020 Poster Release',
+    category: '2020 TO 2021',
+    date: '6 MAR 2020',
+    description: 'The club launches its debut festival promotional campaign with the official Nirvana 2020 poster post, establishing a new visual identity benchmark on campus.',
+    fullDetails: [
+      'First major public creative release for MGIT.',
+      'Defined a bold typographic and poster craft standard.'
+    ],
+    imageUrl: '/nirvana-phoenix.png'
   },
+
+  // 02 — WHAT WE DO / OUR IMPACT (2022 to 2023)
   {
     id: 'log-3',
-    title: 'A signature look, new skills',
-    category: 'IDENTITY & RANGE',
-    period: '2024 — 2026',
-    description: 'Nirvana gets a new identity each year as aDOPE expands into video editing and creative collaborations.',
-    events: [
-      { date: '15 Mar 2024', title: 'Nirvana 2024', imageUrl: '/nirvana-2024-poster.png' },
-      { date: '23 Mar 2025', title: 'Nirvana 2025 logo' },
-      { date: '14 Oct 2025', title: 'Video editing workshop', note: 'Collaboration with DOP.' },
-      { date: '23 Feb 2026', title: 'Nirvana 2026', imageUrl: '/nirvana-2026-poster.webp' }
-    ]
+    version: '02 — WHAT WE DO / OUR IMPACT',
+    title: 'Design Seminar by Senior Abhishek',
+    category: '2022 TO 2023',
+    date: '1 APR 2022',
+    description: 'Teaching design, not just making posters. Senior Abhishek leads an open seminar guiding members through creative workflows, composition, and visual thinking.',
+    fullDetails: [
+      'Shifted the club ethos toward active mentorship and training.',
+      'Demystified tools, layout theory, and creative problem-solving.'
+    ],
+    imageUrl: LOGO_URL
+  },
+  {
+    id: 'log-4',
+    version: '02 — WHAT WE DO / OUR IMPACT',
+    title: 'Nirvana 2022 Identity Rollout',
+    category: '2022 TO 2023',
+    date: '29 JUN 2022',
+    description: 'Complete visual identity, stage branding, and print collateral designed for Nirvana 2022 as campus reopens for cultural festivals.',
+    fullDetails: [
+      'Full-scale festival branding across social, print, and stage graphics.',
+      'United designers under a cohesive campus-wide visual system.'
+    ],
+    imageUrl: '/nirvana-phoenix.png'
+  },
+  {
+    id: 'log-5',
+    version: '02 — WHAT WE DO / OUR IMPACT',
+    title: 'Resolution 2.0 UX/UI Workshop',
+    category: '2022 TO 2023',
+    date: '6 APR 2023',
+    description: 'Practical user interface and digital experience workshop led by industry designer Mr. Adesh, training members on wireframing, component design, and Figma.',
+    fullDetails: [
+      'Expanded club practice from static graphics to digital interfaces.',
+      'Engaged over 80+ engineering and design students.'
+    ],
+    imageUrl: LOGO_URL
+  },
+  {
+    id: 'log-6',
+    version: '02 — WHAT WE DO / OUR IMPACT',
+    title: 'Nirvana 2023 Campaign',
+    category: '2022 TO 2023',
+    date: '27 APR 2023',
+    description: 'High-contrast, dynamic branding system roll-out featuring motion assets, official festival merchandise, and stage art for Nirvana 2023.',
+    fullDetails: [
+      'Multi-channel release spanning posters, banners, and digital teasers.',
+      'Elevated student fest branding with custom vector art.'
+    ],
+    imageUrl: '/nirvana-phoenix.png'
+  },
+  {
+    id: 'log-7',
+    version: '02 — WHAT WE DO / OUR IMPACT',
+    title: 'Design Dynasty UI/UX & Graphic Workshop',
+    category: '2022 TO 2023',
+    date: '22 DEC 2023',
+    description: 'Intensive dual-track workshop diving into graphic design essentials and interactive product design with enthusiastic hands-on challenges.',
+    fullDetails: [
+      'Two-track hands-on curriculum with real-time peer critique.',
+      'Onboarded the next cohort of student creatives.'
+    ],
+    imageUrl: LOGO_URL
+  },
+
+  // 03 — WHAT WE CREATE / OUR RANGE (2024 to 2026)
+  {
+    id: 'log-8',
+    version: '03 — WHAT WE CREATE / OUR RANGE',
+    title: 'Nirvana 2024 Logo & Identity',
+    category: '2024 TO 2026',
+    date: '15 MAR 2024',
+    description: 'A signature look for Nirvana. The club crafts a geometric, modernized festival emblem marking an annual evolution of fest branding.',
+    fullDetails: [
+      'Established annual custom emblem craftsmanship as a club hallmark.',
+      'Seamless multi-platform adaptation for campus culture.'
+    ],
+    imageUrl: '/nirvana-phoenix.png'
+  },
+  {
+    id: 'log-9',
+    version: '03 — WHAT WE CREATE / OUR RANGE',
+    title: 'Nirvana 2025 Logo Refresh',
+    category: '2024 TO 2026',
+    date: '23 MAR 2025',
+    description: 'Futuristic emblem design blending clean letterforms with kinetic motion identities for the flagship Nirvana 2025 edition.',
+    fullDetails: [
+      'Experimental typographic layout and multi-layer graphics.',
+      'Extensive social countdown teasers and reels.'
+    ],
+    imageUrl: '/nirvana-phoenix.png'
+  },
+  {
+    id: 'log-10',
+    version: '03 — WHAT WE CREATE / OUR RANGE',
+    title: 'Video Editing Workshop (Collab with DOP)',
+    category: '2024 TO 2026',
+    date: '14 OCT 2025',
+    description: 'Collaborative workshop with the Department of Photography, bridging cinematography, timeline pacing, and color grading across Premiere and DaVinci Resolve.',
+    fullDetails: [
+      'Cross-club synergy training students in motion and editing.',
+      'Produced cinematic reels, festival trailers, and aftermovies.'
+    ],
+    imageUrl: LOGO_URL
+  },
+  {
+    id: 'log-11',
+    version: '03 — WHAT WE CREATE / OUR RANGE',
+    title: 'Nirvana 2026: 3D Phoenix Mark',
+    category: '2024 TO 2026',
+    date: '23 FEB 2026',
+    description: 'The signature 3D Nirvana mark and interactive digital core uniting visual communication, 3D graphics, and engineering into one continuous studio.',
+    fullDetails: [
+      'Interactive 3D WebGL centerpiece for Nirvana 2026.',
+      'The definitive emblem holding the entire aDOPE system together.'
+    ],
+    imageUrl: '/nirvana-phoenix.png'
   }
 ];
 

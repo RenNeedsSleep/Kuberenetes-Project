@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type FC } from 'react';
 
-export const CustomCursor: React.FC = () => {
+export const CustomCursor: FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

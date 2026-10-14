@@ -33,7 +33,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl animate-fade-in-up overflow-y-auto overscroll-contain">
-      <div className="bg-[#131313] border border-white/20 max-w-xl w-full relative my-2 sm:my-8 max-h-[calc(100dvh-1rem)] overflow-y-auto overscroll-contain shadow-2xl">
+      <div className="bg-black border border-white/20 max-w-xl w-full relative my-2 sm:my-8 max-h-[calc(100dvh-1rem)] overflow-y-auto overscroll-contain shadow-2xl">
         {/* Corner Brackets */}
         <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white z-20" />
         <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white z-20" />
@@ -41,7 +41,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
         <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white z-20" />
 
         {/* Modal Top Bar */}
-        <div className="flex items-center justify-between gap-3 p-4 sm:p-6 border-b border-white/10 bg-[#0E0E0E]">
+        <div className="flex items-center justify-between gap-3 p-4 sm:p-6 border-b border-white/10 bg-black">
           <div className="flex items-center gap-2 min-w-0">
             <Shield className="w-4 h-4 text-white" />
             <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.12em] sm:tracking-widest text-neutral-300 font-semibold">
@@ -67,7 +67,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 mb-2">
               Application Vector Logged
             </span>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">
+            <h3 className="text-2xl sm:text-3xl font-extrabold uppercase text-white tracking-[-0.06em] mb-4">
               Welcome to the Matrix, {formData.name}
             </h3>
 
@@ -78,7 +78,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
               </span>.
             </p>
 
-            <div className="bg-[#1A1A1A] border border-white/10 p-4 text-left w-full mb-8 font-mono text-xs text-neutral-300 space-y-2">
+            <div className="bg-black border border-white/10 p-4 text-left w-full mb-8 font-mono text-xs text-neutral-300 space-y-2">
               <div className="flex justify-between">
                 <span className="text-neutral-500">APPLICANT:</span>
                 <span className="text-white">{formData.name}</span>
@@ -95,7 +95,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
 
             <button
               onClick={handleReset}
-              className="bg-white text-[#131313] font-mono text-xs px-8 py-3.5 uppercase tracking-widest font-semibold hover:bg-neutral-200"
+              className="bg-white text-black font-mono text-xs px-8 py-3.5 uppercase tracking-widest font-semibold hover:bg-neutral-200"
             >
               Return to Showcase
             </button>
@@ -113,7 +113,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g. Alex Rivera"
-                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
               />
             </div>
 
@@ -127,7 +127,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="student@mgit.ac.in"
-                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
               />
             </div>
 
@@ -139,7 +139,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
                 <select
                   value={formData.field}
                   onChange={(e) => setFormData({ ...formData, field: e.target.value })}
-                  className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
+                  className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
                 >
                   <option value="Branding & Identity">Branding &amp; Identity</option>
                   <option value="Posters & Editorial">Posters &amp; Editorial</option>
@@ -156,7 +156,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
                 <select
                   value={formData.yearOfStudy}
                   onChange={(e) => setFormData({ ...formData, yearOfStudy: e.target.value })}
-                  className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
+                  className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
                 >
                   <option value="1st Year">1st Year</option>
                   <option value="2nd Year">2nd Year</option>
@@ -176,7 +176,7 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
                 value={formData.portfolioUrl}
                 onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value })}
                 placeholder="https://behance.net/yourprofile"
-                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors"
               />
             </div>
 
@@ -189,14 +189,14 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
                 value={formData.statement}
                 onChange={(e) => setFormData({ ...formData, statement: e.target.value })}
                 placeholder="Why do you want to join Adope Club at MGIT?"
-                className="w-full bg-[#1A1A1A] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors resize-none"
+                className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors resize-none"
               />
             </div>
 
             <div className="pt-4 border-t border-white/10 flex justify-end">
               <button
                 type="submit"
-                className="w-full bg-white text-[#131313] font-mono text-xs py-3.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-colors flex justify-center items-center gap-2"
+                className="w-full bg-white text-black font-mono text-xs py-3.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-colors flex justify-center items-center gap-2"
               >
                 Submit Membership Vector <ArrowRight className="w-4 h-4" />
               </button>

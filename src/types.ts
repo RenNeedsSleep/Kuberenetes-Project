@@ -33,11 +33,13 @@ export interface CoreTeamMember {
 
 export interface TimelineLog {
   id: string;
+  version: string;
   title: string;
   category: string;
   description: string;
-  period: string;
-  events: { date: string; title: string; note?: string; imageUrl?: string }[];
+  fullDetails: string[];
+  date: string;
+  imageUrl: string;
 }
 
 export interface ApplicationFormState {

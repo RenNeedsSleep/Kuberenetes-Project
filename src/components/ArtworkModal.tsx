@@ -12,7 +12,7 @@ export const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onClose }) 
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl animate-fade-in-up overflow-hidden">
-      <div className="bg-[#131313] border border-white/20 max-w-4xl w-full relative max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden shadow-2xl">
+      <div className="bg-black border border-white/20 max-w-4xl w-full relative max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden shadow-2xl">
         {/* Corner Accents */}
         <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white z-20" />
         <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white z-20" />
@@ -20,7 +20,7 @@ export const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onClose }) 
         <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white z-20" />
 
         {/* Header Bar */}
-        <div className="sticky top-0 z-30 flex items-center justify-between gap-3 p-3 sm:p-6 border-b border-white/10 bg-[#0E0E0E] shrink-0">
+        <div className="sticky top-0 z-30 flex items-center justify-between gap-3 p-3 sm:p-6 border-b border-white/10 bg-black shrink-0">
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 bg-white/5 px-2.5 py-1 border border-white/10">
               {artwork.category}
@@ -52,7 +52,7 @@ export const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onClose }) 
           {/* Details Sidebar */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+              <h2 className="text-2xl sm:text-3xl font-extrabold uppercase text-white tracking-[-0.06em] mb-2">
                 {artwork.title}
               </h2>
 

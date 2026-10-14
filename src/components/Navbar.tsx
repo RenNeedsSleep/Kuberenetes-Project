@@ -70,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
           visible ? 'translate-y-0 pointer-events-auto' : '-translate-y-full pointer-events-none'
         } ${
           scrolled
-            ? 'bg-[#131313]/90 backdrop-blur-md border-b border-white/10 py-4'
+            ? 'bg-black/90 backdrop-blur-md border-b border-white/10 py-4'
             : 'bg-transparent border-b border-transparent py-6'
         }`}
       >
@@ -108,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
           <div className="hidden md:flex items-center gap-4">
             <button
               onClick={onOpenJoinModal}
-              className="magnetic-btn bg-white text-[#131313] font-mono text-xs px-5 py-2.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-all duration-300 flex items-center gap-2"
+              className="magnetic-btn bg-white text-black font-mono text-xs px-5 py-2.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-all duration-300 flex items-center gap-2"
             >
               Join Club
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
 
         {/* Mobile Drawer Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden absolute inset-x-0 top-full max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/10 p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 animate-fade-in-up z-50 pointer-events-auto">
+          <div className="md:hidden absolute inset-x-0 top-full max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain bg-black/95 backdrop-blur-xl border-b border-white/10 p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 animate-fade-in-up z-50 pointer-events-auto">
             <div className="flex flex-col gap-2 sm:gap-4">
               {navLinks.map((link) => (
                 <a
@@ -148,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
                 setMobileMenuOpen(false);
                 onOpenJoinModal();
               }}
-              className="w-full bg-white text-[#131313] font-mono text-xs py-3.5 uppercase tracking-widest font-semibold text-center mt-2 flex justify-center items-center gap-2"
+              className="w-full bg-white text-black font-mono text-xs py-3.5 uppercase tracking-widest font-semibold text-center mt-2 flex justify-center items-center gap-2"
             >
               Join Adope Club
               <ArrowUpRight className="w-4 h-4" />

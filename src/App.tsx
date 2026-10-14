@@ -11,7 +11,6 @@ import { ArtworkModal } from './components/ArtworkModal';
 import { JoinModal } from './components/JoinModal';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
-import { ScrollReveal } from './components/ScrollReveal';
 import { Artwork } from './types';
 
 const JOIN_FORM_URL = 'https://forms.gle/HYMR5CyABFc13pSK8';
@@ -33,7 +32,7 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sectionIds = ['hero', 'about', 'artists', 'team', 'timeline', 'work'];
+    const sectionIds = ['hero', 'about', 'artists', 'team', 'timeline', 'work', 'signal'];
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -56,7 +55,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="bg-[#131313] text-[#e5e2e1] min-h-screen flex flex-col font-sans selection:bg-white selection:text-black relative">
+    <div className="bg-black text-[#e5e2e1] min-h-screen flex flex-col font-sans selection:bg-white selection:text-black relative">
       <CustomCursor />
       {/* Navigation */}
       <Navbar
@@ -71,17 +70,17 @@ export default function App() {
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        <ScrollReveal><AboutSection /></ScrollReveal>
-        <ScrollReveal><MeetTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
-        <ScrollReveal><ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
-        <ScrollReveal><CoreTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} /></ScrollReveal>
+        <AboutSection />
+        <ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
+        <MeetTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
+        <CoreTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
         <TimelineSection />
-        <ScrollReveal><VisualOutputSection
+        <VisualOutputSection
           highlightedImageId={highlightedImageId}
           onImageEnter={handleImageEnter}
           onImageLeave={handleImageLeave}
           onSelectArtwork={(artwork) => setSelectedArtwork(artwork)}
-        /></ScrollReveal>
+        />
       </main>
 
       {/* Footer */}
