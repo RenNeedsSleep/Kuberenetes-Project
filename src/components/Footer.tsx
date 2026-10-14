@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
       <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-9 sm:px-6 sm:py-12 md:grid-cols-[1.2fr_.8fr] md:items-end md:px-16 md:py-16">
         <motion.div variants={itemReveal}>
           <motion.span variants={itemReveal} className="mb-3 block font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-500">Mahatma Gandhi Institute of Technology · Hyderabad</motion.span>
-          <div className="mb-5 flex items-center justify-between gap-3 sm:gap-6">
+          <div className="mb-5 flex items-center gap-3 sm:gap-6">
             <motion.h2 aria-label="aDOPE Club" variants={logoReveal} className="min-w-0 perspective-[500px] text-4xl font-extrabold uppercase leading-[0.88] tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">
               {['ADOPE', 'CLUB.'].map((row) => (
                 <span key={row} aria-hidden="true" className="block overflow-hidden whitespace-nowrap pb-1">
@@ -63,28 +63,6 @@ export const Footer: React.FC = () => {
               ))}
             </motion.h2>
 
-            <div aria-hidden="true" className="relative grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center sm:h-28 sm:w-28">
-              <div className="absolute inset-1 rounded-full border border-dashed border-white/20" />
-              <motion.div
-                animate={prefersReducedMotion ? undefined : { rotate: 360 }}
-                transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-                className="absolute inset-2 rounded-full border border-white/15"
-              >
-                <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.75)]" />
-              </motion.div>
-              <motion.div
-                animate={prefersReducedMotion ? undefined : { rotate: -360 }}
-                transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-                className="absolute inset-[27%] rounded-full border border-white/20"
-              >
-                <span className="absolute -right-1 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rotate-45 bg-neutral-400" />
-              </motion.div>
-              <motion.span
-                animate={prefersReducedMotion ? undefined : { rotate: 360, scale: [1, 1.12, 1] }}
-                transition={prefersReducedMotion ? undefined : { rotate: { duration: 22, repeat: Infinity, ease: 'linear' }, scale: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } }}
-                className="relative text-3xl text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.28)] sm:text-5xl"
-              >✳</motion.span>
-            </div>
           </div>
           <motion.p variants={itemReveal} className="mt-5 max-w-[34ch] font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-neutral-500">A student-led design community turning ideas into identity, experience and culture.</motion.p>
         </motion.div>
