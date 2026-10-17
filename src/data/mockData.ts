@@ -66,7 +66,7 @@ export const ARTWORKS_DATA: Artwork[] = [
     id: 'art-5',
     title: 'Logo Design',
     category: 'Logo Design',
-    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/ee1ac3167501207.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
+    imageUrl: '/logos-practice.png',
     description: 'Logo design work from aDOPE Club’s identity and branding archive.',
     year: '2023',
     artistName: 'aDOPE Club',
@@ -277,7 +277,7 @@ export const ARTISTS_DATA: Artist[] = [
     id: 'practice-logos',
     name: 'Logos',
     role: 'Practice Area',
-    avatarUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/ee1ac3167501207.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
+    avatarUrl: '/logos-practice.png',
     bio: 'Distinctive marks and logo systems that give campus identities a clear, lasting visual signature.',
     specialty: ['Logos', 'Branding', 'Identity']
   }
