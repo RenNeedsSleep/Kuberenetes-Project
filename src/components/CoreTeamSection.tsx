@@ -49,7 +49,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
             alt={member.name || member.role}
             className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             style={{
-              objectPosition: member.id === 'core-head' ? 'center 28%' : 'center 20%',
+              objectPosition: member.id === 'core-head' ? 'center 12%' : 'center 20%',
               filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
               transition: 'filter 350ms ease, transform 500ms ease-out',
             }}
