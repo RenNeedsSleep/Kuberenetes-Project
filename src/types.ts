@@ -16,6 +16,7 @@ export interface Artist {
   name: string;
   role: string;
   avatarUrl: string;
+  gallery?: string[];
   bio: string;
   specialty: string[];
   instagramUrl?: string;

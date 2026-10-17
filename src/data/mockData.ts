@@ -52,10 +52,10 @@ export const ARTWORKS_DATA: Artwork[] = [
   },
   {
     id: 'art-4',
-    title: 'Event Posters',
+    title: 'Event Posters & Campaigns',
     category: 'Posters',
-    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/9d18f5167500789.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
-    description: 'Poster work representing aDOPE’s role as an event-focused design team at MGIT.',
+    imageUrl: '/events-campaigns-combined.png',
+    description: 'Poster work and campaign visual identity for campus festivals, Battle of Bands, and cultural events.',
     year: '2023',
     artistName: 'aDOPE Club',
     specs: ['Poster Design', 'Campaign Graphics', 'Art Direction'],
@@ -269,7 +269,8 @@ export const ARTISTS_DATA: Artist[] = [
     id: 'practice-campaigns',
     name: 'Events & Campaigns',
     role: 'Practice Area',
-    avatarUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/9d18f5167500789.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
+    avatarUrl: '/events-campaigns-combined.png',
+    gallery: ['/events-existing.png', '/events-new.png'],
     bio: 'Campaign graphics and event visuals that connect the club’s design work to MGIT’s campus life.',
     specialty: ['Events', 'Campaigns', 'Graphic Design']
   },
