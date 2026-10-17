@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
           <h2 className="font-heading text-4xl font-extrabold uppercase leading-[0.88] tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">
             aDOPE<br />CLUB<span className="text-neutral-600">.</span>
           </h2>
-          <p className="mt-5 max-w-[34ch] font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-neutral-500">A student-led design community turning ideas into identity, experience and culture.</p>
+          <p className="mt-5 max-w-[34ch] font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-neutral-500">A DOPE CLUB OF MGIT</p>
         </div>
 
         <div className="flex flex-col gap-7 md:items-end">
