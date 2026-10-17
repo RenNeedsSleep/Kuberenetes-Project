@@ -125,8 +125,10 @@ export const Hero: React.FC = () => {
 
     let rafId = 0;
     let current = 0;
+    let isVisible = true;
 
     const loop = () => {
+      if (!isVisible) return;
       const rect = section.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const target = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
@@ -136,9 +138,29 @@ export const Hero: React.FC = () => {
       applyProgress();
       rafId = requestAnimationFrame(loop);
     };
+
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      const video = videoRef.current;
+      if (isVisible) {
+        if (!rafId) rafId = requestAnimationFrame(loop);
+        if (video && video.paused) video.play().catch(() => {});
+      } else {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+        if (video && !video.paused) video.pause();
+      }
+    }, { rootMargin: '100px 0px 100px 0px' });
+
+    visibilityObserver.observe(section);
     rafId = requestAnimationFrame(loop);
 
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      visibilityObserver.disconnect();
+    };
   }, [applyProgress]);
 
   const handleSkip = () => {

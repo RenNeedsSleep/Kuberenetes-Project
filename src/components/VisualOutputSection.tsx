@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Eye } from 'lucide-react';
-import { motion, MotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ARTWORKS_DATA } from '../data/mockData';
 import { Artwork } from '../types';
 import { NirvanaPhoenix } from './NirvanaPhoenix';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface VisualOutputSectionProps {
   highlightedImageId: string | null;
@@ -12,116 +15,158 @@ interface VisualOutputSectionProps {
   onSelectArtwork: (artwork: Artwork) => void;
 }
 
-const ORBIT_STATES = [
-  { entryX: '-64vw', entryY: '-34vh', settleX: '-31vw', settleY: '-22vh', exitX: '-36vw', exitY: '-27vh', entryRotate: -16, settleRotate: -7, exitRotate: -10 },
-  { entryX: '66vw', entryY: '-36vh', settleX: '31vw', settleY: '-16vh', exitX: '37vw', exitY: '-22vh', entryRotate: 15, settleRotate: 8, exitRotate: 11 },
-  { entryX: '-70vw', entryY: '39vh', settleX: '-33vw', settleY: '20vh', exitX: '-39vw', exitY: '25vh', entryRotate: 12, settleRotate: 6, exitRotate: 9 },
-  { entryX: '70vw', entryY: '40vh', settleX: '33vw', settleY: '22vh', exitX: '39vw', exitY: '28vh', entryRotate: -15, settleRotate: -7, exitRotate: -10 },
-  { entryX: '2vw', entryY: '75vh', settleX: '2vw', settleY: '34vh', exitX: '3vw', exitY: '41vh', entryRotate: 9, settleRotate: 2, exitRotate: 4 },
-];
-
-interface OrbitArtworkProps {
-  art: Artwork;
-  index: number;
-  progress: MotionValue<number>;
-  highlightedImageId: string | null;
-  onImageEnter: (imageId: string) => void;
-  onImageLeave: (imageId: string) => void;
-  onSelectArtwork: (artwork: Artwork) => void;
-}
-
-const OrbitArtwork: React.FC<OrbitArtworkProps> = ({ art, index, progress, highlightedImageId, onImageEnter, onImageLeave, onSelectArtwork }) => {
-  const reduceMotion = useReducedMotion();
-  const state = ORBIT_STATES[index];
-  const imageId = `work-${art.id}`;
-  const isHighlighted = highlightedImageId === imageId;
-  const enterStart = index * 0.1;
-  const enterEnd = 0.17 + index * 0.1;
-  const exitStart = 0.62 + index * 0.065;
-  const x = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [state.entryX, state.settleX, state.settleX, state.exitX]);
-  const y = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [state.entryY, state.settleY, state.settleY, state.exitY]);
-  const rotate = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [state.entryRotate, state.settleRotate, state.settleRotate, state.exitRotate]);
-  const scale = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [0.56, 1, 1, 0.88]);
-  const opacity = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [0, 1, 1, 0.72]);
-  const imageScale = useTransform(progress, [enterStart, enterEnd, 1], [1.17, 1.04, 1.1]);
-
-  return (
-    <motion.article
-      onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(imageId)}
-      onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(imageId)}
-      onClick={() => {
-        if (window.matchMedia('(hover: none)').matches && !isHighlighted) {
-          onImageEnter(imageId);
-          return;
-        }
-        onSelectArtwork(art);
-      }}
-      className="absolute left-1/2 top-1/2 z-20 w-[43vw] max-w-[350px] -translate-x-1/2 -translate-y-1/2 cursor-pointer will-change-transform sm:w-[25vw] sm:max-w-[390px]"
-      style={reduceMotion ? { x: state.settleX, y: state.settleY, rotate: state.settleRotate, zIndex: 20 + index } : { x, y, rotate, scale, opacity, zIndex: 20 + index }}
-    >
-      <div className="group relative aspect-[1.12] overflow-hidden border border-white/20 bg-black shadow-[0_26px_66px_rgba(0,0,0,.42)]">
-        <motion.div
-          className="absolute inset-0 bg-cover bg-center transition duration-700"
-          style={{
-            backgroundImage: `url('${art.imageUrl}')`,
-            filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.08)',
-            scale: reduceMotion ? 1.04 : imageScale,
-          }}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,.8),transparent_58%)]" />
-        <span className="absolute left-2.5 top-2.5 border border-white/20 bg-black/40 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.15em] text-white/75 backdrop-blur-sm sm:text-[8px]">{art.category}</span>
-        <Eye className="absolute right-2.5 top-2.5 h-4 w-4 text-white/0 transition group-hover:text-white/80" aria-hidden="true" />
-        <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4">
-          <span className="mb-1 block font-mono text-[7px] uppercase tracking-[0.14em] text-white/60 sm:text-[8px]">{art.artistName} · {art.year}</span>
-          <h3 className="text-base font-extrabold leading-none tracking-[-0.045em] text-white sm:text-xl">{art.title}</h3>
-        </div>
-      </div>
-    </motion.article>
-  );
-};
-
-/** The archive resolves into a moving orbit: artwork arrives on independent routes around the draggable Nirvana core. */
-export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({ highlightedImageId, onImageEnter, onImageLeave, onSelectArtwork }) => {
+export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
+  highlightedImageId,
+  onImageEnter,
+  onImageLeave,
+  onSelectArtwork,
+}) => {
   const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
-  const progress = useSpring(scrollYProgress, { stiffness: 82, damping: 24, mass: 0.38 });
-  const headerY = useTransform(progress, [0, 0.28], ['0vh', '-6vh']);
-  const headerOpacity = useTransform(progress, [0, 0.05, 0.24], [1, 1, 0]);
-  const coreY = useTransform(progress, [0, 0.5, 1], ['13vh', '0vh', '-4vh']);
-  const coreScale = useTransform(progress, [0, 0.42, 1], [0.76, 1, 1.08]);
-  const coreGlow = useTransform(progress, [0, 0.48, 1], [0.2, 0.76, 0.45]);
-  const archivePieces = ARTWORKS_DATA.filter((art) => art.id !== 'art-nirvana-2026');
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  // Filter out the redundant standalone "Posters" card ('art-6')
+  const artworks = ARTWORKS_DATA.filter((art) => art.id !== 'art-6');
+
+  // GSAP ScrollTrigger staggered card reveal
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const cards = gridRef.current.querySelectorAll('.bento-card');
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cards,
+        {
+          opacity: 0,
+          y: 55,
+          scale: 0.96,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.85,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 82%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section ref={sectionRef} id="work" className="relative z-20 h-[330svh] overflow-clip border-b border-white/10 bg-black sm:h-[300svh]">
-      <div className="sticky top-0 h-[100svh] min-h-[650px] overflow-hidden">
-
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,169,85,.12),transparent_35%),radial-gradient(ellipse_at_80%_8%,rgba(255,255,255,.06),transparent_26%)]" />
-
-        <motion.header className="absolute left-4 right-4 top-6 z-40 flex items-start justify-between gap-5 sm:left-6 sm:right-6 sm:top-8 md:left-16 md:right-16 md:top-10" style={reduceMotion ? undefined : { y: headerY, opacity: headerOpacity }}>
+    <section ref={sectionRef} id="work" className="py-16 sm:py-24 lg:py-32 bg-black relative z-20 border-b border-white/10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative">
+        {/* Section Title Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 sm:mb-12 gap-5 sm:gap-6 border-b border-white/10 pb-6 sm:pb-8">
           <div>
-            <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.21em] text-neutral-400 sm:text-[10px]">05 // A living archive</span>
-            <h2 className="text-[clamp(2.6rem,6.8vw,7.6rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.06em] text-white">Design<br /><span className="text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,.72)] sm:[-webkit-text-stroke:2px_rgba(255,255,255,.72)]">Orbit</span></h2>
+            <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
+              05 // Living Archive Gallery
+            </span>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-extrabold uppercase leading-none tracking-tight text-white">
+              Visual<br />
+              Output
+            </h2>
           </div>
-          <div className="hidden max-w-[19rem] pt-2 text-right sm:block">
-            <span className="font-mono text-[9px] uppercase leading-relaxed tracking-[0.17em] text-white/52">Each fragment follows its own route.<br />The Nirvana mark holds the system together.</span>
-          </div>
-        </motion.header>
 
-        <motion.div className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-[min(66vw,640px)] w-[min(66vw,640px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,175,90,.21),rgba(255,175,90,.04)_42%,transparent_69%)] blur-2xl" style={reduceMotion ? undefined : { opacity: coreGlow }} />
-        {/* Seamless 3D Nirvana Phoenix mark without the black box frame */}
-        <motion.div className="absolute left-1/2 top-1/2 z-10 h-[min(64vw,610px)] w-[min(72vw,720px)] -translate-x-1/2 -translate-y-1/2" style={reduceMotion ? undefined : { y: coreY, scale: coreScale }}>
-          <NirvanaPhoenix />
-          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 z-20 font-mono text-[8px] uppercase tracking-[0.15em] text-white/48 sm:bottom-6 sm:text-[9px]">Drag the mark to rotate</div>
-        </motion.div>
+          <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest">
+            {artworks.length} Core Projects
+          </span>
+        </div>
 
-        {archivePieces.map((art, index) => (
-          <OrbitArtwork key={art.id} art={art} index={index} progress={progress} highlightedImageId={highlightedImageId} onImageEnter={onImageEnter} onImageLeave={onImageLeave} onSelectArtwork={onSelectArtwork} />
-        ))}
+        {/* Bento Grid Layout (Matching Old UI: 8+4 on row 1, 4+4+4 on row 2) */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
+          {artworks.map((art, idx) => {
+            // Bento sizing rules
+            let colSpan = 'md:col-span-4';
+            let aspect = 'aspect-square';
 
-        <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-40 flex items-end justify-between font-mono text-[8px] uppercase tracking-[0.18em] text-white/46 sm:bottom-8 sm:left-6 sm:right-6 sm:text-[9px] md:left-16 md:right-16">
-          <span>Scroll to map the archive</span><span>{String(archivePieces.length + 1).padStart(2, '0')} fragments / no fixed order</span>
+            if (idx === 0) {
+              colSpan = 'md:col-span-8';
+              aspect = 'aspect-[16/9] min-h-[320px] sm:min-h-[420px]';
+            } else if (idx === 1) {
+              colSpan = 'md:col-span-4';
+              aspect = 'h-full min-h-[280px] sm:min-h-[420px]';
+            }
+
+            const imageId = `work-${art.id}`;
+            const isHovered = highlightedImageId === imageId;
+
+            return (
+              <div
+                key={art.id}
+                onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(imageId)}
+                onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(imageId)}
+                onClick={() => {
+                  if (window.matchMedia('(hover: none)').matches && !isHovered) {
+                    onImageEnter(imageId);
+                    return;
+                  }
+                  onSelectArtwork(art);
+                }}
+                className={`bento-card ${colSpan} group cursor-pointer relative overflow-hidden border border-white/15 bg-neutral-950 transition-all duration-300 hover:border-white/50 hover:shadow-[0_16px_40px_rgba(0,0,0,0.8)]`}
+              >
+                <div className={`${aspect} relative overflow-hidden w-full flex flex-col justify-between`}>
+                  {/* Decorative Corner Ticks */}
+                  <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-white/60 z-20 pointer-events-none" />
+                  <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-white/60 z-20 pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-white/40 z-20 pointer-events-none" />
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-white/40 z-20 pointer-events-none" />
+
+                  {/* 3D Nirvana Phoenix for first card, high-res visual for others */}
+                  {art.id === 'art-nirvana-2026' ? (
+                    <>
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,160,70,0.14),transparent_60%)] pointer-events-none" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <NirvanaPhoenix />
+                      </div>
+                      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.24em] text-white/50 bg-black/60 px-2 py-0.5 rounded border border-white/10 backdrop-blur-sm">
+                        Drag to rotate
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105"
+                      style={{
+                        backgroundImage: `url('${art.imageUrl}')`,
+                        filter: isHovered ? 'none' : 'grayscale(1) contrast(1.1)',
+                        opacity: isHovered ? 1 : 0.7,
+                      }}
+                    />
+                  )}
+
+                  {/* Subtle Gradient Vignette */}
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black via-black/30 to-black/30 opacity-80 group-hover:opacity-50 transition-opacity duration-300" />
+
+                  {/* Top Row: Category Badge & Eye Indicator */}
+                  <div className="relative z-10 flex items-center justify-between p-4 sm:p-5 pointer-events-none">
+                    <span className="font-mono text-[9px] sm:text-[10px] bg-black/70 backdrop-blur-md px-2.5 py-1 uppercase tracking-widest border border-white/20 text-white/90">
+                      {art.category}
+                    </span>
+
+                    <span className="p-1.5 sm:p-2 bg-black/70 backdrop-blur-md border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <Eye className="w-4 h-4" />
+                    </span>
+                  </div>
+
+                  {/* Bottom Meta Info */}
+                  <div className="relative z-10 p-4 sm:p-6 pointer-events-none">
+                    <span className="font-mono text-[9px] sm:text-[10px] text-neutral-400 block mb-1 uppercase tracking-wider">
+                      BY {art.artistName.toUpperCase()} — {art.year}
+                    </span>
+                    <h4 className="font-extrabold text-xl sm:text-2xl md:text-3xl text-white tracking-tight uppercase group-hover:text-amber-200 transition-colors duration-200">
+                      {art.title}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

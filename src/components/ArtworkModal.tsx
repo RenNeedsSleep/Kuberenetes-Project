@@ -39,7 +39,7 @@ export const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onClose }) 
         </div>
 
         {/* Content Layout */}
-        <div className="p-3 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 overflow-y-auto overscroll-contain min-h-0">
+        <div data-lenis-prevent className="p-3 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 overflow-y-auto overscroll-contain min-h-0">
           {/* Main Image View */}
           <div className="lg:col-span-7 bg-[#0A0A0A] border border-white/10 overflow-hidden relative flex items-center justify-center">
             <img

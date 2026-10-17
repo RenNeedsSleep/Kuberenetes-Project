@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
     { name: 'Artists', href: '#artists' },
     { name: 'Core Team', href: '#team' },
     { name: 'Archive', href: '#timeline' },
-    { name: 'Design Archive', href: '#work' },
+    { name: 'Visual Output', href: '#work' },
   ];
 
   return (
@@ -106,13 +106,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
 
           {/* Action Button */}
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={onOpenJoinModal}
+            <a
+              href="https://forms.gle/4YiNpJRTiB52Fd93A"
+              target="_blank"
+              rel="noopener noreferrer"
               className="magnetic-btn bg-white text-black font-mono text-xs px-5 py-2.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-all duration-300 flex items-center gap-2"
             >
               Join Club
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
+            </a>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -143,16 +145,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
               ))}
             </div>
 
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenJoinModal();
-              }}
+            <a
+              href="https://forms.gle/4YiNpJRTiB52Fd93A"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
               className="w-full bg-white text-black font-mono text-xs py-3.5 uppercase tracking-widest font-semibold text-center mt-2 flex justify-center items-center gap-2"
             >
               Join Adope Club
               <ArrowUpRight className="w-4 h-4" />
-            </button>
+            </a>
           </div>
         )}
       </header>

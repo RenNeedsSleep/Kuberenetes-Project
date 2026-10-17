@@ -32,8 +32,8 @@ export const JoinModal: React.FC<JoinModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl animate-fade-in-up overflow-y-auto overscroll-contain">
-      <div className="bg-black border border-white/20 max-w-xl w-full relative my-2 sm:my-8 max-h-[calc(100dvh-1rem)] overflow-y-auto overscroll-contain shadow-2xl">
+    <div data-lenis-prevent className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl animate-fade-in-up overflow-y-auto overscroll-contain">
+      <div data-lenis-prevent className="bg-black border border-white/20 max-w-xl w-full relative my-2 sm:my-8 max-h-[calc(100dvh-1rem)] overflow-y-auto overscroll-contain shadow-2xl">
         {/* Corner Brackets */}
         <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white z-20" />
         <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white z-20" />

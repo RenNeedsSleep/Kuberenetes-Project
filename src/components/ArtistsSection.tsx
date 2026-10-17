@@ -1,112 +1,402 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { motion, MotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { ARTISTS_DATA } from '../data/mockData';
 import { Artist } from '../types';
 
+/* ─── CSS injected once ─────────────────────────────────────────── */
+const STYLE = `
+@keyframes aop-scanline {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+@keyframes aop-ticker {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@keyframes aop-slideup {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.aop-row {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  cursor: pointer;
+  transition:
+    background-color 500ms cubic-bezier(0.16,1,0.3,1),
+    padding-top 500ms cubic-bezier(0.16,1,0.3,1),
+    padding-bottom 500ms cubic-bezier(0.16,1,0.3,1);
+}
+.aop-row::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 55%;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.05) 50%,
+    rgba(255,255,255,0) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.aop-row:hover::after {
+  animation: aop-scanline 700ms cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.aop-row-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.08);
+  transition:
+    opacity 600ms cubic-bezier(0.16,1,0.3,1),
+    transform 700ms cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+  filter: grayscale(0.4) contrast(1.05);
+}
+.aop-row:hover .aop-row-bg {
+  opacity: 1;
+  transform: scale(1);
+}
+.aop-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.90) 0%,
+    rgba(0,0,0,0.60) 52%,
+    rgba(0,0,0,0.20) 100%
+  );
+  opacity: 0;
+  transition: opacity 500ms cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+.aop-row:hover .aop-overlay { opacity: 1; }
+.aop-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem;
+  transition:
+    padding-top 500ms cubic-bezier(0.16,1,0.3,1),
+    padding-bottom 500ms cubic-bezier(0.16,1,0.3,1);
+}
+@media(min-width:640px) {
+  .aop-inner {
+    grid-template-columns: 4.5rem 1fr 1fr auto;
+    padding: 1.5rem 1.75rem;
+  }
+}
+@media(min-width:1024px) {
+  .aop-inner {
+    padding: 1.6rem 3.5rem;
+  }
+}
+.aop-row:hover .aop-inner {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+@media(min-width:640px) {
+  .aop-row:hover .aop-inner { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+}
+.aop-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.22);
+  text-transform: uppercase;
+  transition: color 400ms ease;
+  user-select: none;
+}
+.aop-row:hover .aop-num { color: rgba(255,255,255,0.55); }
+.aop-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.4rem, 4vw, 3.8rem);
+  letter-spacing: -0.065em;
+  line-height: 1;
+  color: rgba(255,255,255,0.88);
+  text-transform: uppercase;
+  transition:
+    letter-spacing 500ms cubic-bezier(0.16,1,0.3,1),
+    color 400ms ease;
+}
+.aop-row:hover .aop-title {
+  color: #fff;
+  letter-spacing: -0.04em;
+}
+.aop-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0);
+  margin-bottom: 0.4rem;
+  transition: color 350ms ease 40ms;
+}
+.aop-row:hover .aop-role { color: rgba(255,255,255,0.45); }
+.aop-bio {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0);
+  max-width: 40ch;
+  transition: color 400ms cubic-bezier(0.16,1,0.3,1) 60ms;
+  display: none;
+}
+@media(min-width:640px) { .aop-bio { display: block; } }
+.aop-row:hover .aop-bio { color: rgba(255,255,255,0.6); }
+.aop-tags {
+  display: none;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.75rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 400ms cubic-bezier(0.16,1,0.3,1) 90ms,
+    transform 400ms cubic-bezier(0.16,1,0.3,1) 90ms;
+}
+@media(min-width:640px) { .aop-tags { display: flex; } }
+.aop-row:hover .aop-tags { opacity: 1; transform: translateY(0); }
+.aop-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.2rem 0.5rem;
+  color: rgba(255,255,255,0.65);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+}
+.aop-arrow {
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.15);
+  transition:
+    color 350ms ease,
+    transform 350ms cubic-bezier(0.16,1,0.3,1);
+}
+.aop-row:hover .aop-arrow {
+  color: rgba(255,255,255,0.9);
+  transform: translate(5px,-5px);
+}
+/* Slide-up on scroll-into-view (fires once) */
+.aop-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+}
+.aop-reveal.aop-visible {
+  animation: aop-slideup 600ms cubic-bezier(0.16,1,0.3,1) forwards;
+}
+/* Ambient vertical word ticker */
+.aop-ticker-track {
+  animation: aop-ticker 22s linear infinite;
+  will-change: transform;
+}
+/* Bottom sweep progress line */
+.aop-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.7);
+  width: 0%;
+  transition: width 0s;
+}
+.aop-row:hover .aop-progress {
+  width: 100%;
+  transition: width 480ms cubic-bezier(0.16,1,0.3,1);
+}
+/* Left accent line */
+.aop-accent {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 2px;
+  background: rgba(255,255,255,0);
+  transition: background 400ms ease;
+}
+.aop-row:hover .aop-accent {
+  background: rgba(255,255,255,0.6);
+}
+`;
+
+/* ─── Single practice row ────────────────────────────────────────── */
+const PracticeRow: React.FC<{ artist: Artist; index: number; total: number }> = ({
+  artist,
+  index,
+  total,
+}) => {
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.animationDelay = `${index * 80}ms`;
+          el.classList.add('aop-visible');
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [index]);
+
+  return (
+    <div
+      ref={rowRef}
+      className="aop-row aop-reveal"
+      role="article"
+      aria-label={`Practice ${index + 1} of ${total}: ${artist.name}`}
+    >
+      {/* Background image */}
+      <div className="aop-row-bg" style={{ backgroundImage: `url('${artist.avatarUrl}')` }} />
+      {/* Dark overlay */}
+      <div className="aop-overlay" />
+      {/* Left accent bar */}
+      <div className="aop-accent" />
+      {/* Bottom progress sweep */}
+      <div className="aop-progress" />
+
+      <div className="aop-inner">
+        {/* Index */}
+        <span className="aop-num">{String(index + 1).padStart(2, '0')}</span>
+
+        {/* Title block */}
+        <div>
+          <div className="aop-role">{artist.role}</div>
+          <div className="aop-title">{artist.name}</div>
+          <div className="aop-tags">
+            {artist.specialty.map((s) => (
+              <span key={s} className="aop-tag">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Bio */}
+        <p className="aop-bio">{artist.bio}</p>
+
+        {/* Arrow */}
+        <ArrowUpRight className="aop-arrow" size={20} aria-hidden="true" />
+      </div>
+    </div>
+  );
+};
+
+/* ─── Ambient vertical ticker ─────────────────────────────────────── */
+const TICKER_WORDS = ['Brand', 'Type', 'Print', 'Screen', 'Mark', 'Form', 'Color', 'Space', 'Motion', 'Grid'];
+
+const Ticker: React.FC = () => {
+  const words = [...TICKER_WORDS, ...TICKER_WORDS];
+  return (
+    <div
+      className="absolute right-0 top-0 bottom-0 w-10 sm:w-14 z-0 overflow-hidden select-none pointer-events-none"
+      aria-hidden="true"
+    >
+      <div className="aop-ticker-track flex flex-col items-center gap-7 py-4">
+        {words.map((w, i) => (
+          <span
+            key={i}
+            style={{
+              writingMode: 'vertical-rl',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '0.52rem',
+              letterSpacing: '0.24em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.055)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {w}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ─── Section ────────────────────────────────────────────────────── */
 interface ArtistsSectionProps {
   highlightedImageId: string | null;
   onImageEnter: (imageId: string) => void;
   onImageLeave: (imageId: string) => void;
 }
 
-interface PracticeCardProps {
-  artist: Artist;
-  index: number;
-  progress: MotionValue<number>;
-  highlightedImageId: string | null;
-  onImageEnter: (imageId: string) => void;
-  onImageLeave: (imageId: string) => void;
-}
-
-const PracticeCard: React.FC<PracticeCardProps> = ({ artist, index, progress, highlightedImageId, onImageEnter, onImageLeave }) => {
-  const reduceMotion = useReducedMotion();
-  const imageId = `artist-${artist.id}`;
-  const isHighlighted = highlightedImageId === imageId;
-  const count = ARTISTS_DATA.length;
-  const enterStart = index === 0 ? 0 : Math.max(0, (index - 0.72) / count);
-  const enterEnd = index === 0 ? 0.16 : Math.min(0.91, (index + 0.1) / count);
-  const exitStart = Math.min(0.98, Math.max(enterEnd + 0.05, (index + 1.85) / count));
-  const entryX = index % 2 ? '16vw' : '-16vw';
-  const entryRotate = index % 2 ? 4 : -4;
-  const cardX = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [entryX, '0vw', index % 2 ? '-2vw' : '2vw', index % 2 ? '-4vw' : '4vw']);
-  const cardY = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [index === 0 ? '0vh' : '104vh', '0vh', '-2vh', '-9vh']);
-  const cardScale = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [index === 0 ? 1 : 0.9, 1, 0.975, 0.93]);
-  const cardRotate = useTransform(progress, [enterStart, enterEnd, exitStart, 1], [entryRotate, 0, index % 2 ? -1 : 1, index % 2 ? -2 : 2]);
-  const imageScale = useTransform(progress, [enterStart, enterEnd, 1], [1.18, 1.045, 1.08]);
-  const metaOpacity = useTransform(progress, [enterStart, enterEnd], [0, 1]);
+export const ArtistsSection: React.FC<ArtistsSectionProps> = () => {
+  // Inject CSS once on mount
+  useEffect(() => {
+    const id = 'aop-styles';
+    if (!document.getElementById(id)) {
+      const tag = document.createElement('style');
+      tag.id = id;
+      tag.textContent = STYLE;
+      document.head.appendChild(tag);
+    }
+  }, []);
 
   return (
-    <motion.article
-      aria-label={`${index + 1} of ${count}: ${artist.name}`}
-      onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(imageId)}
-      onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(imageId)}
-      onClick={() => window.matchMedia('(hover: none)').matches && onImageEnter(imageId)}
-      className="absolute inset-0 isolate overflow-hidden border border-white/20 bg-black shadow-[0_36px_90px_rgba(0,0,0,.46)]"
-      style={reduceMotion ? { zIndex: index + 1 } : { x: cardX, y: cardY, scale: cardScale, rotate: cardRotate, zIndex: index + 1 }}
-    >
-      <motion.div
-        className="absolute inset-0 bg-cover bg-center will-change-transform"
-        style={{
-          backgroundImage: `url('${artist.avatarUrl}')`,
-          filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.09)',
-          scale: reduceMotion ? 1.04 : imageScale,
-        }}
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,5,5,.88)_0%,rgba(6,6,6,.32)_53%,rgba(5,5,5,.14)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,.82)_0%,transparent_53%)]" />
-      <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-5 sm:inset-x-7 sm:top-7 lg:inset-x-10 lg:top-9">
-        <span className="border border-white/25 bg-black/35 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/80 backdrop-blur-md sm:text-[9px]">Practice / {String(index + 1).padStart(2, '0')}</span>
-        <motion.span className="hidden max-w-[18ch] text-right font-mono text-[9px] uppercase leading-relaxed tracking-[0.14em] text-white/55 sm:block" style={reduceMotion ? undefined : { opacity: metaOpacity }}>One discipline,<br />many directions.</motion.span>
+    <section id="artists" className="relative z-20 bg-black overflow-hidden">
+      {/* ── Section header ─────────────────────────────────── */}
+      <div className="relative z-10 border-t border-white/10 px-4 pt-16 pb-10 sm:px-6 sm:pt-20 md:px-14">
+        <span
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '0.6rem',
+            letterSpacing: '0.21em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.3)',
+            display: 'block',
+            marginBottom: '0.55rem',
+          }}
+        >
+          02 // Disciplines in motion
+        </span>
+        <div className="flex items-end justify-between gap-4">
+          <h2
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: 'clamp(2rem, 6vw, 4.5rem)',
+              letterSpacing: '-0.065em',
+              textTransform: 'uppercase',
+              color: '#fff',
+              lineHeight: 1,
+            }}
+          >
+            Areas of Practice
+          </h2>
+          <span
+            className="hidden sm:block"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '0.6rem',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.28)',
+            }}
+          >
+            {String(ARTISTS_DATA.length).padStart(2, '0')} practices
+          </span>
+        </div>
+        <div className="mt-8 h-px bg-white/10" />
       </div>
 
-      <div className="absolute bottom-5 left-4 right-4 sm:bottom-8 sm:left-7 sm:right-7 lg:bottom-10 lg:left-10 lg:right-10">
-        <motion.div style={reduceMotion ? undefined : { opacity: metaOpacity }}>
-          <span className="mb-3 block font-mono text-[9px] uppercase tracking-[0.22em] text-white/58 sm:text-[10px]">{artist.role}</span>
-          <h3 className="max-w-[11ch] text-[clamp(2.7rem,7.8vw,8.5rem)] font-black uppercase leading-[0.76] tracking-[-0.09em] text-white">{artist.name}</h3>
-        </motion.div>
-        <motion.div className="mt-5 grid max-w-3xl gap-4 border-t border-white/25 pt-4 sm:mt-7 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:pt-5" style={reduceMotion ? undefined : { opacity: metaOpacity }}>
-          <p className="max-w-[52ch] text-[11px] leading-relaxed text-white/74 sm:text-sm">{artist.bio}</p>
-          <div className="flex flex-wrap gap-1.5 sm:justify-end">
-            {artist.specialty.map((spec) => <span key={spec} className="border border-white/20 bg-black/25 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.12em] text-white/75 backdrop-blur-sm sm:text-[9px]">{spec}</span>)}
-          </div>
-        </motion.div>
-      </div>
-      <ArrowUpRight aria-hidden="true" className="absolute bottom-5 right-4 h-5 w-5 text-white/60 sm:bottom-8 sm:right-7 sm:h-6 sm:w-6 lg:bottom-10 lg:right-10" />
-    </motion.article>
-  );
-};
-
-/** A scroll-choreographed deck: each discipline arrives from a different vector, settles, then leaves a trace for the next. */
-export const ArtistsSection: React.FC<ArtistsSectionProps> = ({ highlightedImageId, onImageEnter, onImageLeave }) => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
-  const progress = useSpring(scrollYProgress, { stiffness: 86, damping: 25, mass: 0.36 });
-  const progressWidth = useTransform(progress, [0, 1], ['0%', '100%']);
-  const height = `calc(100svh + ${(ARTISTS_DATA.length - 1) * 68}svh)`;
-
-  return (
-    <section ref={sectionRef} id="artists" className="relative z-20 bg-black" style={{ height }}>
-      <div className="sticky top-0 h-[100svh] min-h-[620px] overflow-hidden border-y border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_18%_13%,rgba(255,255,255,.1),transparent_29%),radial-gradient(ellipse_at_84%_83%,rgba(255,255,255,.06),transparent_26%)]" />
-        <div className="absolute inset-x-4 top-5 z-30 flex items-end justify-between gap-5 sm:inset-x-6 sm:top-7 md:inset-x-16">
-          <div>
-            <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.21em] text-neutral-400 sm:text-[10px]">02 // Disciplines in motion</span>
-            <h2 className="text-2xl font-extrabold uppercase tracking-[-0.06em] text-white sm:text-4xl">Areas of Practice</h2>
-          </div>
-          <span className="hidden font-mono text-[9px] uppercase tracking-[0.18em] text-white/50 sm:block">{String(ARTISTS_DATA.length).padStart(2, '0')} practices / continuous deck</span>
-        </div>
-
-        <div className="absolute inset-x-4 bottom-6 top-[8.8rem] sm:inset-x-6 sm:bottom-8 sm:top-[10.4rem] md:inset-x-16">
-          {ARTISTS_DATA.map((artist, index) => (
-            <PracticeCard key={artist.id} artist={artist} index={index} progress={progress} highlightedImageId={highlightedImageId} onImageEnter={onImageEnter} onImageLeave={onImageLeave} />
-          ))}
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 z-40 h-px bg-white/20">
-          <motion.span className="block h-px bg-white" style={reduceMotion ? { width: '100%' } : { width: progressWidth }} />
-        </div>
+      {/* ── Practice rows ──────────────────────────────────── */}
+      <div className="relative">
+        <Ticker />
+        {ARTISTS_DATA.map((artist, i) => (
+          <PracticeRow key={artist.id} artist={artist} index={i} total={ARTISTS_DATA.length} />
+        ))}
+        <div className="h-px bg-white/10" />
       </div>
     </section>
   );

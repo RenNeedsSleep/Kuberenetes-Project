@@ -18,7 +18,7 @@ export const NirvanaPhoenix: React.FC = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(34, mount.clientWidth / mount.clientHeight, 0.1, 100);
     camera.position.z = 8.2;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(0x000000, 0);
@@ -91,7 +91,9 @@ export const NirvanaPhoenix: React.FC = () => {
       velocityX = 0;
       velocityY = 0;
       mount.setPointerCapture(event.pointerId);
-      event.preventDefault();
+      if (event.pointerType === 'mouse') {
+        event.preventDefault();
+      }
     };
     const onPointerMove = (event: PointerEvent) => {
       if (!dragging) return;
@@ -178,7 +180,7 @@ export const NirvanaPhoenix: React.FC = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 z-10 cursor-grab touch-none active:cursor-grabbing" aria-label="Drag to rotate the three-dimensional phoenix emblem for NIRVANA 2026" />;
+  return <div ref={mountRef} className="absolute inset-0 z-10 cursor-grab touch-pan-y active:cursor-grabbing" aria-label="Drag to rotate the three-dimensional phoenix emblem for NIRVANA 2026" />;
 };
 
 
