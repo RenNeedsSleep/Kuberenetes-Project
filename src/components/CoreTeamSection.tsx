@@ -6,8 +6,8 @@ import { CoreTeamMember } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PHOTO_TILE_COLUMNS = 8;
-const PHOTO_TILE_ROWS = 6;
+const PHOTO_TILE_COLUMNS = 12;
+const PHOTO_TILE_ROWS = 9;
 
 interface CoreTeamSectionProps {
   highlightedImageId: string | null;
@@ -56,8 +56,8 @@ const TeamCard: React.FC<TeamCardProps> = ({
 
     const trigger = ScrollTrigger.create({
       trigger: frame,
-      start: 'top 92%',
-      end: 'bottom 40%',
+      start: 'top 98%',
+      end: 'top 72%',
       onUpdate: (self) => updateFragments(self.progress),
       onRefresh: (self) => updateFragments(self.progress),
     });
