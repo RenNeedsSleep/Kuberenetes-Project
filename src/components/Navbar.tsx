@@ -107,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`font-mono text-xs uppercase tracking-widest transition-all duration-300 relative py-1 ${link.isEvent && eventsUnseen ? 'event-nav-unseen' : ''} ${
+                  className={`font-mono text-xs uppercase tracking-widest transition-all duration-300 relative py-1 ${link.isEvent ? (eventsUnseen ? 'event-nav-unseen' : 'event-nav-seen') : ''} ${
                     isActive
                       ? 'text-white font-semibold border-b border-white'
                       : 'text-white/60 hover:text-white hover:border-b hover:border-white/40'
@@ -154,7 +154,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`font-mono text-sm uppercase tracking-widest text-white/80 hover:text-white py-2 border-b border-white/5 flex justify-between items-center ${link.isEvent && eventsUnseen ? 'event-nav-unseen' : ''}`}
+                  className={`font-mono text-sm uppercase tracking-widest text-white/80 hover:text-white py-2 border-b border-white/5 flex justify-between items-center ${link.isEvent ? (eventsUnseen ? 'event-nav-unseen' : 'event-nav-seen') : ''}`}
                 >
                   {link.name}
                   {link.isEvent && eventsUnseen ? <span className="h-2 w-2 rounded-full bg-red-500" /> : <span className="text-xs text-white/30">➔</span>}

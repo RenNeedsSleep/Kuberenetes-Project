@@ -143,6 +143,7 @@
   -webkit-background-clip: text;
   animation: event-gold-sheen 2.8s linear infinite;
 }
+.event-nav-seen { color: #f4d27d !important; }
 @keyframes event-gold-sheen { to { background-position: 220% center; } }
 @media (prefers-reduced-motion: reduce) { .event-nav-unseen { animation: none; } }
 
