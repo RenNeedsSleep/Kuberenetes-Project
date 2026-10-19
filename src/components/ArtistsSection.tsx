@@ -224,6 +224,79 @@ const STYLE = `
 .aop-row:hover .aop-accent {
   background: rgba(255,255,255,0.6);
 }
+/* Touch screens reveal the row nearest the user's reading position. */
+@media (hover: none), (max-width: 639px) {
+  .aop-row.aop-row-active .aop-row-bg {
+    opacity: 1;
+    transform: scale(1);
+    filter: grayscale(0.7) brightness(0.42) contrast(0.95);
+  }
+  .aop-row.aop-row-active .aop-overlay {
+    opacity: 1;
+    background: linear-gradient(105deg, rgba(0,0,0,0.76), rgba(0,0,0,0.62) 62%, rgba(0,0,0,0.56));
+  }
+  .aop-row.aop-row-active .aop-inner {
+    grid-template-columns: 2rem minmax(0, 1fr) 1.25rem;
+    align-items: start;
+    gap: 0.55rem 0.8rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .aop-row.aop-row-active .aop-inner > :nth-child(1) { grid-column: 1; grid-row: 1; }
+  .aop-row.aop-row-active .aop-inner > :nth-child(2) { grid-column: 2; grid-row: 1; min-width: 0; }
+  .aop-row.aop-row-active .aop-inner > :nth-child(3) {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    max-width: 52ch;
+    margin: 0;
+    color: rgba(255,255,255,0.86);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+  }
+  .aop-row.aop-row-active .aop-title {
+    font-size: clamp(1.25rem, 6vw, 1.85rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.95);
+  }
+  .aop-row.aop-row-active .aop-role {
+    color: rgba(255,255,255,0.72);
+    font-size: 0.56rem;
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+  }
+  .aop-row.aop-row-active .aop-tags { gap: 0.35rem; margin-top: 0.65rem; }
+  .aop-row.aop-row-active .aop-tag {
+    padding: 0.25rem 0.45rem;
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(0,0,0,0.78);
+    color: rgba(255,255,255,0.9);
+    font-size: 0.56rem;
+    line-height: 1.35;
+    letter-spacing: 0.1em;
+  }
+  .aop-row.aop-row-active .aop-num { color: rgba(255,255,255,0.55); }
+  .aop-row.aop-row-active .aop-bio {
+    display: block;
+  }
+  .aop-row.aop-row-active .aop-tags {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .aop-row.aop-row-active .aop-arrow {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    color: rgba(255,255,255,0.9);
+    transform: translate(2px,-2px);
+  }
+  .aop-row.aop-row-active .aop-progress {
+    width: 100%;
+    transition: width 480ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .aop-row.aop-row-active .aop-accent { background: rgba(255,255,255,0.6); }
+}
 `;
 
 /* ─── Single practice row ────────────────────────────────────────── */
@@ -343,6 +416,49 @@ export const ArtistsSection: React.FC<ArtistsSectionProps> = () => {
     }
   }, []);
 
+  // On touch screens, keep the row nearest the viewport center expanded as
+  // the visitor scrolls. Desktop users retain the existing hover interaction.
+  useEffect(() => {
+    if (!window.matchMedia('(hover: none), (max-width: 639px)').matches) return;
+
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('#artists .aop-row'));
+    if (!rows.length) return;
+
+    let animationFrame = 0;
+    const updateActiveRow = () => {
+      animationFrame = 0;
+      const readingLine = window.innerHeight * 0.52;
+      let activeRow: HTMLElement | null = null;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      rows.forEach((row) => {
+        const bounds = row.getBoundingClientRect();
+        if (bounds.bottom <= 0 || bounds.top >= window.innerHeight) return;
+        const distance = Math.abs((bounds.top + bounds.bottom) / 2 - readingLine);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          activeRow = row;
+        }
+      });
+
+      rows.forEach((row) => row.classList.toggle('aop-row-active', row === activeRow));
+    };
+    const scheduleUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateActiveRow);
+    };
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    scheduleUpdate();
+
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      rows.forEach((row) => row.classList.remove('aop-row-active'));
+    };
+  }, []);
+
   return (
     <section id="artists" className="relative z-20 bg-black overflow-hidden">
       {/* ── Section header ─────────────────────────────────── */}
@@ -362,10 +478,10 @@ export const ArtistsSection: React.FC<ArtistsSectionProps> = () => {
         </span>
         <div className="flex items-end justify-between gap-4">
           <h2
+            className="section-heading"
             style={{
               fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
-              fontSize: 'clamp(2rem, 6vw, 4.5rem)',
               letterSpacing: '-0.065em',
               textTransform: 'uppercase',
               color: '#fff',

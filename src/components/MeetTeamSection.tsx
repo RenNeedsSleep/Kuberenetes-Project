@@ -152,7 +152,7 @@ export const MeetTeamSection: React.FC<MeetTeamSectionProps> = ({ highlightedIma
 
   return (
     <section ref={sectionRef} aria-label="Meet the team" className="relative z-20 h-[145svh] overflow-clip bg-black sm:h-[155svh]">
-      <div className="sticky top-0 flex h-[100svh] min-h-[580px] flex-col items-center justify-between border-b border-white/10 bg-black px-4 py-8 sm:py-10 md:py-12">
+      <div className="sticky top-0 flex h-[100svh] min-h-[580px] flex-col items-center justify-center gap-5 border-b border-white/10 bg-black px-4 py-6 sm:gap-8 sm:py-8 md:gap-10 md:py-10">
         {/* Three.js Motion Canvas (Particles) in the background */}
         <div ref={canvasRef} className="pointer-events-none absolute inset-0 z-0 h-full w-full" />
 
@@ -167,14 +167,14 @@ export const MeetTeamSection: React.FC<MeetTeamSectionProps> = ({ highlightedIma
           <span className="relative z-10 mb-2 block font-mono text-[9px] uppercase tracking-[0.21em] text-neutral-400 sm:text-[10px]">
             03 // The Collective · Made Together
           </span>
-          <h2 className="relative z-10 text-[clamp(2.5rem,6.2vw,5.8rem)] font-extrabold uppercase leading-none tracking-[-0.06em] text-white">
+          <h2 className="section-heading relative z-10 font-extrabold uppercase leading-none tracking-[-0.06em] text-white">
             MEET THE TEAM
           </h2>
         </motion.div>
 
         {/* Photo Stage with circular orbiting grayscale tool logos around it */}
         <motion.div
-          className="relative z-10 mx-auto flex max-h-[66vh] w-full max-w-[840px] items-center justify-center"
+          className="relative z-10 mx-auto flex max-h-[62svh] w-full max-w-[840px] items-center justify-center sm:max-h-[64svh] md:max-h-[66svh]"
           style={reduceMotion ? undefined : { x: frameX, y: frameY }}
           onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(clubPhotoId)}
           onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(clubPhotoId)}
@@ -182,7 +182,7 @@ export const MeetTeamSection: React.FC<MeetTeamSectionProps> = ({ highlightedIma
         >
           {/* CSS-only orbital ring — no JS per frame */}
           <div
-            className="orbit-ring pointer-events-none absolute inset-0 flex items-center justify-center"
+            className="orbit-ring pointer-events-none absolute inset-0 z-0 flex items-center justify-center"
             style={{ transformOrigin: 'center center' }}
           >
             {TOOL_LOGOS.map((logo, index) => {
@@ -193,7 +193,7 @@ export const MeetTeamSection: React.FC<MeetTeamSectionProps> = ({ highlightedIma
                   key={logo.name}
                   className="absolute left-1/2 top-1/2"
                   style={{
-                    transform: `rotate(${angleDeg}deg) translate(min(38vw, 220px)) rotate(-${angleDeg}deg) translate(-50%, -50%)`,
+                    transform: `rotate(${angleDeg}deg) translate(min(48vw, 360px)) rotate(-${angleDeg}deg) translate(-50%, -50%)`,
                   }}
                 >
                   <div
@@ -216,7 +216,7 @@ export const MeetTeamSection: React.FC<MeetTeamSectionProps> = ({ highlightedIma
           <img
             src="/adope-club-photo.jpeg"
             alt="aDOPE club members and faculty together at MGIT"
-            className="block h-auto max-h-[66vh] w-auto max-w-full rounded border border-white/15 object-contain shadow-2xl transition-all duration-300"
+            className="relative z-10 block h-auto max-h-[62svh] w-auto max-w-full rounded border border-white/15 object-contain shadow-2xl transition-all duration-300 sm:max-h-[64svh] md:max-h-[66svh]"
             style={{
               filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.05)',
             }}

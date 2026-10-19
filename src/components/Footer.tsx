@@ -6,7 +6,7 @@ import { LaserCollection } from '../shaders/laser/LaserCollection';
 import '../shaders/threeui.css';
 
 const socialItems = [
-  { label: 'aDOPE Club', href: SOCIAL_LINKS.behance },
+  { label: 'aDOPE Club', href: SOCIAL_LINKS.behance, external: true },
   { label: 'Instagram', href: SOCIAL_LINKS.instagram, external: true },
   { label: 'LinkedIn', href: SOCIAL_LINKS.linkedin, external: true },
   { label: 'YouTube', href: SOCIAL_LINKS.youtube, external: true },

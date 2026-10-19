@@ -31,6 +31,33 @@
   }
 }
 
+.section-heading {
+  font-size: clamp(2.2rem, 5.2vw, 5.8rem);
+}
+
+/* Shared star field and soft nebula haze across every main page surface. */
+:is(#hero-section, #about, #artists, #team, #timeline, #work, #signal, footer),
+[aria-label="Meet the team"] > .sticky,
+#timeline > .sticky {
+  background-color: #000;
+  background-image:
+    radial-gradient(ellipse 52% 35% at 52% 46%, rgba(210, 220, 238, 0.045), transparent 74%),
+    radial-gradient(ellipse 34% 28% at 18% 72%, rgba(150, 170, 205, 0.035), transparent 76%),
+    radial-gradient(ellipse 28% 24% at 84% 22%, rgba(226, 215, 200, 0.028), transparent 78%),
+    radial-gradient(circle at 8% 14%, rgba(255,255,255,.5) 0 .7px, transparent 1.3px),
+    radial-gradient(circle at 19% 62%, rgba(255,255,255,.34) 0 .65px, transparent 1.3px),
+    radial-gradient(circle at 31% 28%, rgba(255,255,255,.42) 0 .7px, transparent 1.4px),
+    radial-gradient(circle at 42% 82%, rgba(255,255,255,.28) 0 .6px, transparent 1.2px),
+    radial-gradient(circle at 55% 16%, rgba(255,255,255,.4) 0 .7px, transparent 1.4px),
+    radial-gradient(circle at 67% 54%, rgba(255,255,255,.35) 0 .65px, transparent 1.3px),
+    radial-gradient(circle at 78% 34%, rgba(255,255,255,.48) 0 .7px, transparent 1.4px),
+    radial-gradient(circle at 91% 76%, rgba(255,255,255,.32) 0 .65px, transparent 1.3px),
+    radial-gradient(circle at 96% 10%, rgba(255,255,255,.38) 0 .65px, transparent 1.3px);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .custom-cursor {
   display: none;
   position: fixed;

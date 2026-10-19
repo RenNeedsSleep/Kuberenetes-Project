@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
   }, []);
 
   const navLinks = [
-    { name: 'Experience', href: '#about' },
+    { name: 'Voyage', href: '#about' },
     { name: 'Artists', href: '#artists' },
     { name: 'Core Team', href: '#team' },
     { name: 'Archive', href: '#timeline' },

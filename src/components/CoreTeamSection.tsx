@@ -1,10 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CORE_TEAM_DATA } from '../data/mockData';
 import { CoreTeamMember } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const PHOTO_TILE_COLUMNS = 8;
+const PHOTO_TILE_ROWS = 6;
 
 interface CoreTeamSectionProps {
   highlightedImageId: string | null;
@@ -29,6 +32,75 @@ const TeamCard: React.FC<TeamCardProps> = ({
 }) => {
   const imageId = `team-${member.id}`;
   const isHighlighted = highlightedImageId === imageId;
+  const photoFrameRef = useRef<HTMLDivElement>(null);
+  const [photoRevealed, setPhotoRevealed] = useState(false);
+
+  useEffect(() => {
+    if (!member.imageUrl) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setPhotoRevealed(true);
+      return;
+    }
+
+    const frame = photoFrameRef.current;
+    if (!frame) return;
+    const fragments = frame.querySelectorAll<HTMLElement>('.team-photo-fragment');
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        fragments,
+        {
+          autoAlpha: 0,
+          scale: 0.12,
+          x: (tile) => (((tile * 37) % 101) - 50) * 2.1,
+          y: (tile) => (((tile * 61) % 97) - 48) * 1.7,
+          rotation: (tile) => ((tile * 29) % 41) - 20,
+        },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          x: 0,
+          y: 0,
+          rotation: 0,
+          duration: 0.68,
+          stagger: { each: 0.007, from: 'random' },
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: frame,
+            start: 'top 84%',
+            once: true,
+          },
+          onComplete: () => setPhotoRevealed(true),
+        }
+      );
+    }, frame);
+
+    return () => context.revert();
+  }, [member.imageUrl]);
+
+  const photoFragments = member.imageUrl && !photoRevealed
+    ? Array.from({ length: PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS }, (_, tile) => {
+        const column = tile % PHOTO_TILE_COLUMNS;
+        const row = Math.floor(tile / PHOTO_TILE_COLUMNS);
+        return (
+          <div
+            key={tile}
+            aria-hidden="true"
+            className="team-photo-fragment absolute"
+            style={{
+              left: `${(column / PHOTO_TILE_COLUMNS) * 100}%`,
+              top: `${(row / PHOTO_TILE_ROWS) * 100}%`,
+              width: `${100 / PHOTO_TILE_COLUMNS}%`,
+              height: `${100 / PHOTO_TILE_ROWS}%`,
+              opacity: 0,
+              backgroundImage: `url("${member.imageUrl}")`,
+              backgroundSize: `${PHOTO_TILE_COLUMNS * 100}% ${PHOTO_TILE_ROWS * 100}%`,
+              backgroundPosition: `${(column / (PHOTO_TILE_COLUMNS - 1)) * 100}% ${(row / (PHOTO_TILE_ROWS - 1)) * 100}%`,
+              filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
+            }}
+          />
+        );
+      })
+    : null;
 
   return (
     <article
@@ -42,18 +114,22 @@ const TeamCard: React.FC<TeamCardProps> = ({
       <div className="absolute bottom-0 right-0 h-8 w-px bg-white/20 z-10 transition-colors duration-300 group-hover:bg-white/60" />
 
       {/* Uniform Photo Container: fills area edge-to-edge with zero margins */}
-      <div className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-neutral-900 overflow-hidden border-b border-white/10">
+      <div ref={photoFrameRef} className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-neutral-900 overflow-hidden border-b border-white/10">
         {member.imageUrl ? (
-          <img
-            src={member.imageUrl}
-            alt={member.name || member.role}
-            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-            style={{
-              objectPosition: member.id === 'core-head' ? 'center 12%' : 'center 20%',
-              filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
-              transition: 'filter 350ms ease, transform 500ms ease-out',
-            }}
-          />
+          <>
+            <img
+              src={member.imageUrl}
+              alt={member.name || member.role}
+              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              style={{
+                objectPosition: member.id === 'core-head' ? 'center 12%' : 'center 20%',
+                filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
+                opacity: photoRevealed ? 1 : 0,
+                transition: 'opacity 220ms ease, filter 350ms ease, transform 500ms ease-out',
+              }}
+            />
+            {photoFragments}
+          </>
         ) : (
           /* Sleek placeholder for pending positions ensuring identical height */
           <div className="w-full h-full flex flex-col items-center justify-center border border-dashed border-white/10 bg-neutral-950 p-4 text-center">
@@ -97,51 +173,16 @@ export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({
   onImageEnter,
   onImageLeave,
 }) => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const cardsGridRef = useRef<HTMLDivElement>(null);
-
-  // GSAP Entrance Animation with ScrollTrigger
-  useEffect(() => {
-    if (!cardsGridRef.current) return;
-    const cards = cardsGridRef.current.querySelectorAll('.team-card');
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cards,
-        {
-          opacity: 0,
-          y: 40,
-          scale: 0.96,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: cardsGridRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="team" className="relative z-20 bg-black border-b border-white/10">
+    <section id="team" className="relative z-20 bg-black border-b border-white/10">
       {/* Section Header */}
       <div className="mx-auto max-w-[1440px] px-4 pt-16 pb-10 sm:px-6 sm:pt-20 sm:pb-12 md:px-16">
         <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.21em] text-neutral-500 sm:text-[10px]">
           03 // Core team / 2026
         </span>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="max-w-[14ch] text-[clamp(2.2rem,5.2vw,5.8rem)] font-extrabold uppercase leading-[0.85] tracking-[-0.06em] text-white">
-            The people behind aDOPE
+          <h2 className="section-heading max-w-[14ch] font-extrabold uppercase leading-[0.85] tracking-[-0.06em] text-white">
+            The Curators of aDOPE
           </h2>
           <p className="max-w-sm text-xs leading-relaxed text-neutral-400 sm:pb-1 sm:text-sm">
             A contact sheet of the organisers, designers, and mentors turning campus moments into aDOPE work.
@@ -152,10 +193,7 @@ export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({
 
       {/* Cards Grid: Uniform height and width across all cards */}
       <div className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6 sm:pb-20 md:px-16">
-        <div
-          ref={cardsGridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch">
           {CORE_TEAM_DATA.map((member, index) => (
             <TeamCard
               key={member.id}

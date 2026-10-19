@@ -68,7 +68,7 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
               05 // Living Archive Gallery
             </span>
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-extrabold uppercase leading-none tracking-tight text-white">
+            <h2 className="section-heading font-extrabold uppercase leading-none tracking-tight text-white">
               Visual<br />
               Output
             </h2>

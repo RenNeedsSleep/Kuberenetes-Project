@@ -636,19 +636,19 @@ export const TimelineSection: React.FC = () => {
   const clampedY = placeBelow ? rawY + 20 : rawY - 20;
 
   return (
-    <section ref={sectionRef} id="timeline" className="relative z-20 h-[300svh] bg-black md:h-[350svh]">
+    <section ref={sectionRef} id="timeline" className="relative z-20 h-[390svh] bg-black md:h-[450svh]">
       <div className="sticky top-0 flex h-[100svh] flex-col justify-between overflow-hidden bg-black px-4 pt-14 pb-5 sm:px-8 sm:pt-16 sm:pb-6 lg:px-14">
         {/* Header Bar */}
-        <header className="mx-auto w-full max-w-[1300px] flex items-end justify-between gap-4 border-b border-white/10 pb-3">
+        <header className="mx-auto w-full max-w-[1300px] flex flex-col items-start gap-3 border-b border-white/10 pb-3 md:flex-row md:items-end md:justify-between md:gap-4">
           <div>
             <span className="mb-1 block font-mono text-[8px] uppercase tracking-[0.24em] text-neutral-400 sm:text-[10px]">
               04 / The aDOPE archive · MGIT, Hyderabad
             </span>
-            <h2 className="text-xl font-extrabold uppercase tracking-[-0.05em] text-white sm:text-3xl md:text-4xl">
+            <h2 className="section-heading font-extrabold uppercase tracking-[-0.05em] text-white">
               History in motion
             </h2>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex w-full items-center justify-between gap-3 md:w-auto md:justify-end">
             {/* F1 Sound Toggle Button */}
             <button
               type="button"

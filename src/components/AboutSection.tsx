@@ -57,7 +57,7 @@ export const AboutSection: React.FC = () => {
           <div className="grid items-center gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14 xl:gap-20">
             {/* Title: The whole 'Artists, Designers & The Originals' fits comfortably */}
             <motion.div style={sceneStyle} className="relative z-10">
-              <h2 className="text-[clamp(2.4rem,5.6vw,5.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.06em] text-white">
+              <h2 className="section-heading font-extrabold uppercase leading-[0.88] tracking-[-0.06em] text-white">
                 Artists,<br />
                 Designers &amp;<br />
                 <span className="text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,.72)] sm:[-webkit-text-stroke:2px_rgba(255,255,255,.72)]">The Originals</span>
