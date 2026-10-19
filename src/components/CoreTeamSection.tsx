@@ -69,12 +69,14 @@ const TeamCard: React.FC<TeamCardProps> = ({
     ? Array.from({ length: PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS }, (_, tile) => {
         const column = tile % PHOTO_TILE_COLUMNS;
         const row = Math.floor(tile / PHOTO_TILE_COLUMNS);
+        const columnOffset = ((column * 7) % PHOTO_TILE_COLUMNS) / (PHOTO_TILE_COLUMNS - 1);
+        const revealProgress = columnOffset * 0.28 + (row / (PHOTO_TILE_ROWS - 1)) * 0.72;
         return (
           <div
             key={tile}
             aria-hidden="true"
             className="team-photo-fragment absolute"
-            data-reveal-order={(tile * 37) % (PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS)}
+            data-reveal-order={Math.round(revealProgress * (PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS - 1))}
             style={{
               left: `${(column / PHOTO_TILE_COLUMNS) * 100}%`,
               top: `${(row / PHOTO_TILE_ROWS) * 100}%`,
