@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { LOGO_URL } from '../data/mockData';
 
+const getEventsUnseen = () => {
+  try {
+    const seen = JSON.parse(localStorage.getItem('adope-seen-announcements') || '[]') as string[];
+    return !['disegno-open-call-2026'].every((id) => seen.includes(id));
+  } catch { return true; }
+};
+
 interface NavbarProps {
   onOpenJoinModal: () => void;
   activeSection: string;
@@ -11,10 +18,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [eventsUnseen, setEventsUnseen] = useState(() => localStorage.getItem('adope-events-seen') !== 'true');
+  const [eventsUnseen, setEventsUnseen] = useState(getEventsUnseen);
 
   useEffect(() => {
-    const markSeen = () => setEventsUnseen(false);
+    const markSeen = () => setEventsUnseen(getEventsUnseen());
     window.addEventListener('adope:events-seen', markSeen);
     return () => window.removeEventListener('adope:events-seen', markSeen);
   }, []);

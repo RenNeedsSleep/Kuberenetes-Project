@@ -635,6 +635,8 @@ export const TimelineSection: React.FC = () => {
   // Since it's a thin strip (~46px height), only place below if checkpoint is within 70px of top
   const placeBelow = rawY < 72;
   const clampedY = placeBelow ? rawY + 20 : rawY - 20;
+  const popupAnchorY = placeBelow ? clampedY : clampedY - 48;
+  const connectorMidX = activeCoord ? (activeCoord.x + clampedX) / 2 : clampedX;
 
   return (
     <section ref={sectionRef} id="timeline" className="relative z-20 h-[390svh] bg-black md:h-[450svh]">
@@ -693,8 +695,8 @@ export const TimelineSection: React.FC = () => {
                 style={{ left: activeCoord.x, top: activeCoord.y }}
               >
                 <div className="relative flex items-center justify-center">
-                  <span className="absolute h-7 w-7 rounded-full border border-white/70 bg-white/20 animate-ping" />
-                  <span className="relative h-2.5 w-2.5 rounded-full border-2 border-white bg-white shadow-[0_0_12px_#ffffff]" />
+                  <span className="absolute h-7 w-7 rounded-full border border-amber-200/70 bg-amber-200/20 animate-ping" />
+                  <span className="relative h-2.5 w-2.5 rounded-full border-2 border-amber-100 bg-amber-200 shadow-[0_0_12px_#d6a43a]" />
                 </div>
               </div>
             )}
@@ -712,22 +714,20 @@ export const TimelineSection: React.FC = () => {
                   </filter>
                 </defs>
                 {/* Illuminated connector line */}
-                <line
-                  x1={activeCoord.x}
-                  y1={placeBelow ? activeCoord.y + 6 : activeCoord.y - 6}
-                  x2={activeCoord.x}
-                  y2={clampedY}
-                  stroke="#ffffff"
+                <path
+                  d={`M ${activeCoord.x} ${activeCoord.y} L ${connectorMidX} ${activeCoord.y} L ${clampedX} ${popupAnchorY}`}
+                  stroke="#d6a43a"
                   strokeWidth="2"
                   filter="url(#stemGlow)"
                   strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 {/* Luminous anchor dot at contact point with the pill */}
                 <circle
-                  cx={activeCoord.x}
-                  cy={clampedY}
+                  cx={clampedX}
+                  cy={popupAnchorY}
                   r="2.5"
-                  fill="#ffffff"
+                  fill="#f4d27d"
                   filter="url(#stemGlow)"
                 />
               </svg>
@@ -754,7 +754,7 @@ export const TimelineSection: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedMilestone(activeItem)}
-                    className="group w-full flex items-center justify-between gap-2.5 rounded-full border border-white/30 bg-black/90 hover:bg-neutral-900 hover:border-white/70 pl-2 pr-2.5 py-1.5 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.9),0_0_20px_rgba(255,255,255,0.06)] transition-all duration-200 cursor-pointer text-left hover:scale-[1.02] active:scale-[0.98]"
+                    className="group w-full flex items-center justify-between gap-2.5 rounded-full border border-amber-200/45 bg-[#100c07]/95 hover:bg-[#211707] hover:border-amber-100 pl-2 pr-2.5 py-1.5 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.9),0_0_20px_rgba(214,164,58,0.14)] transition-all duration-200 cursor-pointer text-left hover:scale-[1.02] active:scale-[0.98]"
                     title="Click to view full milestone details"
                   >
                     {/* Milestone Photo Thumbnail */}

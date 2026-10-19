@@ -24,8 +24,19 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  // ARTWORKS_DATA order follows the requested archive hierarchy.
-  const artworks = ARTWORKS_DATA;
+  const posterArtworks = ARTWORKS_DATA.filter((art) => art.category === 'Posters');
+  const posterCollection: Artwork = {
+    id: 'art-poster-collection', title: 'Poster Collection', category: 'Posters',
+    imageUrl: posterArtworks[0]?.imageUrl || '', description: 'Campaign posters and recruitment artwork from the aDOPE archive.',
+    year: '2023–2026', artistName: 'aDOPE Club', specs: ['Poster Design', 'Campaigns', 'Print'],
+    tags: ['Posters', 'Campaigns', 'Archive'], featured: true,
+  };
+  // Keep every poster together as one stop in the requested archive hierarchy.
+  const artworks: Artwork[] = [
+    ...ARTWORKS_DATA.filter((art) => art.category !== 'Posters').slice(0, 2),
+    posterCollection,
+    ...ARTWORKS_DATA.filter((art) => art.category !== 'Posters').slice(2),
+  ];
 
   // GSAP ScrollTrigger staggered card reveal
   useEffect(() => {
@@ -107,7 +118,7 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                     onImageEnter(imageId);
                     return;
                   }
-                  onSelectArtwork(art);
+                  onSelectArtwork(art.id === 'art-poster-collection' ? posterArtworks[0] : art);
                 }}
                 className={`bento-card ${colSpan} group cursor-pointer relative overflow-hidden border border-white/15 bg-neutral-950 transition-all duration-300 hover:border-white/50 hover:shadow-[0_16px_40px_rgba(0,0,0,0.8)]`}
               >
@@ -129,6 +140,15 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                         Drag to rotate
                       </div>
                     </>
+                  ) : art.id === 'art-poster-collection' ? (
+                    <div className="absolute inset-0 grid grid-cols-3 gap-1.5 bg-[#090705] p-2 sm:gap-2 sm:p-3">
+                      {posterArtworks.map((poster, posterIndex) => (
+                        <div key={poster.id} className={`relative min-h-0 overflow-hidden border border-amber-100/20 bg-black ${posterIndex === 0 ? 'row-span-2' : ''}`}>
+                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100" />
+                        </div>
+                      ))}
+                      <span className="absolute right-4 top-4 rounded border border-amber-200/50 bg-black/80 px-2 py-1 font-mono text-[8px] uppercase tracking-[.16em] text-amber-100">{posterArtworks.length} posters / one archive</span>
+                    </div>
                   ) : (
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105"
