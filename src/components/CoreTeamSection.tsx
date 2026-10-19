@@ -6,9 +6,6 @@ import { CoreTeamMember } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FRAME_COLUMNS = 12;
-const FRAME_ROWS = 9;
-
 interface CoreTeamSectionProps {
   highlightedImageId: string | null;
   onImageEnter: (imageId: string) => void;
@@ -32,64 +29,6 @@ const TeamCard: React.FC<TeamCardProps> = ({
 }) => {
   const imageId = `team-${member.id}`;
   const isHighlighted = highlightedImageId === imageId;
-  const photoFrameRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!member.imageUrl) return;
-    const frame = photoFrameRef.current;
-    if (!frame) return;
-    const segments = frame.querySelectorAll<HTMLElement>('.team-frame-segment');
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      segments.forEach((segment) => { segment.style.opacity = '1'; });
-      return;
-    }
-    const updateFrame = (progress: number) => {
-      segments.forEach((segment) => {
-        const revealAt = Number(segment.dataset.revealAt);
-        segment.style.opacity = progress >= revealAt ? '1' : '0';
-      });
-    };
-
-    const trigger = ScrollTrigger.create({
-      trigger: frame,
-      start: 'top 98%',
-      end: 'bottom 8%',
-      onUpdate: (self) => updateFrame(self.progress),
-      onRefresh: (self) => updateFrame(self.progress),
-    });
-
-    return () => trigger.kill();
-  }, [member.imageUrl]);
-
-  const frameSegments = member.imageUrl
-    ? [
-        ...Array.from({ length: FRAME_COLUMNS }, (_, column) => {
-          const columnOffset = ((column * 7) % FRAME_COLUMNS) / (FRAME_COLUMNS - 1);
-          const revealAt = 0.15 + columnOffset * 0.72;
-          return [
-            { key: `top-${column}`, revealAt, style: { left: `${(column / FRAME_COLUMNS) * 100}%`, top: 0, width: `${100 / FRAME_COLUMNS}%`, height: '2px' } },
-            { key: `bottom-${column}`, revealAt: Math.min(0.98, revealAt + 0.08), style: { left: `${(column / FRAME_COLUMNS) * 100}%`, bottom: 0, width: `${100 / FRAME_COLUMNS}%`, height: '2px' } },
-          ];
-        }).flat(),
-        ...Array.from({ length: FRAME_ROWS }, (_, row) => {
-          const rowProgress = row / (FRAME_ROWS - 1);
-          return [
-            { key: `left-${row}`, revealAt: 0.18 + rowProgress * 0.72, style: { left: 0, top: `${rowProgress * 100}%`, width: '2px', height: `${100 / FRAME_ROWS}%` } },
-            { key: `right-${row}`, revealAt: 0.25 + rowProgress * 0.72, style: { right: 0, top: `${rowProgress * 100}%`, width: '2px', height: `${100 / FRAME_ROWS}%` } },
-          ];
-        }).flat(),
-      ]
-    : [];
-
-  const renderedFrameSegments = frameSegments.map((segment) => (
-    <div
-      key={segment.key}
-      aria-hidden="true"
-      className="team-frame-segment absolute z-10"
-      data-reveal-at={segment.revealAt}
-      style={{ ...segment.style, opacity: 0, backgroundColor: 'rgba(20,20,20,0.72)' }}
-    />
-  ));
 
   return (
     <article
@@ -102,21 +41,20 @@ const TeamCard: React.FC<TeamCardProps> = ({
       <div className="absolute left-0 top-0 h-px w-8 bg-white/40 z-10 transition-colors duration-300 group-hover:bg-white/80" />
       <div className="absolute bottom-0 right-0 h-8 w-px bg-white/20 z-10 transition-colors duration-300 group-hover:bg-white/60" />
 
-      {/* Still portrait with the scroll animation limited to its outer frame. */}
-      <div ref={photoFrameRef} className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-white overflow-hidden border-b border-white/10 p-[5px]">
+      {/* Uniform Photo Container: fills area edge-to-edge with zero margins */}
+      <div className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-neutral-900 overflow-hidden border-b border-white/10">
         {member.imageUrl ? (
           <>
             <img
               src={member.imageUrl}
               alt={member.name || member.role}
-              className="relative z-0 w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               style={{
                 objectPosition: member.id === 'core-head' ? 'center 12%' : 'center 20%',
                 filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
-                transition: 'filter 350ms ease',
+                transition: 'filter 350ms ease, transform 500ms ease-out',
               }}
             />
-            {renderedFrameSegments}
           </>
         ) : (
           /* Sleek placeholder for pending positions ensuring identical height */
@@ -130,7 +68,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
         )}
 
         {/* Index counter badge */}
-        <span className="absolute left-2.5 top-2.5 z-20 border border-white/20 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.15em] text-white/80 backdrop-blur-sm">
+        <span className="absolute left-2.5 top-2.5 z-10 border border-white/20 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.15em] text-white/80 backdrop-blur-sm">
           {String(index + 1).padStart(2, '0')}
         </span>
       </div>
@@ -161,8 +99,38 @@ export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({
   onImageEnter,
   onImageLeave,
 }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsGridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!cardsGridRef.current) return;
+    const cards = cardsGridRef.current.querySelectorAll('.team-card');
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 40, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: cardsGridRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => context.revert();
+  }, []);
+
   return (
-    <section id="team" className="relative z-20 bg-black border-b border-white/10">
+    <section ref={sectionRef} id="team" className="relative z-20 bg-black border-b border-white/10">
       {/* Section Header */}
       <div className="mx-auto max-w-[1440px] px-4 pt-16 pb-10 sm:px-6 sm:pt-20 sm:pb-12 md:px-16">
         <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.21em] text-neutral-500 sm:text-[10px]">
@@ -181,7 +149,10 @@ export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({
 
       {/* Cards Grid: Uniform height and width across all cards */}
       <div className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6 sm:pb-20 md:px-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch">
+        <div
+          ref={cardsGridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch"
+        >
           {CORE_TEAM_DATA.map((member, index) => (
             <TeamCard
               key={member.id}
