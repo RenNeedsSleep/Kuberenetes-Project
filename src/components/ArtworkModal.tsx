@@ -1,14 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Artwork } from '../types';
-import { X, Tag, Calendar, User } from 'lucide-react';
+import { X, Tag, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ArtworkModalProps {
   artwork: Artwork | null;
   onClose: () => void;
+  galleryArtworks?: Artwork[];
 }
 
-export const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onClose }) => {
+export const ArtworkModal: React.FC<ArtworkModalProps> = ({ artwork, onClose, galleryArtworks = [] }) => {
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const isGallery = artwork?.id === 'art-poster-collection' && galleryArtworks.length > 0;
+  const displayedArtwork = isGallery ? galleryArtworks[galleryIndex % galleryArtworks.length] : artwork;
+
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [artwork?.id]);
+
+  useEffect(() => {
+    if (!artwork) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (isGallery && event.key === 'ArrowRight') setGalleryIndex((index) => (index + 1) % galleryArtworks.length);
+      if (isGallery && event.key === 'ArrowLeft') setGalleryIndex((index) => (index - 1 + galleryArtworks.length) % galleryArtworks.length);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [artwork, galleryArtworks.length, isGallery, onClose]);
+
   if (!artwork) return null;
+
+  if (isGallery && displayedArtwork) {
+    const showPrevious = () => setGalleryIndex((index) => (index - 1 + galleryArtworks.length) % galleryArtworks.length);
+    const showNext = () => setGalleryIndex((index) => (index + 1) % galleryArtworks.length);
+
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-6 bg-black/95 backdrop-blur-xl animate-fade-in-up">
+        <div className="relative flex h-[min(92dvh,900px)] w-full max-w-5xl flex-col overflow-hidden border border-white/20 bg-[#090807] shadow-2xl">
+          <div className="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-black px-4 py-3 sm:px-6">
+            <div className="min-w-0">
+              <span className="block font-mono text-[9px] uppercase tracking-[.2em] text-amber-100/60">aDOPE archive / posters</span>
+              <h2 className="truncate pt-1 text-sm font-bold uppercase tracking-wider text-white sm:text-base">{displayedArtwork.title}</h2>
+            </div>
+            <div className="flex shrink-0 items-center gap-3">
+              <span className="font-mono text-xs tabular-nums text-neutral-400">{String(galleryIndex + 1).padStart(2, '0')} / {String(galleryArtworks.length).padStart(2, '0')}</span>
+              <button onClick={onClose} aria-label="Close poster collection" className="flex min-h-11 min-w-11 items-center justify-center border border-white/30 text-white transition hover:border-white hover:bg-white/10"><X className="h-5 w-5" /></button>
+            </div>
+          </div>
+          <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden px-12 py-3 sm:px-20 sm:py-5">
+            <img key={displayedArtwork.id} src={displayedArtwork.imageUrl} alt={displayedArtwork.title} className="h-full w-full object-contain" />
+            <button onClick={showPrevious} aria-label="Previous poster" className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/30 bg-black/75 text-white transition hover:border-amber-200 hover:text-amber-100 sm:left-5 sm:h-14 sm:w-14"><ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8" /></button>
+            <button onClick={showNext} aria-label="Next poster" className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/30 bg-black/75 text-white transition hover:border-amber-200 hover:text-amber-100 sm:right-5 sm:h-14 sm:w-14"><ChevronRight className="h-6 w-6 sm:h-8 sm:w-8" /></button>
+          </div>
+          <div className="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 bg-black px-4 py-3 font-mono text-[9px] uppercase tracking-[.16em] text-neutral-500 sm:px-6">
+            <span className="truncate">{displayedArtwork.year} · {displayedArtwork.artistName}</span>
+            <span className="hidden sm:inline">Use ← → to browse</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl animate-fade-in-up overflow-hidden">

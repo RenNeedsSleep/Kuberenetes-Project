@@ -17,6 +17,7 @@ import { JoinModal } from './components/JoinModal';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { Artwork } from './types';
+import { ARTWORKS_DATA } from './data/mockData';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -238,6 +239,7 @@ export default function App() {
       {/* Inspector & Join Modals */}
       <ArtworkModal
         artwork={selectedArtwork}
+        galleryArtworks={selectedArtwork?.id === 'art-poster-collection' ? ARTWORKS_DATA.filter((art) => art.category === 'Posters' && art.id !== 'art-4' && art.id !== 'art-9') : undefined}
         onClose={() => setSelectedArtwork(null)}
       />
 

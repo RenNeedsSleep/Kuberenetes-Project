@@ -75,6 +75,18 @@ export const ARTWORKS_DATA: Artwork[] = [
     featured: false
   },
   {
+    id: 'art-hanuman-jayanti',
+    title: 'Hanuman Jayanti',
+    category: 'Posters',
+    imageUrl: '/poster-hanuman-jayanti.png',
+    description: 'A festive Hanuman Jayanti poster celebrating strength, devotion, and aDOPE’s visual storytelling.',
+    year: '2026',
+    artistName: 'aDOPE Club',
+    specs: ['Festival Poster', 'Illustration', 'Typography'],
+    tags: ['Posters', 'Hanuman Jayanti', 'Festival'],
+    featured: true
+  },
+  {
     id: 'art-9',
     title: 'Poster Collection',
     category: 'Posters',

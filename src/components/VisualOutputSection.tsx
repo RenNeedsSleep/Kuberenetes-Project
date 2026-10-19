@@ -116,11 +116,11 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                 onPointerEnter={() => window.matchMedia('(hover: hover)').matches && onImageEnter(imageId)}
                 onPointerLeave={() => window.matchMedia('(hover: hover)').matches && onImageLeave(imageId)}
                 onClick={() => {
-                  if (window.matchMedia('(hover: none)').matches && !isHovered) {
+                  if (art.id !== 'art-poster-collection' && window.matchMedia('(hover: none)').matches && !isHovered) {
                     onImageEnter(imageId);
                     return;
                   }
-                  onSelectArtwork(art.id === 'art-poster-collection' ? posterArtworks[0] : art);
+                  onSelectArtwork(art);
                 }}
                 className={`bento-card ${colSpan} group cursor-pointer relative overflow-hidden border border-white/15 bg-neutral-950 transition-all duration-300 hover:border-white/50 hover:shadow-[0_16px_40px_rgba(0,0,0,0.8)]`}
               >
