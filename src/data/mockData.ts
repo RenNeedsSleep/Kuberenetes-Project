@@ -16,7 +16,7 @@ export const SOCIAL_LINKS = {
 export const ARTWORKS_DATA: Artwork[] = [
   {
     id: 'art-nirvana-2026',
-    title: 'NIRVANA 2026',
+    title: 'NIRVANA 2026 LOGO',
     category: 'Event Identity',
     imageUrl: '/nirvana-phoenix.png',
     description: 'A dimensional phoenix emblem created for NIRVANA 2026, MGIT’s annual fest.',
@@ -39,18 +39,6 @@ export const ARTWORKS_DATA: Artwork[] = [
     featured: true
   },
   {
-    id: 'art-3',
-    title: 'UI/UX Design',
-    category: 'UI/UX',
-    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/c5a61d167501611.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
-    description: 'Interface design work from the club’s public portfolio of creative projects.',
-    year: '2023',
-    artistName: 'aDOPE Club',
-    specs: ['UI/UX', 'Interface Systems', 'Visual Design'],
-    tags: ['UI/UX', 'Digital Art', 'Design'],
-    featured: true
-  },
-  {
     id: 'art-4',
     title: 'Event Posters & Campaigns',
     category: 'Posters',
@@ -61,6 +49,42 @@ export const ARTWORKS_DATA: Artwork[] = [
     specs: ['Poster Design', 'Campaign Graphics', 'Art Direction'],
     tags: ['Posters', 'Events', 'Graphic Design'],
     featured: true
+  },
+  {
+    id: 'art-6',
+    title: 'DISEGNO Open Call',
+    category: 'Posters',
+    imageUrl: '/poster-open-auditions.webp',
+    description: 'Recruitment poster inviting designers, illustrators, editors, and other creative makers to join aDOPE.',
+    year: '2026',
+    artistName: 'aDOPE Club',
+    specs: ['Recruitment Campaign', 'Poster Design', 'Typography'],
+    tags: ['Posters', 'DISEGNO', 'Open Call'],
+    featured: true
+  },
+  {
+    id: 'art-7',
+    title: 'DISEGNO Recruiting Poster',
+    category: 'Posters',
+    imageUrl: '/poster-disegno-recruitment.webp',
+    description: 'A second DISEGNO recruitment poster from the club’s 2026 creative call.',
+    year: '2026',
+    artistName: 'aDOPE Club',
+    specs: ['Recruitment Campaign', 'Poster Design', 'Illustration'],
+    tags: ['Posters', 'DISEGNO', 'Recruitment'],
+    featured: false
+  },
+  {
+    id: 'art-9',
+    title: 'Poster Collection',
+    category: 'Posters',
+    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/77f98b167500645.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
+    description: 'A poster collection documenting aDOPE’s graphic design practice.',
+    year: '2023',
+    artistName: 'aDOPE Club',
+    specs: ['Graphic Design', 'Composition', 'Print'],
+    tags: ['Posters', 'Print', 'Visual Communication'],
+    featured: false
   },
   {
     id: 'art-5',
@@ -75,16 +99,16 @@ export const ARTWORKS_DATA: Artwork[] = [
     featured: false
   },
   {
-    id: 'art-6',
-    title: 'Posters',
-    category: 'Posters',
-    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/77f98b167500645.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
-    description: 'A poster collection documenting aDOPE’s graphic design practice.',
+    id: 'art-3',
+    title: 'UI/UX Design',
+    category: 'UI/UX',
+    imageUrl: 'https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/c5a61d167501611.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png',
+    description: 'Interface design work from the club’s public portfolio of creative projects.',
     year: '2023',
     artistName: 'aDOPE Club',
-    specs: ['Graphic Design', 'Composition', 'Print'],
-    tags: ['Posters', 'Print', 'Visual Communication'],
-    featured: false
+    specs: ['UI/UX', 'Interface Systems', 'Visual Design'],
+    tags: ['UI/UX', 'Digital Art', 'Design'],
+    featured: true
   }
 ];
 
@@ -169,7 +193,7 @@ export const TIMELINE_DATA: TimelineLog[] = [
       'Multi-channel release spanning posters, banners, and digital teasers.',
       'Elevated student fest branding with custom vector art.'
     ],
-    imageUrl: '/nirvana-phoenix.png'
+    imageUrl: '/nirvana-2023-banner.webp'
   },
   {
     id: 'log-7',
@@ -236,7 +260,7 @@ export const TIMELINE_DATA: TimelineLog[] = [
       'Interactive 3D WebGL centerpiece for Nirvana 2026.',
       'The definitive emblem holding the entire aDOPE system together.'
     ],
-    imageUrl: '/nirvana-phoenix.png'
+    imageUrl: '/nirvana-2026-banner.webp'
   }
 ];
 

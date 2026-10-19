@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TIMELINE_DATA } from '../data/mockData';
 import { TimelineLog } from '../types';
+import { createPortal } from 'react-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -816,7 +817,7 @@ export const TimelineSection: React.FC = () => {
       </div>
 
       {/* Expanded Milestone Details Modal (Triggered by clicking the popup) */}
-      <AnimatePresence>
+      {selectedMilestone && createPortal(<AnimatePresence>
         {selectedMilestone && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
@@ -891,7 +892,7 @@ export const TimelineSection: React.FC = () => {
             </motion.div>
           </div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </section>
   );
 };

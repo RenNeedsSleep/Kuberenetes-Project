@@ -31,6 +31,7 @@ export const Hero: React.FC = () => {
   const introTextRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
+  const musicStoppedOnScrollRef = useRef(false);
 
   useEffect(() => {
     const viewportQuery = window.matchMedia('(max-width: 767px)');
@@ -178,6 +179,12 @@ export const Hero: React.FC = () => {
       const rect = section.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const target = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      if (target > 0.015 && !musicStoppedOnScrollRef.current) {
+        musicStoppedOnScrollRef.current = true;
+        audioRef.current?.pause();
+        setMusicEnabled(false);
+        setMusicNeedsTap(false);
+      }
       current += (target - current) * 0.14;
       if (Math.abs(target - current) < 0.0005) current = target;
       progressRef.current = current;
@@ -344,7 +351,7 @@ export const Hero: React.FC = () => {
             <img
               src={LOGO_URL}
               alt="aDOPE Logo"
-              className="h-10 md:h-12 object-contain filter invert opacity-95 hover:opacity-100 transition-opacity drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+              className="h-10 md:h-12 object-contain filter invert brightness-125 opacity-100 transition-opacity drop-shadow-[0_0_18px_rgba(255,255,255,0.38)]"
             />
           </div>
         </div>

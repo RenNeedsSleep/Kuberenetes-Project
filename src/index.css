@@ -135,6 +135,17 @@
 }
 
 /* Magnetic Button Glow Effect */
+.event-nav-unseen {
+  background: linear-gradient(100deg, #c08a2e 10%, #fff1b8 32%, #d8a63d 52%, #fff4c8 70%, #bd8427 90%);
+  background-size: 220% auto;
+  color: transparent !important;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: event-gold-sheen 2.8s linear infinite;
+}
+@keyframes event-gold-sheen { to { background-position: 220% center; } }
+@media (prefers-reduced-motion: reduce) { .event-nav-unseen { animation: none; } }
+
 .magnetic-btn {
   position: relative;
   overflow: hidden;

@@ -11,6 +11,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [eventsUnseen, setEventsUnseen] = useState(() => localStorage.getItem('adope-events-seen') !== 'true');
+
+  useEffect(() => {
+    const markSeen = () => setEventsUnseen(false);
+    window.addEventListener('adope:events-seen', markSeen);
+    return () => window.removeEventListener('adope:events-seen', markSeen);
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -50,6 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
 
   const navLinks = [
     { name: 'Voyage', href: '#about' },
+    { name: 'Events', href: '#events', isEvent: true },
     { name: 'Artists', href: '#artists' },
     { name: 'Core Team', href: '#team' },
     { name: 'Archive', href: '#timeline' },
@@ -80,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
             <img
               src={LOGO_URL}
               alt="Adope Club Logo"
-              className="h-8 md:h-9 object-contain filter invert opacity-90 group-hover:opacity-100 transition-opacity"
+              className="h-8 md:h-9 object-contain filter invert brightness-125 opacity-100 transition-opacity drop-shadow-[0_0_10px_rgba(255,255,255,0.35)]"
             />
           </a>
 
@@ -92,13 +100,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`font-mono text-xs uppercase tracking-widest transition-all duration-300 relative py-1 ${
+                  className={`font-mono text-xs uppercase tracking-widest transition-all duration-300 relative py-1 ${link.isEvent && eventsUnseen ? 'event-nav-unseen' : ''} ${
                     isActive
                       ? 'text-white font-semibold border-b border-white'
                       : 'text-white/60 hover:text-white hover:border-b hover:border-white/40'
                   }`}
                 >
                   {link.name}
+                  {link.isEvent && eventsUnseen && <span className="absolute -top-1 -right-2 h-1.5 w-1.5 rounded-full bg-red-500" />}
                 </a>
               );
             })}
@@ -107,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
           {/* Action Button */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://forms.gle/4YiNpJRTiB52Fd93A"
+              href="https://forms.gle/HYMR5CyABFc13pSK8"
               target="_blank"
               rel="noopener noreferrer"
               className="magnetic-btn bg-white text-black font-mono text-xs px-5 py-2.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-all duration-300 flex items-center gap-2"
@@ -120,10 +129,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden min-h-11 min-w-11 flex items-center justify-center text-white p-2 hover:bg-white/5 border border-white/10 transition-colors"
+            className="relative md:hidden min-h-11 min-w-11 flex items-center justify-center text-white p-2 hover:bg-white/5 border border-white/10 transition-colors"
             aria-label="Toggle Navigation"
             aria-expanded={mobileMenuOpen}
           >
+            {eventsUnseen && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,.8)]" />}
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
@@ -137,16 +147,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-mono text-sm uppercase tracking-widest text-white/80 hover:text-white py-2 border-b border-white/5 flex justify-between items-center"
+                  className={`font-mono text-sm uppercase tracking-widest text-white/80 hover:text-white py-2 border-b border-white/5 flex justify-between items-center ${link.isEvent && eventsUnseen ? 'event-nav-unseen' : ''}`}
                 >
                   {link.name}
-                  <span className="text-xs text-white/30">➔</span>
+                  {link.isEvent && eventsUnseen ? <span className="h-2 w-2 rounded-full bg-red-500" /> : <span className="text-xs text-white/30">➔</span>}
                 </a>
               ))}
             </div>
 
             <a
-              href="https://forms.gle/4YiNpJRTiB52Fd93A"
+              href="https://forms.gle/HYMR5CyABFc13pSK8"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}

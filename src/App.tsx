@@ -11,6 +11,7 @@ import { MeetTeamSection } from './components/MeetTeamSection';
 import { CoreTeamSection } from './components/CoreTeamSection';
 import { TimelineSection } from './components/TimelineSection';
 import { VisualOutputSection } from './components/VisualOutputSection';
+import { EventsSection } from './components/EventsSection';
 import { ArtworkModal } from './components/ArtworkModal';
 import { JoinModal } from './components/JoinModal';
 import { Footer } from './components/Footer';
@@ -217,6 +218,7 @@ export default function App() {
 
       {/* Main Content Sections */}
       <main className="flex-grow">
+        <EventsSection />
         <AboutSection />
         <ArtistsSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />
         <MeetTeamSection highlightedImageId={highlightedImageId} onImageEnter={handleImageEnter} onImageLeave={handleImageLeave} />

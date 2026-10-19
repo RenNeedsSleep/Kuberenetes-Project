@@ -24,8 +24,8 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  // Filter out the redundant standalone "Posters" card ('art-6')
-  const artworks = ARTWORKS_DATA.filter((art) => art.id !== 'art-6');
+  // ARTWORKS_DATA order follows the requested archive hierarchy.
+  const artworks = ARTWORKS_DATA;
 
   // GSAP ScrollTrigger staggered card reveal
   useEffect(() => {
