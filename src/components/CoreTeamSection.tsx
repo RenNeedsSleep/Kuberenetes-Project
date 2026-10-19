@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CORE_TEAM_DATA } from '../data/mockData';
@@ -6,8 +6,8 @@ import { CoreTeamMember } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PHOTO_TILE_COLUMNS = 12;
-const PHOTO_TILE_ROWS = 9;
+const FRAME_COLUMNS = 12;
+const FRAME_ROWS = 9;
 
 interface CoreTeamSectionProps {
   highlightedImageId: string | null;
@@ -33,65 +33,63 @@ const TeamCard: React.FC<TeamCardProps> = ({
   const imageId = `team-${member.id}`;
   const isHighlighted = highlightedImageId === imageId;
   const photoFrameRef = useRef<HTMLDivElement>(null);
-  const [photoRevealed, setPhotoRevealed] = useState(false);
 
   useEffect(() => {
     if (!member.imageUrl) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setPhotoRevealed(true);
-      return;
-    }
-
     const frame = photoFrameRef.current;
     if (!frame) return;
-    const fragments = frame.querySelectorAll<HTMLElement>('.team-photo-fragment');
-    const updateFragments = (progress: number) => {
-      const visibleCount = Math.floor(progress * fragments.length);
-      fragments.forEach((fragment) => {
-        const order = Number(fragment.dataset.revealOrder);
-        fragment.style.opacity = order < visibleCount ? '1' : '0';
+    const segments = frame.querySelectorAll<HTMLElement>('.team-frame-segment');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      segments.forEach((segment) => { segment.style.opacity = '1'; });
+      return;
+    }
+    const updateFrame = (progress: number) => {
+      segments.forEach((segment) => {
+        const revealAt = Number(segment.dataset.revealAt);
+        segment.style.opacity = progress >= revealAt ? '1' : '0';
       });
-      if (progress >= 1) setPhotoRevealed(true);
     };
 
     const trigger = ScrollTrigger.create({
       trigger: frame,
       start: 'top 98%',
-      end: 'top 72%',
-      onUpdate: (self) => updateFragments(self.progress),
-      onRefresh: (self) => updateFragments(self.progress),
+      end: 'bottom 8%',
+      onUpdate: (self) => updateFrame(self.progress),
+      onRefresh: (self) => updateFrame(self.progress),
     });
 
     return () => trigger.kill();
   }, [member.imageUrl]);
 
-  const photoFragments = member.imageUrl && !photoRevealed
-    ? Array.from({ length: PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS }, (_, tile) => {
-        const column = tile % PHOTO_TILE_COLUMNS;
-        const row = Math.floor(tile / PHOTO_TILE_COLUMNS);
-        const columnOffset = ((column * 7) % PHOTO_TILE_COLUMNS) / (PHOTO_TILE_COLUMNS - 1);
-        const revealProgress = columnOffset * 0.28 + (row / (PHOTO_TILE_ROWS - 1)) * 0.72;
-        return (
-          <div
-            key={tile}
-            aria-hidden="true"
-            className="team-photo-fragment absolute"
-            data-reveal-order={Math.round(revealProgress * (PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS - 1))}
-            style={{
-              left: `${(column / PHOTO_TILE_COLUMNS) * 100}%`,
-              top: `${(row / PHOTO_TILE_ROWS) * 100}%`,
-              width: `${100 / PHOTO_TILE_COLUMNS}%`,
-              height: `${100 / PHOTO_TILE_ROWS}%`,
-              opacity: 0,
-              backgroundImage: `url("${member.imageUrl}")`,
-              backgroundSize: `${PHOTO_TILE_COLUMNS * 100}% ${PHOTO_TILE_ROWS * 100}%`,
-              backgroundPosition: `${(column / (PHOTO_TILE_COLUMNS - 1)) * 100}% ${(row / (PHOTO_TILE_ROWS - 1)) * 100}%`,
-              filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
-            }}
-          />
-        );
-      })
-    : null;
+  const frameSegments = member.imageUrl
+    ? [
+        ...Array.from({ length: FRAME_COLUMNS }, (_, column) => {
+          const columnOffset = ((column * 7) % FRAME_COLUMNS) / (FRAME_COLUMNS - 1);
+          const revealAt = 0.15 + columnOffset * 0.72;
+          return [
+            { key: `top-${column}`, revealAt, style: { left: `${(column / FRAME_COLUMNS) * 100}%`, top: 0, width: `${100 / FRAME_COLUMNS}%`, height: '2px' } },
+            { key: `bottom-${column}`, revealAt: Math.min(0.98, revealAt + 0.08), style: { left: `${(column / FRAME_COLUMNS) * 100}%`, bottom: 0, width: `${100 / FRAME_COLUMNS}%`, height: '2px' } },
+          ];
+        }).flat(),
+        ...Array.from({ length: FRAME_ROWS }, (_, row) => {
+          const rowProgress = row / (FRAME_ROWS - 1);
+          return [
+            { key: `left-${row}`, revealAt: 0.18 + rowProgress * 0.72, style: { left: 0, top: `${rowProgress * 100}%`, width: '2px', height: `${100 / FRAME_ROWS}%` } },
+            { key: `right-${row}`, revealAt: 0.25 + rowProgress * 0.72, style: { right: 0, top: `${rowProgress * 100}%`, width: '2px', height: `${100 / FRAME_ROWS}%` } },
+          ];
+        }).flat(),
+      ]
+    : [];
+
+  const renderedFrameSegments = frameSegments.map((segment) => (
+    <div
+      key={segment.key}
+      aria-hidden="true"
+      className="team-frame-segment absolute z-10"
+      data-reveal-at={segment.revealAt}
+      style={{ ...segment.style, opacity: 0, backgroundColor: 'rgba(20,20,20,0.72)' }}
+    />
+  ));
 
   return (
     <article
@@ -104,22 +102,21 @@ const TeamCard: React.FC<TeamCardProps> = ({
       <div className="absolute left-0 top-0 h-px w-8 bg-white/40 z-10 transition-colors duration-300 group-hover:bg-white/80" />
       <div className="absolute bottom-0 right-0 h-8 w-px bg-white/20 z-10 transition-colors duration-300 group-hover:bg-white/60" />
 
-      {/* Uniform Photo Container: fills area edge-to-edge with zero margins */}
-      <div ref={photoFrameRef} className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-white overflow-hidden border-b border-white/10">
+      {/* Still portrait with the scroll animation limited to its outer frame. */}
+      <div ref={photoFrameRef} className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-white overflow-hidden border-b border-white/10 p-[5px]">
         {member.imageUrl ? (
           <>
             <img
               src={member.imageUrl}
               alt={member.name || member.role}
-              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              className="relative z-0 w-full h-full object-cover"
               style={{
                 objectPosition: member.id === 'core-head' ? 'center 12%' : 'center 20%',
                 filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
-                opacity: photoRevealed ? 1 : 0,
-                transition: 'opacity 80ms linear, filter 350ms ease, transform 500ms ease-out',
+                transition: 'filter 350ms ease',
               }}
             />
-            {photoFragments}
+            {renderedFrameSegments}
           </>
         ) : (
           /* Sleek placeholder for pending positions ensuring identical height */
@@ -133,7 +130,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
         )}
 
         {/* Index counter badge */}
-        <span className="absolute left-2.5 top-2.5 z-10 border border-white/20 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.15em] text-white/80 backdrop-blur-sm">
+        <span className="absolute left-2.5 top-2.5 z-20 border border-white/20 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.15em] text-white/80 backdrop-blur-sm">
           {String(index + 1).padStart(2, '0')}
         </span>
       </div>
@@ -205,3 +202,4 @@ export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({
     </section>
   );
 };
+
