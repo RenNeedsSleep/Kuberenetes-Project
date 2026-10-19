@@ -1,19 +1,25 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { X } from 'lucide-react';
+import { Volume2, VolumeX, X } from 'lucide-react';
 import { ThreeCanvas } from './ThreeCanvas';
 import { LOGO_URL } from '../data/mockData';
 
 const VIDEO_SRC = '/intro-4k.mp4';
 const MOBILE_VIDEO_SRC = '/intro-mobile.mp4';
+const INTRO_AUDIO_SRC = '/intro-audio.mp3';
+
+const getVideoSource = () => (
+  window.matchMedia('(max-width: 767px)').matches ? MOBILE_VIDEO_SRC : VIDEO_SRC
+);
 
 export const Hero: React.FC = () => {
-  const [videoSrc, setVideoSrc] = useState(() => (
-    window.matchMedia('(pointer: coarse)').matches ? MOBILE_VIDEO_SRC : VIDEO_SRC
-  ));
+  const [videoSrc, setVideoSrc] = useState(getVideoSource);
   const [coords, setCoords] = useState({ x: '0.00', y: '100.00' });
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [videoNeedsTap, setVideoNeedsTap] = useState(false);
+  const [musicEnabled, setMusicEnabled] = useState(true);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [musicNeedsTap, setMusicNeedsTap] = useState(false);
   const [skipped, setSkipped] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -21,22 +27,62 @@ export const Hero: React.FC = () => {
   const slotRef = useRef<HTMLDivElement>(null);
   const videoWrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const introTextRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
 
   useEffect(() => {
-    const pointerQuery = window.matchMedia('(pointer: coarse)');
+    const viewportQuery = window.matchMedia('(max-width: 767px)');
     const updateVideoSource = () => {
-      const nextSource = pointerQuery.matches ? MOBILE_VIDEO_SRC : VIDEO_SRC;
+      const nextSource = viewportQuery.matches ? MOBILE_VIDEO_SRC : VIDEO_SRC;
       setVideoSrc(nextSource);
       setVideoReady(false);
       setVideoNeedsTap(false);
     };
 
-    pointerQuery.addEventListener('change', updateVideoSource);
-    return () => pointerQuery.removeEventListener('change', updateVideoSource);
+    viewportQuery.addEventListener('change', updateVideoSource);
+    return () => viewportQuery.removeEventListener('change', updateVideoSource);
   }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = 0.38;
+
+    const onPlay = () => {
+      setMusicPlaying(true);
+      setMusicNeedsTap(false);
+    };
+    const onPause = () => setMusicPlaying(false);
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
+
+    if (musicEnabled) {
+      audio.play().catch(() => setMusicNeedsTap(true));
+    } else {
+      audio.pause();
+    }
+
+    return () => {
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('pause', onPause);
+    };
+  }, [musicEnabled]);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (musicPlaying) {
+      setMusicEnabled(false);
+      setMusicNeedsTap(false);
+      audio.pause();
+      return;
+    }
+
+    setMusicEnabled(true);
+    audio.play().then(() => setMusicNeedsTap(false)).catch(() => setMusicNeedsTap(true));
+  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -193,6 +239,7 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* The morphing intro video */}
+        <audio ref={audioRef} src={INTRO_AUDIO_SRC} loop preload="auto" />
         <div
           ref={videoWrapRef}
           className="absolute left-1/2 top-1/2 z-20 w-full h-full overflow-hidden bg-black will-change-transform"
@@ -202,7 +249,7 @@ export const Hero: React.FC = () => {
             {!videoFailed ? (
               <video
                 ref={videoRef}
-                className="w-full h-full object-contain md:object-cover"
+                className="w-full h-full object-cover"
                 src={videoSrc}
                 autoPlay
                 muted
@@ -263,6 +310,17 @@ export const Hero: React.FC = () => {
           </button>
         )}
 
+        <button
+          type="button"
+          onClick={toggleMusic}
+          aria-label={musicPlaying ? 'Turn intro music off' : 'Turn intro music on'}
+          aria-pressed={musicPlaying}
+          className="absolute bottom-[calc(env(safe-area-inset-bottom)+1rem)] left-4 z-50 flex min-h-11 items-center gap-2 border border-white/25 bg-black/40 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-white/75 backdrop-blur-sm transition-colors hover:border-white hover:text-white sm:bottom-8 sm:left-8"
+        >
+          {musicPlaying ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+          {musicNeedsTap ? 'Tap for music' : musicPlaying ? 'Music on' : 'Music off'}
+        </button>
+
         {/* Hero card content (revealed once the video docks) */}
         <div className="absolute inset-0 z-30 flex items-center justify-center px-6">
           <div
@@ -272,7 +330,7 @@ export const Hero: React.FC = () => {
             {/* Video slot — the fullscreen video docks exactly here */}
             <div
               ref={slotRef}
-              className="relative w-full max-w-[720px] aspect-video border border-white/15 overflow-hidden bg-black mb-5 sm:mb-8"
+              className="relative h-[42dvh] w-auto max-w-[75vw] aspect-[9/16] border border-white/15 overflow-hidden bg-black mb-5 sm:mb-8 md:h-auto md:w-full md:max-w-[720px] md:aspect-video"
             >
               <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white z-10" />
               <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white z-10" />

@@ -45,36 +45,24 @@ const TeamCard: React.FC<TeamCardProps> = ({
     const frame = photoFrameRef.current;
     if (!frame) return;
     const fragments = frame.querySelectorAll<HTMLElement>('.team-photo-fragment');
-    const context = gsap.context(() => {
-      gsap.fromTo(
-        fragments,
-        {
-          autoAlpha: 0,
-          scale: 0.12,
-          x: (tile) => (((tile * 37) % 101) - 50) * 2.1,
-          y: (tile) => (((tile * 61) % 97) - 48) * 1.7,
-          rotation: (tile) => ((tile * 29) % 41) - 20,
-        },
-        {
-          autoAlpha: 1,
-          scale: 1,
-          x: 0,
-          y: 0,
-          rotation: 0,
-          duration: 0.68,
-          stagger: { each: 0.007, from: 'random' },
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: frame,
-            start: 'top 84%',
-            once: true,
-          },
-          onComplete: () => setPhotoRevealed(true),
-        }
-      );
-    }, frame);
+    const updateFragments = (progress: number) => {
+      const visibleCount = Math.floor(progress * fragments.length);
+      fragments.forEach((fragment) => {
+        const order = Number(fragment.dataset.revealOrder);
+        fragment.style.opacity = order < visibleCount ? '1' : '0';
+      });
+      if (progress >= 1) setPhotoRevealed(true);
+    };
 
-    return () => context.revert();
+    const trigger = ScrollTrigger.create({
+      trigger: frame,
+      start: 'top 92%',
+      end: 'bottom 40%',
+      onUpdate: (self) => updateFragments(self.progress),
+      onRefresh: (self) => updateFragments(self.progress),
+    });
+
+    return () => trigger.kill();
   }, [member.imageUrl]);
 
   const photoFragments = member.imageUrl && !photoRevealed
@@ -86,6 +74,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
             key={tile}
             aria-hidden="true"
             className="team-photo-fragment absolute"
+            data-reveal-order={(tile * 37) % (PHOTO_TILE_COLUMNS * PHOTO_TILE_ROWS)}
             style={{
               left: `${(column / PHOTO_TILE_COLUMNS) * 100}%`,
               top: `${(row / PHOTO_TILE_ROWS) * 100}%`,
@@ -114,7 +103,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
       <div className="absolute bottom-0 right-0 h-8 w-px bg-white/20 z-10 transition-colors duration-300 group-hover:bg-white/60" />
 
       {/* Uniform Photo Container: fills area edge-to-edge with zero margins */}
-      <div ref={photoFrameRef} className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-neutral-900 overflow-hidden border-b border-white/10">
+      <div ref={photoFrameRef} className="relative w-full aspect-[4/3] sm:aspect-[4/3] bg-white overflow-hidden border-b border-white/10">
         {member.imageUrl ? (
           <>
             <img
@@ -125,7 +114,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
                 objectPosition: member.id === 'core-head' ? 'center 12%' : 'center 20%',
                 filter: isHighlighted ? 'none' : 'grayscale(1) contrast(1.06)',
                 opacity: photoRevealed ? 1 : 0,
-                transition: 'opacity 220ms ease, filter 350ms ease, transform 500ms ease-out',
+                transition: 'opacity 80ms linear, filter 350ms ease, transform 500ms ease-out',
               }}
             />
             {photoFragments}
