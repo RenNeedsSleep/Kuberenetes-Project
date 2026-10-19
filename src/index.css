@@ -36,13 +36,16 @@
 }
 
 #timeline .history-heading {
-  font-size: clamp(1.65rem, 7vw, 3.5rem);
-  line-height: 0.92;
+  font-size: clamp(1.5rem, 7vw, 2.35rem);
+  line-height: 0.98;
+  white-space: normal;
 }
 
 @media (min-width: 768px) {
   #timeline .history-heading {
     font-size: clamp(2rem, 4.1vw, 3.75rem);
+    line-height: 0.92;
+    white-space: nowrap;
   }
 }
 
