@@ -24,7 +24,9 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const posterArtworks = ARTWORKS_DATA.filter((art) => art.category === 'Posters');
+  const posterArtworks = ARTWORKS_DATA.filter(
+    (art) => art.category === 'Posters' && art.id !== 'art-4' && art.id !== 'art-9'
+  );
   const posterCollection: Artwork = {
     id: 'art-poster-collection', title: 'Poster Collection', category: 'Posters',
     imageUrl: posterArtworks[0]?.imageUrl || '', description: 'Campaign posters and recruitment artwork from the aDOPE archive.',

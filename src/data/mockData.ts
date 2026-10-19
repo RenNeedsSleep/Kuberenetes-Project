@@ -139,7 +139,7 @@ export const TIMELINE_DATA: TimelineLog[] = [
       'First major public creative release for MGIT.',
       'Defined a bold typographic and poster craft standard.'
     ],
-    imageUrl: '/nirvana-phoenix.png'
+    imageUrl: '/events-existing.png'
   },
 
   // 02 — WHAT WE DO / OUR IMPACT (2022 to 2023)
@@ -167,7 +167,7 @@ export const TIMELINE_DATA: TimelineLog[] = [
       'Full-scale festival branding across social, print, and stage graphics.',
       'United designers under a cohesive campus-wide visual system.'
     ],
-    imageUrl: '/nirvana-phoenix.png'
+    imageUrl: '/events-campaigns-combined.png'
   },
   {
     id: 'log-5',
