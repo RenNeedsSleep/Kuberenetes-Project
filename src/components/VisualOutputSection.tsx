@@ -143,13 +143,12 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                       </div>
                     </>
                   ) : art.id === 'art-poster-collection' ? (
-                    <div className="absolute inset-0 grid grid-cols-3 gap-1.5 bg-[#090705] p-2 sm:gap-2 sm:p-3">
+                    <div className="absolute inset-0 grid grid-cols-2 gap-2 bg-[#090705] p-3 sm:gap-3 sm:p-4">
                       {posterArtworks.map((poster, posterIndex) => (
-                        <div key={poster.id} className={`relative min-h-0 overflow-hidden border border-amber-100/20 bg-black ${posterIndex === 0 ? 'row-span-2' : ''}`}>
-                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100" />
+                        <div key={poster.id} className="relative min-h-0 overflow-hidden border border-amber-100/20 bg-black/70 p-1">
+                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-contain opacity-90 transition duration-500 group-hover:scale-[1.02] group-hover:opacity-100" />
                         </div>
                       ))}
-                      <span className="absolute right-4 top-4 rounded border border-amber-200/50 bg-black/80 px-2 py-1 font-mono text-[8px] uppercase tracking-[.16em] text-amber-100">{posterArtworks.length} posters / one archive</span>
                     </div>
                   ) : (
                     <div

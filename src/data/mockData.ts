@@ -139,7 +139,7 @@ export const TIMELINE_DATA: TimelineLog[] = [
       'First major public creative release for MGIT.',
       'Defined a bold typographic and poster craft standard.'
     ],
-    imageUrl: '/events-existing.png'
+    imageUrl: LOGO_URL
   },
 
   // 02 — WHAT WE DO / OUR IMPACT (2022 to 2023)
