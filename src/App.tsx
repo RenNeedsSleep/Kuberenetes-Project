@@ -202,7 +202,7 @@ export default function App() {
       {/* Top Global Scroll Progress Bar */}
       <div
         id="global-scroll-progress"
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-white via-neutral-300 to-white z-[60] pointer-events-none origin-left transition-transform duration-75"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-700 via-amber-300 to-amber-700 z-[60] pointer-events-none origin-left transition-transform duration-75"
         style={{ transform: 'scaleX(0)' }}
       />
 
