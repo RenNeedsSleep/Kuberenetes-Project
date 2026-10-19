@@ -35,6 +35,17 @@
   font-size: clamp(2.2rem, 5.2vw, 5.8rem);
 }
 
+#timeline .history-heading {
+  font-size: clamp(1.65rem, 7vw, 3.5rem);
+  line-height: 0.92;
+}
+
+@media (min-width: 768px) {
+  #timeline .history-heading {
+    font-size: clamp(2rem, 4.1vw, 3.75rem);
+  }
+}
+
 /* Shared star field and soft nebula haze across every main page surface. */
 :is(#hero-section, #about, #artists, #team, #timeline, #work, #signal, footer),
 [aria-label="Meet the team"] > .sticky,

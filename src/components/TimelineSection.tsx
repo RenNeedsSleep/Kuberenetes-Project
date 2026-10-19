@@ -645,7 +645,7 @@ export const TimelineSection: React.FC = () => {
             <span className="mb-1 block font-mono text-[8px] uppercase tracking-[0.24em] text-neutral-400 sm:text-[10px]">
               04 / The aDOPE archive · MGIT, Hyderabad
             </span>
-            <h2 className="section-heading font-extrabold uppercase tracking-[-0.05em] text-white">
+            <h2 className="history-heading section-heading max-w-full whitespace-nowrap font-extrabold uppercase tracking-[-0.05em] text-white">
               History in motion
             </h2>
           </div>
