@@ -516,7 +516,10 @@ export const TimelineSection: React.FC = () => {
 
       camera.aspect = width / height;
       camera.position.x = -0.6;
-      camera.position.z = width < 520 ? 13.0 : (width < 820 ? 11.2 : 9.6);
+      const baseDistance = width < 520 ? 13.0 : (width < 820 ? 11.2 : 9.6);
+      // Fit the full circuit horizontally on narrow, portrait viewports.
+      const trackFitDistance = 8.8 / (2 * Math.tan(THREE.MathUtils.degToRad(19)) * camera.aspect);
+      camera.position.z = Math.max(baseDistance, trackFitDistance);
       camera.lookAt(-0.6, 0, 0);
       camera.updateProjectionMatrix();
 
