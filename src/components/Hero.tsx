@@ -3,9 +3,8 @@ import { Volume2, VolumeX, X } from 'lucide-react';
 import { ThreeCanvas } from './ThreeCanvas';
 import { LOGO_URL } from '../data/mockData';
 
-const VIDEO_SRC = '/intro-4k.mp4';
-const MOBILE_VIDEO_SRC = '/intro-mobile.mp4';
-const INTRO_AUDIO_SRC = '/intro-audio.mp3';
+const VIDEO_SRC = '/intro-main.mp4';
+const MOBILE_VIDEO_SRC = '/intro-mobile-with-audio.mp4';
 
 const getVideoSource = () => (
   window.matchMedia('(max-width: 767px)').matches ? MOBILE_VIDEO_SRC : VIDEO_SRC
@@ -27,7 +26,6 @@ export const Hero: React.FC = () => {
   const slotRef = useRef<HTMLDivElement>(null);
   const videoWrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const introTextRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
@@ -47,42 +45,48 @@ export const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = 0.38;
-
+    const video = videoRef.current;
+    if (!video) return;
+    video.volume = 0.38;
+    const updateMusicState = () => setMusicPlaying(!video.muted && !video.paused);
     const onPlay = () => {
-      setMusicPlaying(true);
-      setMusicNeedsTap(false);
+      updateMusicState();
+      if (!video.muted) setMusicNeedsTap(false);
     };
-    const onPause = () => setMusicPlaying(false);
-    audio.addEventListener('play', onPlay);
-    audio.addEventListener('pause', onPause);
-
-    if (musicEnabled) {
-      audio.play().catch(() => setMusicNeedsTap(true));
-    } else {
-      audio.pause();
-    }
+    video.addEventListener('play', onPlay);
+    video.addEventListener('pause', updateMusicState);
+    video.addEventListener('volumechange', updateMusicState);
+    updateMusicState();
 
     return () => {
-      audio.removeEventListener('play', onPlay);
-      audio.removeEventListener('pause', onPause);
+      video.removeEventListener('play', onPlay);
+      video.removeEventListener('pause', updateMusicState);
+      video.removeEventListener('volumechange', updateMusicState);
     };
-  }, [musicEnabled]);
+  }, [videoSrc]);
 
   const toggleMusic = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (musicPlaying) {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!video.muted) {
+      video.muted = true;
       setMusicEnabled(false);
+      setMusicPlaying(false);
       setMusicNeedsTap(false);
-      audio.pause();
       return;
     }
 
+    video.muted = false;
     setMusicEnabled(true);
-    audio.play().then(() => setMusicNeedsTap(false)).catch(() => setMusicNeedsTap(true));
+    video.play().then(() => {
+      setMusicPlaying(true);
+      setMusicNeedsTap(false);
+    }).catch(() => {
+      video.muted = true;
+      setMusicEnabled(false);
+      setMusicPlaying(false);
+      setMusicNeedsTap(true);
+    });
   };
 
   useEffect(() => {
@@ -102,14 +106,25 @@ export const Hero: React.FC = () => {
     if (!video || videoFailed) return;
 
     const attemptPlayback = () => {
-      video.muted = true;
-      video.defaultMuted = true;
+      video.muted = !musicEnabled;
+      video.defaultMuted = !musicEnabled;
       video.playsInline = true;
       video.play().then(() => {
         setVideoReady(true);
         setVideoNeedsTap(false);
+        setMusicPlaying(!video.muted);
       }).catch(() => {
-        setVideoNeedsTap(true);
+        if (!video.muted) {
+          video.muted = true;
+          setMusicEnabled(false);
+          setMusicNeedsTap(true);
+          video.play().then(() => {
+            setVideoReady(true);
+            setVideoNeedsTap(false);
+          }).catch(() => setVideoNeedsTap(true));
+        } else {
+          setVideoNeedsTap(true);
+        }
       });
     };
 
@@ -122,7 +137,7 @@ export const Hero: React.FC = () => {
     if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) attemptPlayback();
 
     return () => video.removeEventListener('canplay', onCanPlay);
-  }, [videoFailed, videoSrc]);
+  }, [musicEnabled, videoFailed, videoSrc]);
 
   /* Scroll-driven morph: fullscreen video -> docked into hero-card slot */
   const applyProgress = useCallback(() => {
@@ -181,8 +196,9 @@ export const Hero: React.FC = () => {
       const target = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
       if (target > 0.015 && !musicStoppedOnScrollRef.current) {
         musicStoppedOnScrollRef.current = true;
-        audioRef.current?.pause();
+        if (videoRef.current) videoRef.current.muted = true;
         setMusicEnabled(false);
+        setMusicPlaying(false);
         setMusicNeedsTap(false);
       }
       current += (target - current) * 0.14;
@@ -246,7 +262,6 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* The morphing intro video */}
-        <audio ref={audioRef} src={INTRO_AUDIO_SRC} loop preload="auto" />
         <div
           ref={videoWrapRef}
           className="absolute left-1/2 top-1/2 z-20 w-full h-full overflow-hidden bg-black will-change-transform"
@@ -259,7 +274,7 @@ export const Hero: React.FC = () => {
                 className="w-full h-full object-cover"
                 src={videoSrc}
                 autoPlay
-                muted
+                muted={!musicEnabled}
                 loop
                 playsInline
                 preload="auto"
@@ -277,7 +292,7 @@ export const Hero: React.FC = () => {
                 <div className="absolute inset-0 bg-grid-pattern opacity-40" style={{ transform: 'perspective(600px) rotateX(35deg) scale(1.6)' }} />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-white/40">
-                    Place intro.mp4 in /public
+                    Place intro-main.mp4 in /public
                   </span>
                 </div>
               </div>
