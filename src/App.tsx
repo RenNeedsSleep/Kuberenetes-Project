@@ -21,7 +21,7 @@ import { ARTWORKS_DATA } from './data/mockData';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const JOIN_FORM_URL = 'https://forms.gle/HYMR5CyABFc13pSK8';
+const JOIN_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfjFLqiOi9liCH9Z_i5HwmWYtpqx9fpSd8YKyHmacnxVXS_GQ/viewform';
 
 export default function App() {
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);

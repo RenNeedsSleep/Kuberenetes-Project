@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 
-const JOIN_FORM_URL = 'https://forms.gle/HYMR5CyABFc13pSK8';
+const JOIN_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfjFLqiOi9liCH9Z_i5HwmWYtpqx9fpSd8YKyHmacnxVXS_GQ/viewform';
 const ANNOUNCEMENTS = ['disegno-open-call-2026'];
 const SEEN_KEY = 'adope-seen-announcements';
 
