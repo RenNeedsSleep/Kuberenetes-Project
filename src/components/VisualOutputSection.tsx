@@ -153,7 +153,7 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                             transform: `translate(-50%, -50%) translate(${(posterIndex - (posterArtworks.length - 1) / 2) * 15}px, ${(posterIndex - (posterArtworks.length - 1) / 2) * -7}px) rotate(${(posterIndex - (posterArtworks.length - 1) / 2) * 4}deg)`,
                           }}
                         >
-                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-contain grayscale contrast-110" />
+                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-contain grayscale contrast-110 transition duration-500 group-hover:grayscale-0" />
                         </div>
                       ))}
                     </div>
