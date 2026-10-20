@@ -143,10 +143,17 @@ export const VisualOutputSection: React.FC<VisualOutputSectionProps> = ({
                       </div>
                     </>
                   ) : art.id === 'art-poster-collection' ? (
-                    <div className="absolute inset-0 grid grid-cols-2 gap-2 bg-[#090705] p-3 sm:gap-3 sm:p-4">
+                    <div className="absolute inset-0 overflow-hidden bg-[#090705]">
                       {posterArtworks.map((poster, posterIndex) => (
-                        <div key={poster.id} className="relative min-h-0 overflow-hidden border border-amber-100/20 bg-black/70 p-1">
-                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-contain opacity-90 transition duration-500 group-hover:scale-[1.02] group-hover:opacity-100" />
+                        <div
+                          key={poster.id}
+                          className="absolute left-1/2 top-1/2 h-[88%] w-[58%] overflow-hidden border border-white/35 bg-black shadow-[0_12px_36px_rgba(0,0,0,.65)]"
+                          style={{
+                            zIndex: posterIndex + 1,
+                            transform: `translate(-50%, -50%) translate(${(posterIndex - (posterArtworks.length - 1) / 2) * 15}px, ${(posterIndex - (posterArtworks.length - 1) / 2) * -7}px) rotate(${(posterIndex - (posterArtworks.length - 1) / 2) * 4}deg)`,
+                          }}
+                        >
+                          <img src={poster.imageUrl} alt={poster.title} className="h-full w-full object-contain grayscale contrast-110" />
                         </div>
                       ))}
                     </div>
