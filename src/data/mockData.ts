@@ -362,12 +362,6 @@ export const CORE_TEAM_DATA: CoreTeamMember[] = [
     role: 'Faculty Coordinator',
     imageUrl: '/sree-divya.png',
     bio: 'Supporting aDOPE’s student team through faculty mentorship across its creative work.'
-  },
-  {
-    id: 'core-faculty-pending',
-    name: '',
-    role: 'Faculty Coordinator',
-    bio: ''
   }
 ];
 

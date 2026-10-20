@@ -167,7 +167,7 @@ export const CoreTeamSection: React.FC<CoreTeamSectionProps> = ({
 
         <div className="mt-8 flex items-center justify-between font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-700 sm:text-[9px]">
           <span>Collective direction / MGIT</span>
-          <span>7 points / one studio</span>
+          <span>{CORE_TEAM_DATA.length} points / one studio</span>
         </div>
       </div>
     </section>
