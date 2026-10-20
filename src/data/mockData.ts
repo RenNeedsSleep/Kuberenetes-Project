@@ -54,7 +54,7 @@ export const ARTWORKS_DATA: Artwork[] = [
     id: 'art-6',
     title: 'DISEGNO Open Call',
     category: 'Posters',
-    imageUrl: '/poster-open-auditions.webp',
+    imageUrl: '/poster-open-auditions-qr.png',
     description: 'Recruitment poster inviting designers, illustrators, editors, and other creative makers to join aDOPE.',
     year: '2026',
     artistName: 'aDOPE Club',

@@ -123,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
           {/* Action Button */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://forms.gle/HYMR5CyABFc13pSK8"
+              href="https://forms.gle/KHvuQ3bNp7cEXJ258"
               target="_blank"
               rel="noopener noreferrer"
               className="magnetic-btn bg-white text-black font-mono text-xs px-5 py-2.5 uppercase tracking-widest font-semibold hover:bg-neutral-200 transition-all duration-300 flex items-center gap-2"
@@ -163,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenJoinModal, activeSection }
             </div>
 
             <a
-              href="https://forms.gle/HYMR5CyABFc13pSK8"
+              href="https://forms.gle/KHvuQ3bNp7cEXJ258"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 
-const JOIN_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfjFLqiOi9liCH9Z_i5HwmWYtpqx9fpSd8YKyHmacnxVXS_GQ/viewform';
+const JOIN_FORM_URL = 'https://forms.gle/KHvuQ3bNp7cEXJ258';
 const ANNOUNCEMENTS = ['disegno-open-call-2026'];
 const SEEN_KEY = 'adope-seen-announcements';
 
@@ -43,8 +43,8 @@ export const EventsSection: React.FC = () => {
           <div className="mb-2 flex items-center justify-between border-b border-amber-200/20 px-2 pb-2 font-mono text-[9px] uppercase tracking-[.22em] text-amber-100/75">
             <span>Announcement 01 / Open Call</span><span className="flex items-center gap-1.5"><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-300" /> New</span>
           </div>
-          <a href="/poster-open-auditions.webp" target="_blank" rel="noopener noreferrer" aria-label="Open the aDOPE auditions poster" className="group block overflow-hidden bg-black">
-            <img src="/poster-open-auditions.webp" alt="aDOPE presents DISEGNO open call for creative roles" className="max-h-[78vh] w-full object-contain transition duration-500 group-hover:scale-[1.015]" />
+          <a href="/poster-open-auditions-qr.png" target="_blank" rel="noopener noreferrer" aria-label="Open the aDOPE auditions poster" className="group block overflow-hidden bg-black">
+            <img src="/poster-open-auditions-qr.png" alt="aDOPE presents DISEGNO open call for creative roles" className="max-h-[78vh] w-full object-contain transition duration-500 group-hover:scale-[1.015]" />
           </a>
         </div>
       </div>
