@@ -29,7 +29,6 @@ export const Hero: React.FC = () => {
   const introTextRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
-  const musicStoppedOnScrollRef = useRef(false);
 
   useEffect(() => {
     const viewportQuery = window.matchMedia('(max-width: 767px)');
@@ -106,6 +105,15 @@ export const Hero: React.FC = () => {
     if (!video || videoFailed) return;
 
     const attemptPlayback = () => {
+      const section = sectionRef.current;
+      const sectionBounds = section?.getBoundingClientRect();
+      const sectionOnScreen = sectionBounds && sectionBounds.bottom > 0 && sectionBounds.top < window.innerHeight;
+      if (!sectionOnScreen) {
+        video.muted = true;
+        video.pause();
+        return;
+      }
+
       video.muted = !musicEnabled;
       video.defaultMuted = !musicEnabled;
       video.playsInline = true;
@@ -194,13 +202,6 @@ export const Hero: React.FC = () => {
       const rect = section.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const target = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      if (target > 0.015 && !musicStoppedOnScrollRef.current) {
-        musicStoppedOnScrollRef.current = true;
-        if (videoRef.current) videoRef.current.muted = true;
-        setMusicEnabled(false);
-        setMusicPlaying(false);
-        setMusicNeedsTap(false);
-      }
       current += (target - current) * 0.14;
       if (Math.abs(target - current) < 0.0005) current = target;
       progressRef.current = current;
@@ -215,6 +216,13 @@ export const Hero: React.FC = () => {
         if (!rafId) rafId = requestAnimationFrame(loop);
         if (video && video.paused) video.play().catch(() => {});
       } else {
+        if (video) {
+          video.muted = true;
+          video.defaultMuted = true;
+          setMusicEnabled(false);
+          setMusicPlaying(false);
+          setMusicNeedsTap(false);
+        }
         if (rafId) {
           cancelAnimationFrame(rafId);
           rafId = 0;
